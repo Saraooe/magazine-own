@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zine · Vol.02 · Resolution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ══════════════════════════════════════
+   0. RESET
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+/* ══════════════════════════════════════
+   1. THEME TOKENS · t-a 牛皮纸档案
+══════════════════════════════════════ */
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+  --btn-bg:       rgba(42,32,24,.08);
+  --btn-border:   rgba(42,32,24,.18);
+  --btn-active:   #8b2e1a;
+}
+
+/* ══════════════════════════════════════
+   2. BASE
+══════════════════════════════════════ */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s ease, color .3s ease;
+}
+
+/* ══════════════════════════════════════
+   3. BILINGUAL · 双语切换
+══════════════════════════════════════ */
+[lang="en"], [lang="zh"] { display: inline; }
+[data-bilingual] [lang="zh"] { display: none; }
+[data-bilingual] [lang="en"] { display: inline; }
+[data-bilingual].lang-zh [lang="zh"] { display: inline; }
+[data-bilingual].lang-zh [lang="en"] { display: none; }
+
+[data-bilingual] p > [lang],
+[data-bilingual] h1 > [lang],
+[data-bilingual] h2 > [lang],
+[data-bilingual] h3 > [lang],
+[data-bilingual] .article-lede > [lang],
+[data-bilingual] .cover-sub > [lang],
+[data-bilingual] .pq-script > [lang],
+[data-bilingual] .pq-small-text > [lang],
+[data-bilingual] .pq-below > [lang],
+[data-bilingual] blockquote > [lang] {
+  display: block;
+}
+[data-bilingual].lang-zh p > [lang="en"],
+[data-bilingual].lang-zh h1 > [lang="en"],
+[data-bilingual].lang-zh h2 > [lang="en"],
+[data-bilingual].lang-zh h3 > [lang="en"],
+[data-bilingual].lang-zh .article-lede > [lang="en"],
+[data-bilingual].lang-zh .cover-sub > [lang="en"],
+[data-bilingual].lang-zh .pq-script > [lang="en"],
+[data-bilingual].lang-zh .pq-small-text > [lang="en"],
+[data-bilingual].lang-zh .pq-below > [lang="en"],
+[data-bilingual].lang-zh blockquote > [lang="en"] {
+  display: none;
+}
+
+/* ══════════════════════════════════════
+   4. MASTHEAD
+══════════════════════════════════════ */
+.zine-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw;
+  height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+
+.lang-switcher {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+[data-bilingual] .lang-switcher { display: flex; }
+
+.lang-btn {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  padding: 4px 10px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--bg);
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+  line-height: 1;
+  opacity: .7;
+}
+.lang-btn:hover { opacity: 1; }
+.lang-btn.active {
+  background: var(--btn-active);
+  border-color: var(--btn-active);
+  color: #fff;
+  opacity: 1;
+}
+
+@media print { .zine-masthead { display: none; } }
+
+/* ══════════════════════════════════════
+   5. L01 · 封面
+══════════════════════════════════════ */
+.zine-cover {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 8vh 5vw 5vh;
+  min-height: 85vh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+}
+.cover-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.022em;
+  color: var(--ink);
+  margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  max-width: 50ch;
+  padding-left: 18px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 5vh;
+}
+
+.cover-image-slot {
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26vh;
+  margin-bottom: 4vh;
+  overflow: hidden;
+}
+.cover-image-slot.empty::after {
+  content: attr(data-label);
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+.cover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  padding-top: 2vh;
+  text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: var(--accent);
+  opacity: .28;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════
+   6. L06 · 目录页
+══════════════════════════════════════ */
+.zine-index {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 1.4vh 0;
+  border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+/* ══════════════════════════════════════
+   7. L04 · Pull Quote 硫酸纸卡片
+══════════════════════════════════════ */
+.pull-quote-section {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+}
+.tracing-card {
+  position: relative;
+  padding: 36px 44px 32px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow:
+    2px 4px 12px rgba(0,0,0,.07),
+    4px 8px 28px rgba(0,0,0,.05),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px);
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.82;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 20px auto 0;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════
+   8. L02 · 双栏正文
+══════════════════════════════════════ */
+.zine-body {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 5.5vh 5vw;
+  border-bottom: 1px solid var(--rule);
+}
+.zine-body.two-col {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4.5vw;
+  align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+
+.sidebar-block {
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin-bottom: 2.8vh;
+}
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  padding: 2px 7px;
+  margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  letter-spacing: .1em;
+}
+
+/* ══════════════════════════════════════
+   9. L03 · 单栏长文
+══════════════════════════════════════ */
+.zine-body.one-col { display: block; }
+.col-center { max-width: 660px; margin: 0 auto; }
+
+/* ══════════════════════════════════════
+   10. 文章通用
+══════════════════════════════════════ */
+.article-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  margin-bottom: 2vh;
+  padding-top: 1.2vh;
+  border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  margin-bottom: 2vh;
+}
+
+.col-wide p, .col-center p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  color: var(--ink-2);
+  line-height: 1.92;
+  margin-bottom: 0;
+}
+.col-wide p + p, .col-center p + p { text-indent: 2em; }
+
+.col-wide h3, .col-center h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 3.2vh 0 1.2vh;
+  letter-spacing: -.01em;
+}
+.col-wide strong, .col-center strong { font-weight: 600; color: var(--ink); }
+.col-wide mark, .col-center mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+
+.col-wide blockquote, .col-center blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.82;
+}
+
+/* ══════════════════════════════════════
+   11. TRACING APPENDIX · 硫酸纸附页
+══════════════════════════════════════ */
+.tracing-appendix {
+  position: relative;
+  max-width: 900px;
+  margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow:
+    1px 3px 8px rgba(0,0,0,.06),
+    3px 6px 20px rgba(0,0,0,.07),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg);
+  transform-origin: top left;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · 附页';
+  position: absolute;
+  top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  background: var(--bg);
+  padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner {
+  transform: rotate(.45deg);
+  transform-origin: top left;
+}
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 22px;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.appendix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 36px;
+}
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.78;
+  margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+/* ══════════════════════════════════════
+   12. L07 · 尾页
+══════════════════════════════════════ */
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--colophon-acc);
+  margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--colophon-fg);
+  line-height: 1.78;
+}
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  color: var(--colophon-fg);
+  opacity: .35;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   13. UTILITIES
+══════════════════════════════════════ */
+.section-hr {
+  border: none; height: 1px;
+  background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  max-width: 960px; margin: 40px auto;
+}
+
+/* ══════════════════════════════════════
+   14. RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+@media print {
+  .zine-masthead { display: none; }
+  .col-narrow    { position: static; }
+  .stamp         { opacity: .15; }
+  body           { font-size: 11pt; }
+}
+
+</style>
+</head>
+
+<body class="t-a" data-bilingual="true">
+
+<!-- ════ 顶部页眉 ════ -->
+<header class="zine-masthead">
+  <span class="masthead-name">MAGAZINE OWN · 杂志架</span>
+  <span class="masthead-issue">Vol.02 · 2026</span>
+  <div class="lang-switcher" role="group" aria-label="Language">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn"        id="btn-zh" onclick="setLang('zh')">中文</button>
+  </div>
+</header>
+
+<!-- ════ L01 · 封面 ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.02 · 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">
+      <span lang="en">Behavior Change</span>
+      <span lang="zh">行为改变</span>
+    </span>
+  </div>
+
+  <h1 class="cover-title">
+    <span lang="en">The Resolution<br><em>Protocol</em></span>
+    <span lang="zh">决心<br><em>协议</em></span>
+  </h1>
+
+  <p class="cover-sub">
+    <span lang="en">New years resolutions are stupid — but reflecting on the life you hate is always wise. Seven ideas on behavior change, psychology, and identity transformation to launch yourself toward a better 2026.</span>
+    <span lang="zh">新年决心是愚蠢的——但反思你讨厌的生活总是明智的。七个关于行为改变、心理学和身份转变的想法，帮你开启更好的 2026。</span>
+  </p>
+
+  <div class="cover-image-slot empty" data-label="Image Slot · 3:4"></div>
+
+  <div class="cover-footer">
+    <span>
+      <span lang="en">A comprehensive guide to true change</span>
+      <span lang="zh">一份关于真正改变的全面指南</span>
+    </span>
+    <span class="stamp">NO.02</span>
+  </div>
+</section>
+
+<!-- ════ L06 · 目录 ════ -->
+<section class="zine-index">
+  <div class="index-label">
+    <span lang="en">Contents · 目录</span>
+    <span lang="zh">目录 · Contents</span>
+  </div>
+  <ol class="index-list">
+    <li>
+      <span class="index-num">I</span>
+      <span class="index-title">
+        <span lang="en">You Aren't the Person Who Would Be There</span>
+        <span lang="zh">你不是那个会在那里的人</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§1</span>
+    </li>
+    <li>
+      <span class="index-num">II</span>
+      <span class="index-title">
+        <span lang="en">You Don't Actually Want to Be There</span>
+        <span lang="zh">你其实不想待在那里</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§2</span>
+    </li>
+    <li>
+      <span class="index-num">III</span>
+      <span class="index-title">
+        <span lang="en">You're Afraid to Be There</span>
+        <span lang="zh">你害怕到达那里</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§3</span>
+    </li>
+    <li>
+      <span class="index-num">IV</span>
+      <span class="index-title">
+        <span lang="en">The Life You Want Is a Level of Mind</span>
+        <span lang="zh">你想要的生活是意识的一个层面</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§4</span>
+    </li>
+    <li>
+      <span class="index-num">V</span>
+      <span class="index-title">
+        <span lang="en">Intelligence Is Getting What You Want</span>
+        <span lang="zh">智力是从生活中获得你想要的</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§5</span>
+    </li>
+    <li>
+      <span class="index-num">VI</span>
+      <span class="index-title">
+        <span lang="en">Launch a New Life in One Day</span>
+        <span lang="zh">一天内开启全新生活</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§6</span>
+    </li>
+    <li>
+      <span class="index-num">VII</span>
+      <span class="index-title">
+        <span lang="en">Turn Your Life Into a Video Game</span>
+        <span lang="zh">把生活变成一场电子游戏</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">§7</span>
+    </li>
+  </ol>
+</section>
+
+<!-- ════ L04 · Pull Quote 硫酸纸卡片 ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+
+    <p class="pq-small-text">
+      <span lang="en">If you want a specific outcome in life, you must have the lifestyle that creates that outcome long before you reach it.</span>
+      <span lang="zh">如果你想在生活中获得特定的结果，你必须在你达到它之前，就拥有能创造这种结果的生活方式。</span>
+    </p>
+
+    <div class="pq-script">
+      <span lang="en">You aren't where<br>you want to be</span>
+      <span lang="zh">你不在你<br>想要的位置</span>
+    </div>
+
+    <span class="pq-cite">—— Vol.02 · The Resolution Protocol</span>
+
+    <p class="pq-below">
+      <span lang="en">Because you aren't the person who would be there. Because you don't actually want to be there. Because you're afraid to be there. Three reasons, one way out.</span>
+      <span lang="zh">因为你不是那个会在那里的人。因为你其实不想待在那里。因为你害怕到达那里。三个原因，一条出路。</span>
+    </p>
+
+  </div>
+</section>
+
+<!-- ════ §1 · 双栏正文 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">Identity precedes behavior. You can't build a great life on a rotting foundation.</span>
+        <span lang="zh">身份先于行为。你无法在腐朽的基础上建造伟大的生活。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Identity</span>
+          <span class="sidebar-tag">Lifestyle</span>
+          <span class="sidebar-tag">Foundation</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">身份</span>
+          <span class="sidebar-tag">生活方式</span>
+          <span class="sidebar-tag">基础</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Note</span>
+        <span lang="zh">旁注</span>
+      </h4>
+      <p>
+        <span lang="en">The bodybuilder doesn't grind to eat healthy — they can't see themselves living any other way.</span>
+        <span lang="zh">健美运动员不是靠"努力"才吃得健康——他们无法想象自己能以其他方式生活。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§1 · Section I</div>
+
+    <h2 class="article-title">
+      <span lang="en">You Aren't Where You Want to Be Because You Aren't the Person Who Would Be There</span>
+      <span lang="zh">你不在你想要的位置上，是因为你不是那个会在那里的人</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">If you're anything like me, you think new years resolutions are stupid.</span>
+      <span lang="zh">如果你像我一样，你会觉得新年决心很愚蠢。</span>
+    </p>
+
+    <p>
+      <span lang="en">Because most people go about changing their lives in the completely wrong way. They create these resolutions because everyone else does — we create a superficial meaning out of status games — but they don't meet the requirements for true change, which goes a lot deeper than convincing yourself you're going to be more disciplined or productive this year.</span>
+      <span lang="zh">因为大多数人以完全错误的方式去改变他们的生活。他们制定这些决心是因为其他人都在做——我们在地位游戏中创造出表面的意义——但这些决心并不符合真正改变的要求，而真正改变要深得多，远不止说服自己今年会更自律或更有效率。</span>
+    </p>
+    <p>
+      <span lang="en">However, as much as I think new years resolutions are stupid, it's always wise to reflect on the life you hate so you can launch yourself toward something that much better. So whether you want to start the business, transform your body, or take the risk toward a more meaningful life without quitting after 2 weeks, I want to share 7 ideas you probably haven't heard before on behavior change, psychology, and productivity so you can do just that in 2026.</span>
+      <span lang="zh">然而，尽管我认为新年决心很愚蠢，但反思你讨厌的生活总是明智的，这样你就能朝着更好的事物前进。所以，无论您是想创业、改变身材，还是冒险追求更有意义的生活而不在两周后就放弃，我想分享一些您可能从未听说过的关于行为改变、心理学和生产力方面的七个想法，以便您能在 2026 年实现这一点。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Two Requirements for Success</span>
+      <span lang="zh">成功的两个要求</span>
+    </h3>
+    <p>
+      <span lang="en">When it comes to setting big goals, people tend to focus on one of the two requirements for success:</span>
+      <span lang="zh">在设定大目标时，人们往往只关注成功所需的两个要求中的一个：</span>
+    </p>
+    <p>
+      <span lang="en"><strong>1. Changing your actions</strong> to make progress toward the goal (least important, second order). <strong>2. Changing who you are</strong> so that your behavior naturally follows (most important, first order).</span>
+      <span lang="zh"><strong>1. 调整你的行为</strong>以朝着目标前进（最不重要，第二顺序）。<strong>2. 改变你自己</strong>，让你的行为自然而然地随之而来（最重要，第一顺序）。</span>
+    </p>
+    <p>
+      <span lang="en">Most people set a surface-level goal, hype themselves up to remain disciplined for the first few weeks, then go back to their old ways without much struggle, because they were trying to build a great life on a <mark>rotting foundation</mark>.</span>
+      <span lang="zh">大多数人设定一个表面目标，自我激励保持纪律几周，然后不费吹灰之力又回到老样子，因为他们试图在<mark>腐朽的基础</mark>上建造一个伟大的生活。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Think of Somebody Successful</span>
+      <span lang="zh">想想一个成功的人</span>
+    </h3>
+    <p>
+      <span lang="en">Think of a bodybuilder with a great physique, a founder/CEO worth hundreds of millions, or a charismatic dude who can chat up a group without a shred of anxiety. Do you think the bodybuilder has to "grind" to eat healthy? Does the CEO have to discipline themselves to show up and lead the team?</span>
+      <span lang="zh">想想一个身材完美的健美运动员，一个身家数亿的首席执行官，或者一个能轻松与一群人交谈而毫无焦虑的迷人家伙。你认为健美运动员必须"努力"才能吃得健康吗？CEO 必须自律才能出现在团队面前并领导团队吗？</span>
+    </p>
+    <p>
+      <span lang="en">To you, it may seem like that on the surface, but the truth is that they can't see themselves living any other way. The bodybuilder has to grind to eat <em>unhealthily</em>. The CEO has to force themself to lie in bed past their alarm clock, and they hate every second of it.</span>
+      <span lang="zh">对你来说，表面上看可能是这样，但事实是，他们无法想象自己能以其他方式生活。健美运动员必须努力才能吃<em>得不健康</em>。CEO 必须强迫自己在闹钟响过之后躺在床上，并且他们讨厌每一秒钟。</span>
+    </p>
+    <p>
+      <span lang="en">If you want a specific outcome in life, <strong>you must have the lifestyle that creates that outcome long before you reach it</strong>. If someone says they want to lose 30 pounds, I often don't believe them — not because I don't think they are capable, but because there are too many times when that same person says, "I can't wait until I'm done losing weight so I can start to enjoy life again."</span>
+      <span lang="zh">如果你想在生活中获得特定的结果，<strong>你必须在你达到它之前，就拥有能创造这种结果的生活方式</strong>。如果有人说他想减重 30 磅，我常常不相信他们——不是因为我认为他们没有能力，而是因为那个人经常会说，"我迫不及待想结束减肥，好重新开始享受生活。"</span>
+    </p>
+    <p>
+      <span lang="en">When you truly change yourself, all of your habits that don't move the needle toward your goal become disgusting, because you have a deep and profound awareness of what kind of life those actions compound into.</span>
+      <span lang="zh">当你真正改变自己时，所有那些不能推动你实现目标的习惯都会变得令人厌恶，因为你深刻地意识到这些行为会积累成怎样的人生。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ §2 · 双栏正文 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">All behavior is goal-oriented. Your "bad" habits serve an unconscious goal.</span>
+        <span lang="zh">所有行为都是目标导向的。你的"坏"习惯服务于一个无意识的目标。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Teleology</span>
+          <span class="sidebar-tag">Unconscious</span>
+          <span class="sidebar-tag">Perception</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">目的论</span>
+          <span class="sidebar-tag">潜意识</span>
+          <span class="sidebar-tag">感知</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Quote</span>
+        <span lang="zh">引言</span>
+      </h4>
+      <p>
+        <span lang="en">"Trust only movement. Life happens at the level of events, not of words." — Alfred Adler</span>
+        <span lang="zh">"只信任行动。生活发生在事件层面，而不是言语层面。" —— 阿尔弗雷德·阿德勒</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§2 · Section II</div>
+
+    <h2 class="article-title">
+      <span lang="en">You Aren't Where You Want to Be Because You Don't Want to Be There</span>
+      <span lang="zh">你不在你想要的位置上，是因为你不想待在那里</span>
+    </h2>
+
+    <p>
+      <span lang="en">If you want to change who you are, you must understand how the mind works so that you can start to reprogram it. The first step is to understand that <strong>all behavior is goal-oriented</strong>. It's teleological.</span>
+      <span lang="zh">如果你想要改变你自己，你必须了解心智是如何运作的，这样你才能开始重新编程它。第一步是理解<strong>所有行为都是目标导向的</strong>。这是目的论的。</span>
+    </p>
+    <p>
+      <span lang="en">You take a step forward because you want to reach a certain location. You scratch your nose because you want to make the itch go away. Those ones are clear, but most of the time, your goals are <em>unconscious</em>. You may not realize that when you sit on the couch in the middle of the day, you are trying to burn time before your next responsibility.</span>
+      <span lang="zh">你向前迈步是因为你想到达某个地方。你挠鼻子是因为你想让痒的感觉消失。这些例子很清晰，但大多数时候，你的目标是<em>潜意识的</em>。你可能没有意识到，当你中午坐在沙发上时，你正试图在下一个责任开始前消磨时间。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Procrastination as Goal-Seeking</span>
+      <span lang="zh">拖延作为目标追求</span>
+    </h3>
+    <p>
+      <span lang="en">If you can't stop procrastinating your work, you may justify it with the fact that you "lack discipline," but in reality, you are attempting to achieve a goal like you always are. In this case, that goal could be to protect yourself from the judgment that comes from finishing and sharing your work.</span>
+      <span lang="zh">如果你无法停止拖延工作，你可能会用"缺乏纪律"来为自己辩解，但实际上，你仍然像往常一样试图实现一个目标。在这种情况下，那个目标可能是为了保护自己免受完成和分享工作的评判。</span>
+    </p>
+    <p>
+      <span lang="en">If you say you want to quit your dead-end job, but stay in it without any real reason, you might think you don't have enough courage — but the truth is that you are pursuing the goal of safety, predictability, and an excuse to not look like a failure.</span>
+      <span lang="zh">如果你说你想要辞掉死路一条的工作，但没有任何真正的原因还留在那里，你可能会开始觉得自己不够勇敢——但事实是你在追求安全、可预测性，以及一个借口，以免在他人面前显得像个失败者。</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">Real change requires changing your goals. Not setting surface-level goals — changing your point of view. A goal is a projection into the future that acts as a lens of perception.</span>
+      <span lang="zh">真正的改变需要改变你的目标。不是设定表面目标——而是改变你的观点。目标是未来的一种投射，它充当一种感知的镜头，让你能够注意到有助于你实现目标的信息、想法和资源。</span>
+    </blockquote>
+  </article>
+</section>
+
+<!-- ════ §3 · 双栏正文 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">When your identity feels threatened, the same fight-or-flight response triggers as when your body feels threatened.</span>
+        <span lang="zh">当你的身份感到威胁时，会触发与身体感到威胁时相同的战斗或逃跑反应。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Identity</span>
+          <span class="sidebar-tag">Conditioning</span>
+          <span class="sidebar-tag">Fight or Flight</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">身份</span>
+          <span class="sidebar-tag">条件反射</span>
+          <span class="sidebar-tag">战斗或逃跑</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Quote</span>
+        <span lang="zh">引言</span>
+      </h4>
+      <p>
+        <span lang="en">"If you have accepted an idea and are firmly convinced it is true, it has the same power over you as the hypnotist's words." — Maxwell Maltz</span>
+        <span lang="zh">"如果你接受了一个想法，并且坚定地相信这个想法是真实的，它对你产生的力量与催眠师对被催眠者的言语产生的力量相同。" —— 马克斯韦尔·马尔茨</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§3 · Section III</div>
+
+    <h2 class="article-title">
+      <span lang="en">You Aren't Where You Want to Be Because You're Afraid to Be There</span>
+      <span lang="zh">你不在你想要的位置上，是因为你害怕到达那里</span>
+    </h2>
+
+    <p>
+      <span lang="en">Here's how you've become who you are today, and how you will become who you will be tomorrow. This is the anatomy of identity:</span>
+      <span lang="zh">这是你如何成为今天的你，以及你将如何成为明天的你的方式。这是身份的解剖：</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">1. You want to achieve a goal → 2. You perceive reality through the lens of that goal → 3. You only notice "important" information that helps → 4. You act and receive feedback → 5. You repeat until it becomes automatic → 6. That behavior becomes who you think you are → 7. You defend your identity to maintain psychological consistency</span>
+      <span lang="zh">1. 你想实现一个目标 → 2. 你通过这个目标的镜头感知现实 → 3. 你只注意到能帮助你的"重要"信息 → 4. 你行动并获得反馈 → 5. 你不断重复直到它变得自动化 → 6. 那种行为成为你认为自己是谁的一部分 → 7. 你为了保持心理一致性而捍卫你的身份</span>
+    </blockquote>
+
+    <p>
+      <span lang="en">The unfortunate reality is that you must break the cycle between steps 6 and 7, but this process starts when you are a child. You have the goal of survival. You are dependent on your parents to teach you how to survive. You had to conform. And since the way most people teach is through reward and punishment, unless you adopt their beliefs and values, you will be punished.</span>
+      <span lang="zh">不幸的现实是，你必须打破步骤 6 和 7 之间的循环，但这个过程从你小时候就开始了。你的目标是生存。你依赖父母教你如何生存。你必须顺从。由于大多数人通过奖惩来教你，除非你接受他们的信念和价值观，否则你会受到惩罚。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Conceptual Survival</span>
+      <span lang="zh">概念层面的生存</span>
+    </h3>
+    <p>
+      <span lang="en">Once you fulfill your physical survival needs (which is quite easy in today's world), you start to survive on the conceptual or ideological level. You may not try to protect and reproduce your body, but you absolutely protect and reproduce your mind.</span>
+      <span lang="zh">一旦你满足了身体的生存需求（这在当今世界很容易做到），你开始在概念或意识形态层面生存。你可能不会试图保护和繁殖你的身体，但你绝对会保护和繁殖你的心灵。</span>
+    </p>
+    <p>
+      <span lang="en">When your body feels threatened, you go into fight or flight. <strong>When your identity feels threatened, the same thing happens.</strong> If you are heavily identified with a political ideology, you will feel threatened when someone challenges your beliefs. You literally feel the stress. You feel, emotionally, like you were just slapped in the face.</span>
+      <span lang="zh">当你的身体感到威胁时，你会进入战斗或逃跑模式。<strong>当你的身份感到威胁时，同样会发生这种情况。</strong>如果你与某种政治意识形态有强烈的认同，当有人挑战你的信念时，你会感到威胁。你真的会感到压力。在情感上，你感觉就像被人当面扇了一巴掌。</span>
+    </p>
+    <p>
+      <span lang="en">The same thing happens when you unconsciously see yourself as a lawyer, a gamer, or somebody else who would not take the actions to achieve a better life. <mark>Your identity is running the show</mark>, and it will fight to stay alive.</span>
+      <span lang="zh">当你无意识地认为自己是一个律师、一个游戏玩家，或是一个不会采取行动来获得更好生活的人时，同样的事情也会发生。<mark>你的身份在掌控全局</mark>，而且它会为了存活而战斗。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ §4 · 双栏正文 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">The mind evolves through predictable stages. You can get stuck — or you can grow through.</span>
+        <span lang="zh">意识会经历可预测的阶段。你可以卡住——也可以成长穿越。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Ego Development</span>
+          <span class="sidebar-tag">Stages</span>
+          <span class="sidebar-tag">Evolution</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">自我发展</span>
+          <span class="sidebar-tag">阶段</span>
+          <span class="sidebar-tag">进化</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Models</span>
+        <span lang="zh">模型</span>
+      </h4>
+      <p>
+        <span lang="en">Maslow · Greuter · Spiral Dynamics · Integral Theory</span>
+        <span lang="zh">马斯洛 · 格雷特尔 · 螺旋动力学 · 整体理论</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§4 · Section IV</div>
+
+    <h2 class="article-title">
+      <span lang="en">The Life You Want Lies Within a Specific Level of Mind</span>
+      <span lang="zh">你想要的生活存在于特定的意识层面</span>
+    </h2>
+
+    <p>
+      <span lang="en">The mind evolves through predictable stages over time. When you're born, you're like a little survival sponge that absorbs whatever beliefs you can so that you can feel safe and secure. And if you don't be careful, your mind may crystalize and it may make it difficult to live a meaningful life.</span>
+      <span lang="zh">意识会随着时间的推移经历可预测的阶段。当你出生时，你就像一块小小的生存海绵，吸收你能吸收的任何信念，以便你感到安全。如果你不小心，你的意识可能会结晶化，这可能会使你难以过上有意义的生活。</span>
+    </p>
+
+    <h3>
+      <span lang="en">The 9 Stages of Ego Development (Abridged)</span>
+      <span lang="zh">九个自我发展阶段（简版）</span>
+    </h3>
+    <p>
+      <span lang="en"><strong>Impulsive</strong> — No separation between impulse and action. A toddler hits when angry because the feeling and the behavior are the same thing.</span>
+      <span lang="zh"><strong>冲动型</strong>——冲动和行动之间没有区别。幼儿生气时会打人，因为感受和行为是同一回事。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Self-Protective</strong> — The world is dangerous and you learn to look out for yourself. A kid learns to hide report cards and figure out what adults want to hear.</span>
+      <span lang="zh"><strong>自我保护</strong>——世界是危险的，你学会照顾自己。一个孩子学会隐藏成绩单，弄清楚成年人想听什么。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Conformist</strong> — You are your group and its rules feel like reality itself. Someone who genuinely cannot fathom why anyone would vote differently than their family.</span>
+      <span lang="zh"><strong>遵从者</strong>——你属于你的群体，群体的规则感觉就像现实本身。有人真诚地无法想象为什么任何人会投票与他们的家庭不同。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Self-Aware</strong> — You notice you have an inner life that doesn't match the exterior. Sitting in church and realizing you're not sure you believe what everyone around you seems to believe.</span>
+      <span lang="zh"><strong>自我认知</strong>——你注意到你有一个与外表不匹配的内心生活。坐在教堂里，意识到你不确定自己是否相信周围所有人似乎相信的东西。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Conscientious</strong> — You build your own system of principles and hold yourself accountable to them. Leaving your family's religion after careful study and adopting a personal philosophy you can defend.</span>
+      <span lang="zh"><strong>认真负责</strong>——你建立自己的原则体系，并要求自己遵守它们。在仔细研究后离开家族宗教，采用自己能够辩护的个人哲学。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Individualist</strong> — You see that your principles were shaped by context and start holding them more loosely. Realizing your political views have more to do with where you grew up than objective truth.</span>
+      <span lang="zh"><strong>个人主义</strong>——你意识到自己的原则受到环境的影响，开始对它们持更宽松的态度。意识到你的政治观点更多地与你的成长环境有关，而不是客观真理。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Strategist</strong> — You work with systems while aware of your own involvement in them. Leading an organization while actively questioning your own blind spots.</span>
+      <span lang="zh"><strong>战略家</strong>——你在系统中工作，同时意识到自己参与其中。领导一个组织时，积极质疑自己的盲点。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Construct-Aware</strong> — You see all frameworks, including your identity, as useful fictions. Holding your spiritual beliefs metaphorically not literally, knowing the map is not the territory.</span>
+      <span lang="zh"><strong>建构自觉者</strong>——你将所有框架，包括你的身份，都视为有用的虚构。以比喻而非字面的方式持有你的精神信仰，知道地图并非疆域。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>Unitive</strong> — Separation between self and life dissolves. Work, rest, and play feel like the same thing. There's no one left who needs to become something, just presence responding to what arises.</span>
+      <span lang="zh"><strong>合一</strong>——自我与生命的分离消融。工作、休息和玩耍感觉都一样。再也没有人需要成为什么，只有存在回应着出现的事物。</span>
+    </p>
+    <p>
+      <span lang="en">For most people reading this, I would assume you hover between stages 4 and 8, which is a huge gap. The good thing is, it doesn't really matter what stage you are in, because <mark>moving through any of them follows a pattern</mark>.</span>
+      <span lang="zh">对于大多数阅读这篇文章的人来说，我猜你的得分在 4 到 8 之间，这是一个巨大的差距。好的事情是，你处于哪个阶段并不重要，因为<mark>通过任何一个阶段都遵循一个模式</mark>。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ §5 · 双栏正文 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">Intelligence = the ability to iterate, persist, and understand the big picture. Low intelligence = inability to learn from mistakes.</span>
+        <span lang="zh">智力 = 迭代、坚持和理解大局的能力。低智力 = 无法从错误中学习。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Cybernetics</span>
+          <span class="sidebar-tag">Agency</span>
+          <span class="sidebar-tag">Iteration</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">控制论</span>
+          <span class="sidebar-tag">自主性</span>
+          <span class="sidebar-tag">迭代</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Quote</span>
+        <span lang="zh">引言</span>
+      </h4>
+      <p>
+        <span lang="en">"The only real test of intelligence is if you get what you want out of life." — Naval Ravikant</span>
+        <span lang="zh">"衡量智力的唯一真正标准是你能否在生活中得到你想要的东西。" —— 纳瓦尔·拉维坎特</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§5 · Section V</div>
+
+    <h2 class="article-title">
+      <span lang="en">Intelligence Is the Ability to Get What You Want Out of Life</span>
+      <span lang="zh">智力是你在生活中获得你想要的东西的能力</span>
+    </h2>
+
+    <p>
+      <span lang="en">There is a formula for success. One ingredient is agency. One ingredient is opportunity. The last ingredient is intelligence.</span>
+      <span lang="zh">成功有一个公式。其中一个成分是自主性。一个成分是机会。最后一个成分是智力。</span>
+    </p>
+    <p>
+      <span lang="en">If you have high agency but low opportunity, it doesn't matter how likely you are to act toward a goal, because it isn't a goal that will bear much fruit. If you have opportunity and agency but low intelligence, then you will never be fully able to benefit from that opportunity.</span>
+      <span lang="zh">如果你有高自主性但机会低，那么你采取行动实现目标的可能有多大都不重要，因为那不是一个能结出丰硕果实的目标。如果你有机会和自主性但智力低，那么你将永远无法完全从那个机会中获益。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Cybernetics: The Art of Steering</span>
+      <span lang="zh">控制论：掌舵的艺术</span>
+    </h3>
+    <p>
+      <span lang="en">Cybernetics comes from the Greek word <em>kybernetikos</em> which means "to steer" or "good at steering." It's also known as "the art of getting what you want." Cybernetics illustrates the properties of intelligent systems:</span>
+      <span lang="zh">控制论源自希腊语单词 <em>kybernetikos</em>，意为"掌舵"或"擅长掌舵"。它也被称为"获取你想要的艺术"。控制论说明了智能系统的特性：</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">1. Have a goal → 2. Act toward that goal → 3. Sense where you are → 4. Compare it to the goal → 5. Act again based on feedback</span>
+      <span lang="zh">1. 有目标 → 2. 朝着目标行动 → 3. 感知你现在所在的位置 → 4. 将它与目标比较 → 5. 根据反馈再次行动</span>
+    </blockquote>
+
+    <p>
+      <span lang="en">A ship blown off course that corrects toward its destination. A thermostat sensing a change in heat and turning on. The pancreas excreting insulin after blood glucose spikes. You can judge intelligence based on the system's ability to iterate and persist with trial and error.</span>
+      <span lang="zh">一艘偏离航线的船修正方向驶向目的地。一个恒温器感知到温度变化并开启。胰腺在血糖升高后分泌胰岛素。你可以根据系统迭代和坚持试错的能力来判断其智能程度。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>High intelligence</strong> is the ability to iterate, persist, and understand the big picture. The mark of <strong>low intelligence</strong> is the inability to learn from your mistakes. Low-intelligence people get stuck on problems rather than solving them. They hit a roadblock and quit.</span>
+      <span lang="zh"><strong>高智能</strong>是迭代、坚持和理解大局的能力。<strong>低智能</strong>的标志是无法从错误中学习。低智力的人容易在问题上卡住而不是解决问题。他们遇到障碍就放弃。</span>
+    </p>
+    <p>
+      <span lang="en">High intelligence is realizing any problem can be solved on a large enough timescale. The reality is that <mark>you can achieve any goal you set your mind to</mark>.</span>
+      <span lang="zh">高智力是认识到任何问题在足够长的时间尺度上都可以解决。现实是，<mark>你可以实现你决心要达成的任何目标</mark>。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ §6 · 双栏正文（一日协议） ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">A one-day protocol to dig deep into your psyche: morning excavation, daytime interrupts, evening synthesis.</span>
+        <span lang="zh">一个一日协议，深入挖掘你的心理：早晨挖掘，白天中断，晚上综合。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Protocol</span>
+          <span class="sidebar-tag">Anti-Vision</span>
+          <span class="sidebar-tag">Dissonance</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">协议</span>
+          <span class="sidebar-tag">反愿景</span>
+          <span class="sidebar-tag">失调感</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">3 Phases</span>
+        <span lang="zh">三个阶段</span>
+      </h4>
+      <p>
+        <span lang="en">1. Dissonance → 2. Uncertainty → 3. Discovery</span>
+        <span lang="zh">1. 失调感 → 2. 不确定性 → 3. 发现</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§6 · Section VI</div>
+
+    <h2 class="article-title">
+      <span lang="en">How to Launch Into a Completely New Life (in 1 Day)</span>
+      <span lang="zh">如何在一天内开启全新的生活</span>
+    </h2>
+
+    <p>
+      <span lang="en">The best periods of my life always came after a period of getting absolutely fed up with the lack of progress I was making. Through the simple, but often painful act of questioning, you can reach profound insights that change the trajectory of your life.</span>
+      <span lang="zh">我人生中最美好的时期，总是出现在我对自己的进步毫无进展感到极度厌烦之后。通过简单但常常痛苦的行为——质疑，你可以达到深刻的见解，从而改变你的人生轨迹。</span>
+    </p>
+    <p>
+      <span lang="en">This protocol is structured so that it can be completed in one day. In the morning, you do a psychological excavation. During the day, you prompt yourself with interrupts. At night, you synthesize the insights into a direction.</span>
+      <span lang="zh">该协议设计为可在一日内完成。早上，你进行心理挖掘，揭示自己隐藏的动机。白天，你通过中断提示自己，避免自动驾驶，并思考你的生活。晚上，你整合见解，形成你明天将开始行动的方向。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Part 1 · Morning — Psychological Excavation</span>
+      <span lang="zh">第一部分 · 早晨——心理挖掘</span>
+    </h3>
+    <p>
+      <span lang="en">Set aside 15-30 minutes. Do not outsource this contemplation to AI. Break past the limiter that is on your mind.</span>
+      <span lang="zh">预留 15-30 分钟。不要试图将这种思考外包给 AI。我想让你打破脑海中那个限制。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>1.</strong> What is the dull and persistent dissatisfaction you've learned to live with? (If you don't hate it, you will tolerate it)</span>
+      <span lang="zh"><strong>1.</strong> 你学会了忍受的那种迟钝而持久的不满是什么？（如果你不讨厌它，你就会容忍它）</span>
+    </p>
+    <p>
+      <span lang="en"><strong>2.</strong> What do you complain about repeatedly but never actually change? Write down the three complaints you've voiced most often in the past year. For each: What would someone who watched your behavior (not your words) conclude that you actually want?</span>
+      <span lang="zh"><strong>2.</strong> 你反复抱怨却从未真正改变的是什么？写下过去一年你最常表达的三个抱怨。对于每个：一个观察你行为（而不是你的话）的人会得出你实际上想要什么结论？</span>
+    </p>
+    <p>
+      <span lang="en"><strong>3.</strong> What truth about your current life would be unbearable to admit to someone you deeply respect?</span>
+      <span lang="zh"><strong>3.</strong> 关于你目前生活的真相，是什么会让你无法向一个你非常尊敬的人承认？</span>
+    </p>
+    <p>
+      <span lang="en">Then, build your <mark>anti-vision</mark>: If absolutely nothing changes for the next five years, describe an average Tuesday. Where do you wake up? What does your body feel like? What's the first thing you think about? Now do it for ten years. What have you missed? Who gave up on you?</span>
+      <span lang="zh">然后，构建你的<mark>反愿景</mark>：如果未来五年内绝对没有任何改变，描述一个普通的周二。你在哪里醒来？你的身体感觉如何？你首先想到什么？现在用十年时间来做。你错过了什么？谁放弃了你？</span>
+    </p>
+
+    <h3>
+      <span lang="en">Part 2 · Throughout the Day — Interrupting Autopilot</span>
+      <span lang="zh">第二部分 · 全天——打断自动驾驶</span>
+    </h3>
+    <p>
+      <span lang="en">Create reminders in your phone at random times. Include the question so you can immediately start thinking about it:</span>
+      <span lang="zh">在手机上创建随机时间的提醒。在提醒中包含这个问题，这样你就可以立即开始思考它：</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">11:00am — What am I avoiding right now by doing what I'm doing?<br>1:30pm — If someone filmed the last two hours, what would they conclude I want from my life?<br>3:15pm — Am I moving toward the life I hate or the life I want?<br>5:00pm — What's the most important thing I'm pretending isn't important?<br>7:30pm — What did I do today out of identity protection rather than genuine desire?<br>9:00pm — When did I feel most alive today? When did I feel most dead?</span>
+      <span lang="zh">上午 11:00——我正在做的事情是什么让我现在在回避？<br>下午 1:30——如果有人拍摄了过去的两个小时，他们会得出我想要怎样的生活结论？<br>下午 3:15——我是在走向我讨厌的生活还是我想要的生活？<br>下午 5:00——我假装不重要的事情中，什么是最重要的？<br>下午 7:30——我今天做了哪些事情是出于身份保护而非真诚的愿望？<br>下午 9:00——我今天什么时候感觉最活着？什么时候感觉最死？</span>
+    </blockquote>
+
+    <h3>
+      <span lang="en">Part 3 · Evening — Synthesizing Insight</span>
+      <span lang="zh">第三部分 · 晚上——综合洞察</span>
+    </h3>
+    <p>
+      <span lang="en">Write a single sentence that captures what you refuse to let your life become. Write a single sentence that captures what you're building toward. Then set your goal-lenses:</span>
+      <span lang="zh">写下一句能概括你拒绝让人生变成的样子的话。写下一句能概括你正在努力的方向的话。然后设定你的目标镜头：</span>
+    </p>
+    <p>
+      <span lang="en"><strong>One-year lens:</strong> What would have to be true in one year for you to know you've broken the old pattern? <strong>One-month lens:</strong> What would have to be true in one month for the one-year lens to remain possible? <strong>Daily lens:</strong> What are 2-3 actions you can timeblock tomorrow that the person you're becoming would simply do?</span>
+      <span lang="zh"><strong>一年镜头：</strong>一年后，你需要知道你已经打破了旧模式，必须发生什么具体的事情？<strong>一个月镜头：</strong>一个月后，什么情况必须发生，才能让一年镜头的可能仍然存在？<strong>每日镜头：</strong>明天，你能安排 2-3 个行动，成为你想成为的人会自然而然做的事情是什么？</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ §7 · 双栏正文 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Idea</span>
+        <span lang="zh">核心观点</span>
+      </h4>
+      <p>
+        <span lang="en">Games are the poster child for obsession, enjoyment, and flow. Reverse-engineer them to live in deeper enjoyment.</span>
+        <span lang="zh">游戏是痴迷、享受和心流状态的典范。反向工程它们以活在更深层次的享受中。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Keywords</span>
+        <span lang="zh">关键词</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Flow State</span>
+          <span class="sidebar-tag">Gamification</span>
+          <span class="sidebar-tag">Obsession</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">心流状态</span>
+          <span class="sidebar-tag">游戏化</span>
+          <span class="sidebar-tag">痴迷</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Quote</span>
+        <span lang="zh">引言</span>
+      </h4>
+      <p>
+        <span lang="en">"The pursuit of a goal brings order in awareness because a person must concentrate attention on the task at hand." — Csikszentmihalyi</span>
+        <span lang="zh">"追求目标会带来意识的秩序，因为一个人必须集中注意力在当前的任务上。" —— 契克森米哈赖</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">§7 · Section VII</div>
+
+    <h2 class="article-title">
+      <span lang="en">Turn Your Life Into a Video Game</span>
+      <span lang="zh">将你的生活变成一个视频游戏</span>
+    </h2>
+
+    <p>
+      <span lang="en">You now have all of the components that lead to a good life. Organize all of your insights into one coherent plan. Write down these 6 components:</span>
+      <span lang="zh">你现在拥有了所有导致美好生活的组成部分。整理你所有的见解到一个连贯的计划中。写下这 6 个组成部分：</span>
+    </p>
+
+    <blockquote>
+      <span lang="en"><strong>1. Anti-vision</strong> — What is the life I never want to experience again?<br><strong>2. Vision</strong> — What is the ideal life I think I want and can improve as I work toward it?<br><strong>3. 1-year goal</strong> — What will my life look like in 1 year time?<br><strong>4. 1-month project</strong> — What do I need to learn? What can I build?<br><strong>5. Daily levers</strong> — What priority tasks bring my project closer to completion?<br><strong>6. Constraints</strong> — What am I not willing to sacrifice?</span>
+      <span lang="zh"><strong>1. 反愿景</strong>——我再也不想体验的生活是什么？<br><strong>2. 愿景</strong>——我认为想要并可以为之努力改善的理想生活是什么？<br><strong>3. 一年目标</strong>——一年后我的生活将是什么样子？<br><strong>4. 一个月项目</strong>——我需要学习什么？我能构建什么？<br><strong>5. 每日杠杆</strong>——哪些优先级高、推动指针的任务能让我离项目完成更近？<br><strong>6. 约束条件</strong>——我不愿意为了实现愿景而牺牲什么？</span>
+    </blockquote>
+
+    <p>
+      <span lang="en">Why is this so powerful? Because these components literally create your own little world. You turn your life into a video game:</span>
+      <span lang="zh">为什么这如此强大？因为这几个要素实际上为你创造了自己的小世界。你把生活变成了一场电子游戏：</span>
+    </p>
+    <p>
+      <span lang="en">Your <strong>vision</strong> is how you win. Your <strong>anti-vision</strong> is what's at stake. Your <strong>1-year goal</strong> is the mission — your sole priority in life. Your <strong>1-month project</strong> is the boss fight where you gain XP. Your <strong>daily levers</strong> are the quests. Your <strong>constraints</strong> are the rules that encourage creativity.</span>
+      <span lang="zh">你的<strong>愿景</strong>是你获胜的方式。你的<strong>反愿景</strong>是赌注所在。你的<strong>一年目标</strong>是任务——你生活中唯一的优先事项。你的<strong>一个月项目</strong>是 Boss 战，你如何获得经验值。你的<strong>每日杠杆</strong>是任务。你的<strong>约束</strong>是那些鼓励创造力的规则。</span>
+    </p>
+    <p>
+      <span lang="en">All of these act as a concentric set of circles, like a forcefield, that guard your mind from distractions and shiny objects. The more you play the game, the stronger this force becomes, and soon enough it becomes who you are — and <mark>you wouldn't have it any other way</mark>.</span>
+      <span lang="zh">所有这些构成一个同心圆环系统，像一道力场，保护你的心灵免受干扰和闪亮物体的侵害。你玩得越多，这种力量就越强大，很快它就成了你的本质——而<mark>你也不会希望有其他的样子</mark>。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ TRACING APPENDIX · 硫酸纸附页 ════ -->
+<div class="tracing-appendix">
+  <div class="appendix-inner">
+
+    <div class="appendix-title">
+      <span lang="en">The Protocol</span>
+      <span lang="zh">协议</span>
+    </div>
+
+    <div class="appendix-grid">
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Summary</span>
+          <span lang="zh">总结</span>
+        </div>
+        <p>
+          <span lang="en">True change isn't about discipline or surface-level goals. It's about becoming the kind of person whose behavior naturally produces the outcome you want.</span>
+          <span lang="zh">真正的改变不在于纪律或表面目标。而在于成为那种行为自然而然产生你想要的结果的人。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">7 Ideas</span>
+          <span lang="zh">七个想法</span>
+        </div>
+        <p>
+          <span lang="en">I. Identity precedes behavior · II. All behavior is goal-oriented · III. Identity defends itself · IV. Mind evolves in stages · V. Intelligence = iteration · VI. One-day protocol · VII. Gamify your life</span>
+          <span lang="zh">一、身份先于行为 · 二、所有行为都是目标导向的 · 三、身份会自我捍卫 · 四、意识分阶段进化 · 五、智力即迭代 · 六、一日协议 · 七、游戏化你的人生</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Try This</span>
+          <span lang="zh">试试这个</span>
+        </div>
+        <p>
+          <span lang="en">Block one full day. Morning: psychological excavation. Daytime: 6 interrupt questions. Evening: synthesize into vision + anti-vision + goal-lenses.</span>
+          <span lang="zh">留出一整天。早晨：心理挖掘。白天：6 个中断问题。晚上：综合为愿景 + 反愿景 + 目标镜头。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Sources</span>
+          <span lang="zh">参考</span>
+        </div>
+        <p>
+          <span lang="en">Adler (teleology) · Maltz (psycho-cybernetics) · Csikszentmihalyi (flow) · Naval (intelligence) · Greuter (ego development)</span>
+          <span lang="zh">阿德勒（目的论）· 马尔茨（心理控制论）· 契克森米哈赖（心流）· 纳瓦尔（智力）· 格雷特尔（自我发展）</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="appendix-rule"></div>
+    <div class="appendix-fine">
+      This appendix is printed on tracing paper · 本附页以硫酸纸印刷 · Vol.02 · 2026
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ L07 · 尾页 ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5><span lang="en">About This Issue</span><span lang="zh">关于本期</span></h5>
+        <p><span lang="en">Vol.02 explores why most resolutions fail — and how to engineer true identity-level change.</span><span lang="zh">Vol.02 探讨为什么大多数新年决心会失败——以及如何设计真正的身份层面的改变。</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Publication</span><span lang="zh">出版信息</span></h5>
+        <p><span lang="en">2026 · Magazine Own<br>Vol.02 · Resolution Protocol</span><span lang="zh">2026 · Magazine Own<br>Vol.02 · 决心协议</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Design</span><span lang="zh">设计信息</span></h5>
+        <p><span lang="en">Zine Skill · t-a Kraft Archive<br>Noto Serif SC · Dancing Script</span><span lang="zh">Zine Skill · t-a 牛皮纸档案<br>Noto Serif SC · Dancing Script</span></p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">© 2026 · MAGAZINE OWN · All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- ════ 语言切换脚本 ════ -->
+<script>
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'zh') {
+      body.classList.add('lang-zh');
+      document.getElementById('btn-zh').classList.add('active');
+      document.getElementById('btn-en').classList.remove('active');
+      document.documentElement.lang = 'zh-CN';
+    } else {
+      body.classList.remove('lang-zh');
+      document.getElementById('btn-en').classList.add('active');
+      document.getElementById('btn-zh').classList.remove('active');
+      document.documentElement.lang = 'en';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const isBilingual = body.hasAttribute('data-bilingual');
+    if (!isBilingual) return;
+    document.getElementById('btn-en').classList.add('active');
+    document.getElementById('btn-zh').classList.remove('active');
+  });
+</script>
+
+</body>
+</html>

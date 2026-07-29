@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zine · Vol.02 · Brain Rot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ══════════════════════════════════════
+   0. RESET
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+/* ══════════════════════════════════════
+   1. THEME TOKENS · t-a 牛皮纸档案
+══════════════════════════════════════ */
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+  --btn-bg:       rgba(42,32,24,.08);
+  --btn-border:   rgba(42,32,24,.18);
+  --btn-active:   #8b2e1a;
+}
+
+/* ══════════════════════════════════════
+   2. BASE
+══════════════════════════════════════ */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s ease, color .3s ease;
+}
+
+/* Paper grain texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ══════════════════════════════════════
+   3. BILINGUAL
+══════════════════════════════════════ */
+[lang="en"], [lang="zh"] { display: inline; }
+[data-bilingual] [lang="zh"] { display: none; }
+[data-bilingual] [lang="en"] { display: inline; }
+[data-bilingual].lang-zh [lang="zh"] { display: inline; }
+[data-bilingual].lang-zh [lang="en"] { display: none; }
+[data-bilingual] p > [lang],
+[data-bilingual] h1 > [lang],
+[data-bilingual] h2 > [lang],
+[data-bilingual] h3 > [lang],
+[data-bilingual] .article-lede > [lang],
+[data-bilingual] .cover-sub > [lang],
+[data-bilingual] .pq-script > [lang],
+[data-bilingual] .pq-small-text > [lang],
+[data-bilingual] .pq-below > [lang],
+[data-bilingual] blockquote > [lang],
+[data-bilingual] .appendix-title > [lang],
+[data-bilingual] .sidebar-block p > [lang] {
+  display: block;
+}
+[data-bilingual].lang-zh p > [lang="en"],
+[data-bilingual].lang-zh h1 > [lang="en"],
+[data-bilingual].lang-zh h2 > [lang="en"],
+[data-bilingual].lang-zh h3 > [lang="en"],
+[data-bilingual].lang-zh .article-lede > [lang="en"],
+[data-bilingual].lang-zh .cover-sub > [lang="en"],
+[data-bilingual].lang-zh .pq-script > [lang="en"],
+[data-bilingual].lang-zh .pq-small-text > [lang="en"],
+[data-bilingual].lang-zh .pq-below > [lang="en"],
+[data-bilingual].lang-zh blockquote > [lang="en"],
+[data-bilingual].lang-zh .appendix-title > [lang="en"],
+[data-bilingual].lang-zh .sidebar-block p > [lang="en"] {
+  display: none;
+}
+
+/* ══════════════════════════════════════
+   4. MASTHEAD
+══════════════════════════════════════ */
+.zine-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw;
+  height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+
+.lang-switcher { display: none; align-items: center; gap: 2px; flex-shrink: 0; }
+[data-bilingual] .lang-switcher { display: flex; }
+.lang-btn {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  padding: 4px 10px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--bg);
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+  line-height: 1;
+  opacity: .7;
+}
+.lang-btn:hover { opacity: 1; }
+.lang-btn.active {
+  background: var(--btn-active);
+  border-color: var(--btn-active);
+  color: #fff;
+  opacity: 1;
+}
+
+/* ══════════════════════════════════════
+   5. COVER
+══════════════════════════════════════ */
+.zine-cover {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 8vh 5vw 5vh;
+  min-height: 85vh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+  z-index: 2;
+}
+.cover-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.022em;
+  color: var(--ink);
+  margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  max-width: 50ch;
+  padding-left: 18px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 5vh;
+}
+
+.cover-image-slot {
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26vh;
+  margin-bottom: 4vh;
+  overflow: hidden;
+}
+.cover-image-slot.empty::after {
+  content: attr(data-label);
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+.cover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  padding-top: 2vh;
+  text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: var(--accent);
+  opacity: .28;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════
+   6. PULL QUOTE
+══════════════════════════════════════ */
+.pull-quote-section {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+.tracing-card {
+  position: relative;
+  padding: 36px 44px 32px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow:
+    2px 4px 12px rgba(0,0,0,.07),
+    4px 8px 28px rgba(0,0,0,.05),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px);
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.82;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 20px auto 0;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════
+   7. BODY · TWO COL
+══════════════════════════════════════ */
+.zine-body {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 5.5vh 5vw;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+.zine-body.two-col {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4.5vw;
+  align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+
+.sidebar-block {
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin-bottom: 2.8vh;
+}
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  padding: 2px 7px;
+  margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  letter-spacing: .1em;
+}
+
+/* ══════════════════════════════════════
+   8. ONE COL
+══════════════════════════════════════ */
+.zine-body.one-col { display: block; }
+.col-center { max-width: 660px; margin: 0 auto; }
+
+/* ══════════════════════════════════════
+   9. ARTICLE COMMON
+══════════════════════════════════════ */
+.article-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  margin-bottom: 2vh;
+  padding-top: 1.2vh;
+  border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  margin-bottom: 2vh;
+}
+
+.col-wide p, .col-center p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  color: var(--ink-2);
+  line-height: 1.92;
+  margin-bottom: 1.4em;
+}
+.col-wide p + p, .col-center p + p { text-indent: 2em; }
+
+.col-wide h3, .col-center h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 3.2vh 0 1.2vh;
+  letter-spacing: -.01em;
+}
+.col-wide strong, .col-center strong { font-weight: 600; color: var(--ink); }
+.col-wide mark, .col-center mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+
+.col-wide blockquote, .col-center blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.82;
+}
+
+/* Dialogue block for interview format */
+.dialogue {
+  margin: 16px 0;
+  padding: 12px 18px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--accent);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.82;
+}
+.dialogue .speaker {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ══════════════════════════════════════
+   10. INDEX
+══════════════════════════════════════ */
+.zine-index {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 1.4vh 0;
+  border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+/* ══════════════════════════════════════
+   11. TRACING APPENDIX
+══════════════════════════════════════ */
+.tracing-appendix {
+  position: relative;
+  max-width: 900px;
+  margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow:
+    1px 3px 8px rgba(0,0,0,.06),
+    3px 6px 20px rgba(0,0,0,.07),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg);
+  transform-origin: top left;
+  z-index: 2;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · 附页';
+  position: absolute;
+  top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  background: var(--bg);
+  padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner {
+  transform: rotate(.45deg);
+  transform-origin: top left;
+}
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 22px;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.appendix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 36px;
+}
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.78;
+  margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+/* ══════════════════════════════════════
+   12. COLOPHON
+══════════════════════════════════════ */
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; position: relative; z-index: 2; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--colophon-acc);
+  margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--colophon-fg);
+  line-height: 1.78;
+}
+.colophon a {
+  color: var(--colophon-acc);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--colophon-acc);
+}
+.colophon a:hover { opacity: .8; }
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  color: var(--colophon-fg);
+  opacity: .35;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   13. RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+
+</style>
+</head>
+
+<body class="t-a" data-bilingual="true">
+
+<!-- ════ MASTHEAD ════ -->
+<header class="zine-masthead">
+  <span class="masthead-name">MAGAZINE OWN · 杂志架</span>
+  <span class="masthead-issue">Vol.02 · 2026</span>
+  <div class="lang-switcher" role="group" aria-label="Language">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn"        id="btn-zh" onclick="setLang('zh')">中文</button>
+  </div>
+</header>
+
+<!-- ════ COVER ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.02 · 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">
+      <span lang="en">Brain Rot</span>
+      <span lang="zh">脑腐</span>
+    </span>
+  </div>
+
+  <h1 class="cover-title">
+    <span lang="en">Is Your Brain<br><em>Rotting</em>?</span>
+    <span lang="zh">你的大脑<br><em>在腐烂</em>吗？</span>
+  </h1>
+
+  <p class="cover-sub">
+    <span lang="en">60 people took a cognitive test, took a 10-minute break, then tested again. Some sat quietly. Some scrolled TikTok. Whose brain changed? The science of short-form video is starting to catch up — and it's not the answer you think.</span>
+    <span lang="zh">60 人参加了认知测试，休息 10 分钟后再测一次。有人安静坐着，有人刷 TikTok。谁的大脑变了？短视频的科学研究正在跟上——答案和你想的不一样。</span>
+  </p>
+
+  <div class="cover-image-slot empty" data-label="Image Slot · 3:4"></div>
+
+  <div class="cover-footer">
+    <span>
+      <span lang="en">Short-form video feeds · Attention · Agency</span>
+      <span lang="zh">短视频流 · 注意力 · 自主性</span>
+    </span>
+    <span class="stamp">NO.02</span>
+  </div>
+</section>
+
+<!-- ════ INDEX ════ -->
+<section class="zine-index">
+  <div class="index-label">
+    <span lang="en">Contents</span>
+    <span lang="zh">目录</span>
+  </div>
+  <ol class="index-list">
+    <li>
+      <span class="index-num">01</span>
+      <span class="index-title">
+        <span lang="en">The Munich Experiment</span>
+        <span lang="zh">慕尼黑实验</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.02</span>
+    </li>
+    <li>
+      <span class="index-num">02</span>
+      <span class="index-title">
+        <span lang="en">The Restaurant Without a Menu</span>
+        <span lang="zh">没有菜单的餐厅</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.04</span>
+    </li>
+    <li>
+      <span class="index-num">03</span>
+      <span class="index-title">
+        <span lang="en">Is All of Media Becoming TikTok?</span>
+        <span lang="zh">所有媒体都在 TikTok 化？</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.06</span>
+    </li>
+    <li>
+      <span class="index-num">04</span>
+      <span class="index-title">
+        <span lang="en">The Goldfish Myth</span>
+        <span lang="zh">金鱼神话</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.08</span>
+    </li>
+    <li>
+      <span class="index-num">05</span>
+      <span class="index-title">
+        <span lang="en">What Exactly Gets Worse?</span>
+        <span lang="zh">到底什么变差了？</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.10</span>
+    </li>
+    <li>
+      <span class="index-num">06</span>
+      <span class="index-title">
+        <span lang="en">The Autopilot Mind</span>
+        <span lang="zh">自动驾驶的大脑</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.13</span>
+    </li>
+  </ol>
+</section>
+
+<!-- ════ PULL QUOTE ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+
+    <p class="pq-small-text">
+      <span lang="en">TikTok's success can largely be attributed to strong out-of-the-box personalization and automation, which limits user agency.</span>
+      <span lang="zh">TikTok 的成功很大程度上归功于开箱即用的个性化和自动化，这限制了用户的自主性。</span>
+    </p>
+
+    <div class="pq-script">
+      <span lang="en">My experience is what<br>I agree to attend to</span>
+      <span lang="zh">我的经验就是我<br>同意关注的东西</span>
+    </div>
+
+    <span class="pq-cite">—— William James, 1890</span>
+
+    <p class="pq-below">
+      <span lang="en">If feeds nudge users into autopilot, they don't just lose the experience of choosing — they lose the capacity to remember where they intended to go.</span>
+      <span lang="zh">如果信息流将用户推入自动驾驶模式，他们失去的不仅是选择的体验——还有记住自己原本打算去哪里的能力。</span>
+    </p>
+
+  </div>
+</section>
+
+<!-- ════ SECTION 01 · The Munich Experiment ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Setting</span>
+        <span lang="zh">背景</span>
+      </h4>
+      <p>
+        <span lang="en">Munich, 2022. University of Munich. 60 subjects, cognitive testing, 10-minute break.</span>
+        <span lang="zh">慕尼黑，2022 年。慕尼黑大学。60 名受试者，认知测试，10 分钟休息。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Break Conditions</span>
+        <span lang="zh">休息条件</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Rest</span>
+          <span class="sidebar-tag">Twitter</span>
+          <span class="sidebar-tag">YouTube</span>
+          <span class="sidebar-tag">TikTok</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">静坐</span>
+          <span class="sidebar-tag">推特</span>
+          <span class="sidebar-tag">油管</span>
+          <span class="sidebar-tag">TikTok</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Key Test</span>
+        <span lang="zh">核心测试</span>
+      </h4>
+      <p>
+        <span lang="en">Prospective memory: remembering to do something you intended to do.</span>
+        <span lang="zh">前瞻记忆：记住你打算做的事情。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Section 01</div>
+
+    <h2 class="article-title">
+      <span lang="en">The Munich Experiment</span>
+      <span lang="zh">慕尼黑实验</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">In 2022, a lab in Munich did something worth seeing. They gave 60 people a cognitive test, sent them away for a 10-minute break, then tested them again. The difference was the break.</span>
+      <span lang="zh">2022 年，慕尼黑的一个实验室做了一件值得一看的事。他们让 60 人参加认知测试，休息 10 分钟后再测一次。区别在于休息方式。</span>
+    </p>
+
+    <p>
+      <span lang="en">Some people just sat there. Some scrolled on Twitter. Some watched a normal YouTube video. And some went on TikTok. So whose brain changed during that time?</span>
+      <span lang="zh">有人安静坐着。有人刷 Twitter。有人看普通 YouTube 视频。有人刷 TikTok。那么，谁的大脑在那段时间里发生了变化？</span>
+    </p>
+
+    <p>
+      <span lang="en">This is one of the few experiments that has actually tested the idea of <strong>brain rot</strong>. The science is starting to catch up to the fact that short-form video feeds are everywhere. And almost all of the commentary says that they're making us dumber.</span>
+      <span lang="zh">这是为数不多真正测试了<strong>脑腐</strong>概念的实验之一。科学开始跟上短视频无处不在的现实。几乎所有评论都说它让我们变笨了。</span>
+    </p>
+
+    <div class="dialogue">
+      <span class="speaker">>> Student</span>
+      <span lang="en">"I cannot physically bring myself to study."</span>
+      <span lang="zh">"我完全无法让自己学习。"</span>
+    </div>
+
+    <div class="dialogue">
+      <span class="speaker">>> Another voice</span>
+      <span lang="en">"I'm addicted, too. We're all addicted to this."</span>
+      <span lang="zh">"我也上瘾了。我们都对这个上瘾。"</span>
+    </div>
+
+    <div class="dialogue">
+      <span class="speaker">>> A third voice</span>
+      <span lang="en">"Oh, and we're giving kids the attention span of a walnut."</span>
+      <span lang="zh">"我们正在让孩子的注意力变得和核桃一样短。"</span>
+    </p>
+
+    <p>
+      <span lang="en">This is awkward because we make shorts and it has introduced us to a bunch of new viewers. If brain rot is real, then we might be part of the problem.</span>
+      <span lang="zh">这很尴尬，因为我们也做短视频，它给我们带来了很多新观众。如果脑腐是真的，那我们可能也是问题的一部分。</span>
+    </p>
+
+    <p>
+      <span lang="en">But there's reason for skepticism. Socrates thought writing would ruin our minds. People worried about novels being addictive, and the telegraph, and all of that. <mark>We don't just take the conventional wisdom. We're trying to see if there's anything behind the vibes.</mark></span>
+      <span lang="zh">但有理由保持怀疑。苏格拉底认为书写会毁掉我们的思维。人们担心小说会让人上瘾，担心电报，诸如此类。<mark>我们不盲从常识。我们想看看这些感觉背后有没有真东西。</mark></span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ SECTION 02 · The Restaurant Without a Menu ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Analogy</span>
+        <span lang="zh">类比</span>
+      </h4>
+      <p>
+        <span lang="en">A restaurant without menus. You open your mouth, a device places a morsel on your tongue. You don't choose — you swallow or spit.</span>
+        <span lang="zh">一家没有菜单的餐厅。你张开嘴，一台设备把一小口食物放到你舌头上。你不选择——你吞下或吐掉。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Key Quote</span>
+        <span lang="zh">关键引文</span>
+      </h4>
+      <p>
+        <span lang="en">"TikTok wins by making fewer things feel like your decision."</span>
+        <span lang="zh">"TikTok 的赢法是让更少的事情感觉是你自己的决定。"</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Source</span>
+        <span lang="zh">来源</span>
+      </h4>
+      <p>
+        <span lang="en">Internal TikTok documents, revealed via state lawsuit redactions.</span>
+        <span lang="zh">TikTok 内部文件，通过州诉讼涂黑失误曝光。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Section 02</div>
+
+    <h2 class="article-title">
+      <span lang="en">The Restaurant Without a Menu</span>
+      <span lang="zh">没有菜单的餐厅</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">Last year, private conversations between TikTok employees came to light after 14 US states investigated and sued the company. A local reporter discovered the redactions hadn't been done correctly.</span>
+      <span lang="zh">去年，TikTok 员工之间的私人对话在 14 个美国州起诉该公司后曝光。一名地方记者发现涂黑处理做错了。</span>
+    </p>
+
+    <p>
+      <span lang="en">Sylvia Goodman copy-and-pasted the redacted text into a fresh document and could read everything. "My jaw was on the floor," she said. The documents showed TikTok employees openly grappling with the potential harm of the bold glamour filter. They admitted screen time reminders were "a good talking point, but not altogether effective."</span>
+      <span lang="zh">Sylvia Goodman 把涂黑的文本复制粘贴到新文档里，什么都看到了。"我惊掉了下巴，"她说。文件显示 TikTok 员工在公开讨论 bold glamour 滤镜的潜在危害。他们承认屏幕时间提醒是"一个好的谈资，但并不真正有效"。"</span>
+    </p>
+
+    <p>
+      <span lang="en">One sentence stood out, from an internal document titled "digital well-being":</span>
+      <span lang="zh">有一句话格外醒目，出自一份标题为"数字健康"的内部文件：</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"TikTok's success can largely be attributed to strong out-of-the-box personalization and automation, which limits user agency."</span>
+      <span lang="zh">"TikTok 的成功很大程度上归功于开箱即用的个性化和自动化，这限制了用户的自主性。"</span>
+    </blockquote>
+
+    <p>
+      <span lang="en">They're saying that TikTok wins by making fewer things feel like your decision. And that's the key to understanding what short-form video feeds might be doing to our minds. Since we use that word <strong>feed</strong>, let's roll with the food analogy.</span>
+      <span lang="zh">他们在说，TikTok 的赢法是让更少的事情感觉是你自己的决定。这是理解短视频流可能对我们大脑做了什么的关键。既然我们用了<strong>信息流</strong>这个词，那就用食物来打个比方。</span>
+    </p>
+
+    <h3>
+      <span lang="en">The Menu Restaurant</span>
+      <span lang="zh">有菜单的餐厅</span>
+    </h3>
+
+    <p>
+      <span lang="en">The restaurants we know have a menu. You browse, you pick something, you eat it. Streaming television is that kind of restaurant. YouTube is too, or it was. Their big innovation is that the menus are personalized based on what you've eaten there in the past.</span>
+      <span lang="zh">我们熟悉的餐厅有菜单。你浏览，你选择，你吃。流媒体电视就是那种餐厅。YouTube 也是，至少曾经是。它们的大创新是根据你过去的点餐记录个性化菜单。</span>
+    </p>
+
+    <h3>
+      <span lang="en">The Morsel Restaurant</span>
+      <span lang="zh">一口一口喂的餐厅</span>
+    </h3>
+
+    <p>
+      <span lang="en">Now imagine a restaurant without menus where you sit down, open your mouth, and a device places a morsel of something onto your tongue. You don't get another bite until you eat it or spit it out. By measuring your chew time, the restaurant can adjust the lineup of bites to feature more of the flavors that you tend to swallow.</span>
+      <span lang="zh">现在想象一家没有菜单的餐厅，你坐下，张开嘴，一台设备把一小口食物放到你舌头上。你不吃掉或不吐掉就不会有下一口。通过测量你的咀嚼时间，餐厅可以调整喂食序列，多给你你倾向于吞下的口味。</span>
+    </p>
+
+    <p>
+      <span lang="en">But they don't just hit you with the same flavor time after time. They can also test out some unexpected morsels, because even if it's not your favorite, it's just a bite. And there's another one waiting that might be amazing. <mark>Without a menu, you lose the experience of choosing, but you gain the experience of being surprised over and over and over again.</mark></span>
+      <span lang="zh">但他们不会一直给你同一种口味。他们也会试探一些意外的小口，因为即使不是你最喜欢的，也只是一口。而且还有一个可能很棒的在等着。<mark>没有菜单，你失去了选择的体验，但获得了被一次又一次惊喜的体验。</mark></span>
+    </p>
+
+    <p>
+      <span lang="en">Plus, a lot more people can make morsels than can make a whole menu. So this restaurant can recruit way more cooks trying way more tricks to make their morsels tasty.</span>
+      <span lang="zh">而且，能做一口食物的人远比能做一整份菜单的人多。所以这家餐厅可以招募更多厨师，尝试更多技巧来让小口食物更美味。</span>
+    </p>
+
+    <p>
+      <span lang="en">This restaurant is TikTok and Reels and YouTube Shorts and all of the other imitators. And it is probably the most engaging media interface that I've ever seen. There's a catch, though. This sequential feeding system wouldn't work if the dishes were big or complicated. <strong>It only works with morsels. If you take away the user's agency, you arrive at short form.</strong></span>
+      <span lang="zh">这家餐厅就是 TikTok、Reels、YouTube Shorts 和所有其他模仿者。它可能是我见过的最具吸引力的媒体界面。但有个问题。这种顺序喂食系统在菜品很大或很复杂时不起作用。<strong>它只对小口食物有效。如果你拿走用户的自主性，你就得到了短视频。</strong></span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ SECTION 03 · Is All of Media Becoming TikTok? ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Precedent</span>
+        <span lang="zh">先例</span>
+      </h4>
+      <p>
+        <span lang="en">Tinder did the same thing to dating apps: one profile at a time, forcing feedback. All dating apps became Tinder.</span>
+        <span lang="zh">Tinder 对约会应用做了同样的事：一次一个档案，强制反馈。所有约会应用都变成了 Tinder。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Scale</span>
+        <span lang="zh">规模</span>
+      </h4>
+      <p>
+        <span lang="en">Reels: 200B+ daily views. YouTube Shorts: 200B+ daily views. The numbers are staggering.</span>
+        <span lang="zh">Reels：每日 2000 亿+ 次观看。YouTube Shorts：每日 2000 亿+ 次观看。数字惊人。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Analogy</span>
+        <span lang="zh">类比</span>
+      </h4>
+      <p>
+        <span lang="en">"The bowl of potato chips that someone sticks on the table that you didn't order, but it's there, so you snack on it."</span>
+        <span lang="zh">"有人在你桌上放了一碗薯片，你没点，但它在那儿，所以你就吃了。"</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Section 03</div>
+
+    <h2 class="article-title">
+      <span lang="en">Is All of Media Becoming TikTok?</span>
+      <span lang="zh">所有媒体都在 TikTok 化？</span>
+    </h2>
+
+    <p>
+      <span lang="en">We've seen this happen before with Tinder. Instead of a dating app based on a menu, they showed one profile at a time, forcing feedback from the swiper. And what happened? The profiles became short form. Just photos, a couple of words, and an algorithm that encodes our subconscious responses more than our reflective intentions.</span>
+      <span lang="zh">我们在 Tinder 上见过同样的事。它没有用菜单式的约会应用，而是一次展示一个档案，强制滑动者反馈。结果怎样？档案变成了短视频形式。只有照片、几个词，以及一个编码我们潜意识反应而非反思性意图的算法。</span>
+    </p>
+
+    <p>
+      <span lang="en">Maybe you noticed that all the dating apps became Tinder. So, is all of media becoming TikTok?</span>
+      <span lang="zh">也许你注意到了，所有约会应用都变成了 Tinder。那么，所有媒体都在变成 TikTok 吗？</span>
+    </p>
+
+    <h3>
+      <span lang="en">The Investor Calls</span>
+      <span lang="zh">投资者电话会议</span>
+    </h3>
+
+    <p>
+      <span lang="en">Only the platforms know how much human attention has shifted into these feeds, and they don't release the data. But they do quarterly calls with investors. If you go back through the past few years, you can hear how big a response Meta and YouTube have made to the rise of TikTok:</span>
+      <span lang="zh">只有平台知道有多少人类注意力转移到了这些信息流里，而他们不公布数据。但他们每季度跟投资者开电话会议。如果你回看过去几年，你能听到 Meta 和 YouTube 对 TikTok 崛起做出了多大的回应：</span>
+    </p>
+
+    <div class="dialogue">
+      <span class="speaker">>> Meta Investor Call</span>
+      <span lang="en">"Reels already makes up more than 50% of the time that people spend on Instagram."</span>
+      <span lang="zh">"Reels 已经占到人们在 Instagram 上花费时间的 50% 以上。"</span>
+    </div>
+
+    <div class="dialogue">
+      <span class="speaker">>> YouTube Investor Call</span>
+      <span lang="en">"We now average over 200 billion daily views on YouTube Shorts."</span>
+      <span lang="zh">"YouTube Shorts 目前日均观看量超过 2000 亿次。"</span>
+    </div>
+
+    <p>
+      <span lang="en">Social media has gone through two eras so far. First: all content was from friends, family, and accounts you followed. Second: creator content was added. Now, as AI makes it easier to create and remix content, we're going to add yet another huge corpus on top of those.</span>
+      <span lang="zh">社交媒体经历了两个时代。第一个时代：所有内容来自朋友、家人和你关注的账号。第二个时代：创作者内容被加入。现在，随着 AI 让创作和混剪内容变得更容易，我们将在上面再叠加一个庞大的内容库。</span>
+    </p>
+
+    <p>
+      <span lang="en">It's really easy to think of this as the bowl of potato chips that someone sticks on the table that you didn't order, but it's there, so you snack on it. No one can eat just one.</span>
+      <span lang="zh">这很容易被想象成有人在你桌上放了一碗薯片，你没点，但它在那儿，所以你就吃了。没人能只吃一片。</span>
+    </p>
+
+    <p>
+      <span lang="en">But there is such a thing as a healthy snack, right? So the question becomes: <mark>is there such a thing as an anti-brain-rot short?</mark></span>
+      <span lang="zh">但确实有健康零食这种东西，对吧？所以问题变成了：<mark>有没有反脑腐的短视频？</mark></span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ SECTION 04 · The Goldfish Myth ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">The Myth</span>
+        <span lang="zh">神话</span>
+      </h4>
+      <p>
+        <span lang="en">"Our attention span is now shorter than a goldfish." — This is entirely made up.</span>
+        <span lang="zh">"我们的注意力现在比金鱼还短。"——这完全是编造的。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Researcher</span>
+        <span lang="zh">研究者</span>
+      </h4>
+      <p>
+        <span lang="en">Gloria Mark, author of "Attention Span." Tracked workplace attention since 2003.</span>
+        <span lang="zh">Gloria Mark，《注意力跨度》作者。自 2003 年追踪工作场所注意力。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Data Points</span>
+        <span lang="zh">数据点</span>
+      </h4>
+      <p>
+        <span lang="en">2003: 2.5 min → 2012: 75 sec → Now: ~40 sec</span>
+        <span lang="zh">2003 年：2.5 分钟 → 2012 年：75 秒 → 现在：约 40 秒</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Section 04</div>
+
+    <h2 class="article-title">
+      <span lang="en">The Goldfish Myth</span>
+      <span lang="zh">金鱼神话</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">Before we get to TikTok, there's a bigger question to answer. Have our attention spans really shrunk? According to a 2015 post by Time magazine, yes — they're now shorter than a goldfish. But this is one of those myths that won't die.</span>
+      <span lang="zh">在谈 TikTok 之前，有一个更大的问题要回答。我们的注意力真的缩短了吗？根据《时代》杂志 2015 年的一篇文章，是的——现在比金鱼还短。但这是一个死不了的神话。</span>
+    </p>
+
+    <p>
+      <span lang="en">The claim came from a report published by Microsoft which had a graphic showing our attention span declining from 12 seconds to 8 seconds. But they were citing something called Statistic Brain, which in turn cited these sources. And when journalists tried to track down those sources, <strong>they didn't exist. The numbers were entirely made up — for both the humans and the goldfish.</strong></span>
+      <span lang="zh">这个说法来自微软发布的一份报告，其中有一张图表显示我们的注意力从 12 秒下降到 8 秒。但他们引用的是一个叫 Statistic Brain 的网站，而那个网站又引用了这些来源。当记者试图追踪这些来源时，<strong>它们根本不存在。这些数字完全是编造的——人类的和金鱼的都是。</strong></span>
+    </p>
+
+    <h3>
+      <span lang="en">What Would It Really Take to Measure Attention?</span>
+      <span lang="zh">真正测量注意力需要什么？</span>
+    </h3>
+
+    <p>
+      <span lang="en">Gloria Mark is one of the few people who have tried. Way back in 2003, she convinced an investment management company to let her peek over the shoulders of 14 of their employees as they worked. With stopwatches, every time they changed to do something else, they would click. Those employees spent about 2 and a half minutes working on their computers before switching.</span>
+      <span lang="zh">Gloria Mark 是少数真正尝试过的人之一。早在 2003 年，她说服一家投资管理公司让她观察 14 名员工的工作。她们拿着秒表，每次员工切换做别的事就按一下。那些员工大约花两分半钟在电脑上工作就会切换。</span>
+    </p>
+
+    <p>
+      <span lang="en">Fast forward to 2012. She installs software that tracks how often employees click from one window to another and finds they switch every 75 seconds on average. Now it's closer to 40 seconds.</span>
+      <span lang="zh">快进到 2012 年。她安装了追踪员工窗口切换频率的软件，发现平均 75 秒切换一次。现在大约是 40 秒。</span>
+    </p>
+
+    <p>
+      <span lang="en">So yes, empirically we can say that on screens, attention spans have shortened. But it's tricky. Is this measuring our ability to focus, or just how much distracting stuff there is in our lives?</span>
+      <span lang="zh">所以是的，从经验上我们可以说，在屏幕上注意力确实缩短了。但这很棘手。这测量的是我们的专注能力，还是生活中有多少干扰？</span>
+    </p>
+
+    <h3>
+      <span lang="en">Three Influences on Focus</span>
+      <span lang="zh">影响专注的三个因素</span>
+    </h3>
+
+    <p>
+      <span lang="en">Gloria Mark's approach captures real life but can't distinguish between three different influences on our ability to focus:</span>
+      <span lang="zh">Gloria Mark 的方法捕捉了真实生活，但无法区分影响专注能力的三个不同因素：</span>
+    </p>
+
+    <p>
+      <span lang="en"><strong>1. Attentional capacity</strong> — what we generally think of as attention span. <strong>2. Motivation</strong> — how much we need or care about focusing on this task. <strong>3. Competition</strong> — how much our environment is distracting us.</span>
+      <span lang="zh"><strong>1. 注意力容量</strong>——我们通常认为的注意力跨度。<strong>2. 动机</strong>——我们有多大需要或在意专注于这个任务。<strong>3. 竞争</strong>——环境有多大干扰。</span>
+    </p>
+
+    <p>
+      <span lang="en">In a lab, they can control for motivation and competition. But the tasks they give people don't look anything like real life. And on lab tests, performance in adults has actually been <strong>increasing</strong> over three decades and 32 countries. In children, overall performance hasn't changed, but their style has — faster, more errors, but also more items completed.</span>
+      <span lang="zh">在实验室里，他们可以控制动机和竞争。但他们给受试者的任务跟现实生活完全不一样。而且在实验室测试中，成年人的表现实际上在<strong>提升</strong>——跨越三十年和 32 个国家。在儿童中，整体表现没有变化，但风格变了——更快、更多错误，但也完成了更多项目。</span>
+    </p>
+
+    <p>
+      <span lang="en">So let's set aside the concept of attention spans. It's a fuzzy term. <mark>The sharper question: if you binge short-form video, what exactly gets worse?</mark></span>
+      <span lang="zh">所以让我们搁置注意力跨度这个概念。它太模糊了。<mark>更尖锐的问题：如果你刷短视频，到底什么变差了？</mark></span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ SECTION 05 · What Exactly Gets Worse? ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Study 1 · CRT</span>
+        <span lang="zh">研究一 · 认知反思</span>
+      </h4>
+      <p>
+        <span lang="en">Peking University, 72 students. 30 min TikTok vs. 30 min reading. TikTok group did worse on analytical thinking. Swiping itself caused the drop.</span>
+        <span lang="zh">北京大学，72 名学生。30 分钟 TikTok vs 30 分钟阅读。TikTok 组分析思维更差。滑动本身导致了下降。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Study 2 · Prospective Memory</span>
+        <span lang="zh">研究二 · 前瞻记忆</span>
+      </h4>
+      <p>
+        <span lang="en">University of Munich. 10-min break: rest / Twitter / YouTube / TikTok. Only TikTok group lost the ability to remember intentions.</span>
+        <span lang="zh">慕尼黑大学。10 分钟休息：静坐/Twitter/YouTube/TikTok。只有 TikTok 组丧失了记住意图的能力。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Study 3 · Swipe Limit</span>
+        <span lang="zh">研究三 · 滑动限制</span>
+      </h4>
+      <p>
+        <span lang="en">UK replication, 45 students. 10 swipes only vs. unlimited. Limited group: no drop. Unlimited: significant drop.</span>
+        <span lang="zh">英国复制实验，45 名学生。仅 10 次滑动 vs 无限制。限制组：无下降。无限制组：显著下降。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Section 05</div>
+
+    <h2 class="article-title">
+      <span lang="en">What Exactly Gets Worse?</span>
+      <span lang="zh">到底什么变差了？</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">A recent review of 14 studies found that increased short-form video use was associated with poorer cognition, including attention and inhibitory control. But "associated with" is scientist code for "we're not saying this causes the problem."</span>
+      <span lang="zh">最近一项对 14 项研究的综述发现，短视频使用增加与认知能力较差相关，包括注意力和抑制控制。但"相关"是科学家的暗语，意思是"我们没有说这导致了问题"。"</span>
+    </p>
+
+    <p>
+      <span lang="en">But there are a few experimental studies. There are at least two different cognitive tests where people perform worse after scrolling a shorts feed. One is a trick-question quiz. The other is about whether you can remember to do something you plan to do.</span>
+      <span lang="zh">但有一些实验研究。至少有两种不同的认知测试中，人们在刷短视频后表现更差。一种是陷阱题测试。另一种是关于你是否能记住去做你计划要做的事。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Test 1 · The Cognitive Reflection Test</span>
+      <span lang="zh">测试一 · 认知反思测试</span>
+    </h3>
+
+    <p>
+      <span lang="en">"A bat and a ball cost $1.10 in total. The bat costs $1 more than the ball. How much does the ball cost?"</span>
+      <span lang="zh">"一根球棒和一个球总共 1.10 美元。球棒比球贵 1 美元。球多少钱？"</span>
+    </p>
+
+    <p>
+      <span lang="en">Your gut is screaming "10 cents." You need to override that to get the right answer: 5 cents. This is supposed to capture analytical thinking — the ability to switch out of autopilot.</span>
+      <span lang="zh">你的直觉在喊"10 美分"。你需要覆盖那个直觉才能得到正确答案：5 美分。这据称能捕捉分析思维——跳出自动驾驶模式的能力。</span>
+    </p>
+
+    <p>
+      <span lang="en">72 college students at Peking University in Beijing took this test after either 30 minutes scrolling TikTok or 30 minutes reading. The TikTok group did worse. The researchers wanted to know: does what you watch matter? So they ran a second study — cute animals vs. science experiments. It didn't matter. But the swiping groups consistently did worse. <strong>They got 0.38 fewer questions right out of three — that's 12% of the scale after 30 minutes, from just swiping alone.</strong></span>
+      <span lang="zh">北京大学的 72 名学生在 30 分钟刷 TikTok 或 30 分钟阅读后做了这个测试。TikTok 组表现更差。研究者想知道：你看的内容重要吗？所以他们做了第二个实验——可爱动物 vs 科学实验。不重要。但滑动组一致地表现更差。<strong>三道题中少对了 0.38 题——30 分钟后量表的 12%，仅仅因为滑动。</strong></span>
+    </p>
+
+    <h3>
+      <span lang="en">Test 2 · Prospective Memory</span>
+      <span lang="zh">测试二 · 前瞻记忆</span>
+    </h3>
+
+    <p>
+      <span lang="en">Prospective memory is when you remember to do something you intended to do — picking up dry cleaning, joining a Zoom meeting, taking medication. Researchers at the University of Munich wanted to know how short-form video feeds affect that ability.</span>
+      <span lang="zh">前瞻记忆是指你记住去做你打算做的事——取干洗、参加 Zoom 会议、吃药。慕尼黑大学的研究者想知道短视频流如何影响这种能力。</span>
+    </p>
+
+    <p>
+      <span lang="en">They embedded a task within a task. Press N if the word is real, M if it's fake. But if you see "blue," "purple," or "green," press Q, W, or E instead. Subjects did this task, took a 10-minute break — rest, Twitter, YouTube, or TikTok — then tested again.</span>
+      <span lang="zh">他们在任务中嵌套了任务。如果是真词按 N，假词按 M。但如果你看到"blue""purple"或"green"，则按 Q、W 或 E。受试者做完测试，休息 10 分钟——静坐、Twitter、YouTube 或 TikTok——然后再测一次。</span>
+    </p>
+
+    <p>
+      <span lang="en">The real-word/fake-word performance was the same. But for the blue-purple-green task — where they needed to remember that second intention — one group saw a big drop. <mark>It was the group that scrolled TikTok during the break.</mark></span>
+      <span lang="zh">真词/假词的表现一样。但在蓝-紫-绿任务中——他们需要记住第二个意图——有一组大幅下降。<mark>是休息时刷 TikTok 的那组。</mark></span>
+    </p>
+
+    <h3>
+      <span lang="en">Test 3 · The Swipe Limit</span>
+      <span lang="zh">测试三 · 滑动限制</span>
+    </h3>
+
+    <p>
+      <span lang="en">Researchers in the UK replicated this with 45 students. One group was limited to 10 swipes. The other could swipe as much as they wanted. There was also a control group that sat quietly.</span>
+      <span lang="zh">英国研究者用 45 名学生复制了这个实验。一组限制只能滑 10 次。另一组随意滑。还有一组安静坐着作为对照。</span>
+    </p>
+
+    <p>
+      <span lang="en">The group limited to 10 swipes didn't see a drop. The unlimited swiping group did. <strong>So again: something about being able to do this mindlessly is the problem.</strong></span>
+      <span lang="zh">限制 10 次滑动的组没有下降。无限制滑动组下降了。<strong>所以再一次：问题在于能够无意识地做这件事。</strong></span>
+    </p>
+
+    <p>
+      <span lang="en">If you're watching this in a clipped short, don't swipe away. Actually, what you should do is download all the shorts, but watch them in one big stream.</span>
+      <span lang="zh">如果你在看短视频版，别滑走。其实你应该把所有短视频下载下来，拼成一个大视频看。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ SECTION 06 · The Autopilot Mind ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">William James, 1890</span>
+        <span lang="zh">威廉·詹姆斯，1890</span>
+      </h4>
+      <p>
+        <span lang="en">"My experience is what I agree to attend to. Only those items which I notice shape my mind."</span>
+        <span lang="zh">"我的经验就是我同意关注的东西。只有我注意到的事物才塑造了我的心灵。"</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Argument</span>
+        <span lang="zh">核心论点</span>
+      </h4>
+      <p>
+        <span lang="en">Agency is at the heart of both analytical thinking and prospective memory. Feeds that nudge users into autopilot nudge creators into autopilot too.</span>
+        <span lang="zh">自主性是分析思维和前瞻记忆的核心。将用户推入自动驾驶的信息流也会将创作者推入自动驾驶。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Destin Sandlin</span>
+        <span lang="zh">Destin Sandlin</span>
+      </h4>
+      <p>
+        <span lang="en">Creator of "Smarter Every Day." Has elected not to post shorts. "I don't think the infinite scroll is healthy for our minds."</span>
+        <span lang="zh">"Smarter Every Day"创作者。选择不发短视频。"我认为无限滑动对我们的心理健康不利。"</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Section 06</div>
+
+    <h2 class="article-title">
+      <span lang="en">The Autopilot Mind</span>
+      <span lang="zh">自动驾驶的大脑</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">In 1890, the pioneering American psychologist William James wrote: "My experience is what I agree to attend to." And there's more. "Only those items which I notice shape my mind."</span>
+      <span lang="zh">1890 年，美国心理学先驱威廉·詹姆斯写道："我的经验就是我同意关注的东西。"还有："只有我注意到的事物才塑造了我的心灵。"</span>
+    </p>
+
+    <p>
+      <span lang="en">And yet, I keep coming back to this question of user agency — or what James called selective interest. Agency is at the heart of both analytical thinking and prospective memory. Those weird little tests are basically asking: <strong>is your brain on autopilot, or can you slow down, make a turn, remember where you intended to go?</strong></span>
+      <span lang="zh">然而，我不断回到用户自主性这个问题——或者詹姆斯所说的选择性兴趣。自主性是分析思维和前瞻记忆的核心。那些奇怪的小测试基本上在问：<strong>你的大脑在自动驾驶吗，还是你能慢下来、转弯、记住你打算去哪里？</strong></span>
+    </p>
+
+    <p>
+      <span lang="en">It's not just your intentions that get lost. Feeds that nudge the customers into autopilot tend to nudge the cooks into autopilot, too.</span>
+      <span lang="zh">丢失的不仅是你的意图。将顾客推入自动驾驶的信息流也会把厨师推入自动驾驶。</span>
+    </p>
+
+    <div class="dialogue">
+      <span class="speaker">>> Comment on a short</span>
+      <span lang="en">"Your contents are the most anti-brain-rot content out there. Actually, genuine and very high quality."</span>
+      <span lang="zh">"你们的内容是最反脑腐的内容。真的，真诚且高质量。"</span>
+    </div>
+
+    <div class="dialogue">
+      <span class="speaker">>> Reply</span>
+      <span lang="en">"No such thing as anti-brain-rot content when it's short form."</span>
+      <span lang="zh">"短视频形式不存在反脑腐的内容。"</span>
+    </div>
+
+    <h3>
+      <span lang="en">Destin's Choice</span>
+      <span lang="zh">Destin 的选择</span>
+    </h3>
+
+    <p>
+      <span lang="en">Destin Sandlin of Smarter Every Day has elected not to post shorts:</span>
+      <span lang="zh">Smarter Every Day 的 Destin Sandlin 选择不发短视频：</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"I have elected not to do that because I don't think it's good for people. I don't think the infinite scroll is healthy for our minds. I think saying no to shorts is powerful. And I think it ultimately increases trust in the creator."</span>
+      <span lang="zh">"我选择不那样做，因为我认为它对人们不好。我认为无限滑动对我们的心理健康不利。我认为对短视频说不很有力量。而且我认为它最终会增加观众对创作者的信任。"</span>
+    </blockquote>
+
+    <p>
+      <span lang="en">But having bite-sized information isn't inherently bad. When I was at NPR, we would make 3-minute radio pieces all the time. I didn't feel like those were bad for the world just because it was a compressed amount of information about a complex subject. The question is: <mark>do we want to participate in these endless scrolls?</mark></span>
+      <span lang="zh">但小份信息本身并不坏。我在 NPR 时经常做 3 分钟的广播节目。我不觉得因为它是关于复杂话题的压缩信息就对世界有害。问题是：<mark>我们想不想参与这些无限滑动？</mark></span>
+    </p>
+
+    <p>
+      <span lang="en">Is there such a thing as a good short — an anti-brain-rot short? What do you think? Is this research strong enough that we should be making a change?</span>
+      <span lang="zh">有没有好的短视频——反脑腐的短视频？你怎么看？这个研究是否足够有力，让我们应该做出改变？</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ TRACING APPENDIX ════ -->
+<div class="tracing-appendix">
+  <div class="appendix-inner">
+
+    <div class="appendix-title">
+      <span lang="en">Field Notes</span>
+      <span lang="zh">田野笔记</span>
+    </div>
+
+    <div class="appendix-grid">
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Key Finding</span>
+          <span lang="zh">核心发现</span>
+        </div>
+        <p>
+          <span lang="en">Short-form video feeds don't just "shorten attention spans" — they specifically degrade analytical thinking and prospective memory. The mechanism is loss of user agency: mindless swiping, not content itself, is the problem.</span>
+          <span lang="zh">短视频流不只是"缩短注意力"——它特定地损害分析思维和前瞻记忆。机制是用户自主性的丧失：无意识滑动本身，而非内容，才是问题。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">The Three Studies</span>
+          <span lang="zh">三项研究</span>
+        </div>
+        <p>
+          <span lang="en">1. Peking University: TikTok users worse at CRT after 30 min. 2. University of Munich: TikTok break degraded prospective memory. 3. UK replication: unlimited swiping caused the drop, 10-swipe limit did not.</span>
+          <span lang="zh">1. 北京大学：30 分钟 TikTok 后 CRT 表现更差。2. 慕尼黑大学：TikTok 休息降低了前瞻记忆。3. 英国复制：无限制滑动导致下降，10 次限制没有。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">The Goldfish Lie</span>
+          <span lang="zh">金鱼谎言</span>
+        </div>
+        <p>
+          <span lang="en">The "attention span shorter than a goldfish" claim was entirely fabricated. The Microsoft report cited Statistic Brain, which cited non-existent sources. Both the human and goldfish numbers were made up.</span>
+          <span lang="zh">"注意力比金鱼短"的说法完全是编造的。微软报告引用了 Statistic Brain，而后者引用了不存在的来源。人类和金鱼的数据都是捏造的。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Open Question</span>
+          <span lang="zh">开放问题</span>
+        </div>
+        <p>
+          <span lang="en">All studies are short-term. No long-term research exists yet on chronic short-form video use. Is the effect confined to right after use, or does it persist? Long-term studies could guide better ethics and policy.</span>
+          <span lang="zh">所有研究都是短期的。目前还没有关于长期使用短视频的纵向研究。效应是否仅在使用后出现，还是会持续？长期研究可以指导更好的伦理和政策。</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="appendix-rule"></div>
+    <div class="appendix-fine">
+      This appendix is printed on tracing paper · 本附页以硫酸纸印刷 · Vol.02 · 2026
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ COLOPHON ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5><span lang="en">About This Issue</span><span lang="zh">关于本期</span></h5>
+        <p><span lang="en">An investigation into the science of "brain rot." Are short-form video feeds actually making us dumber? The research is more nuanced than the headlines — but the red flags are real.</span><span lang="zh">对"脑腐"科学的调查。短视频流真的在让我们变笨吗？研究比标题更微妙——但红旗是真实的。</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Source</span><span lang="zh">来源</span></h5>
+        <p><span lang="en">Adapted from Howtown episode transcript. Studies: Peking University, University of Munich, UK replication. Internal TikTok documents via state lawsuit redactions.</span><span lang="zh">改编自 Howtown 节目文字稿。研究：北京大学、慕尼黑大学、英国复制实验。TikTok 内部文件来自州诉讼涂黑失误。</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Design</span><span lang="zh">设计信息</span></h5>
+        <p><span lang="en">Theme A · Kraft Paper Archive<br>Noto Serif SC · Dancing Script<br>Bilingual EN/ZH</span><span lang="zh">主题 A · 牛皮纸档案<br>Noto Serif SC · Dancing Script<br>中英双语</span></p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">© 2026 · MAGAZINE OWN · Vol.02 · All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- ════ Language Switch Script ════ -->
+<script>
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'zh') {
+      body.classList.add('lang-zh');
+      document.getElementById('btn-zh').classList.add('active');
+      document.getElementById('btn-en').classList.remove('active');
+      document.documentElement.lang = 'zh-CN';
+    } else {
+      body.classList.remove('lang-zh');
+      document.getElementById('btn-en').classList.add('active');
+      document.getElementById('btn-zh').classList.remove('active');
+      document.documentElement.lang = 'en';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const isBilingual = body.hasAttribute('data-bilingual');
+    if (!isBilingual) return;
+    document.getElementById('btn-en').classList.add('active');
+    document.getElementById('btn-zh').classList.remove('active');
+  });
+</script>
+
+</body>
+</html>

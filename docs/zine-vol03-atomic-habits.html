@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zine · Vol.03 · Atomic Habits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+  --btn-bg:       rgba(42,32,24,.08);
+  --btn-border:   rgba(42,32,24,.18);
+  --btn-active:   #8b2e1a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s ease, color .3s ease;
+}
+
+[lang="en"], [lang="zh"] { display: inline; }
+[data-bilingual] [lang="zh"] { display: none; }
+[data-bilingual] [lang="en"] { display: inline; }
+[data-bilingual].lang-zh [lang="zh"] { display: inline; }
+[data-bilingual].lang-zh [lang="en"] { display: none; }
+
+[data-bilingual] p > [lang],
+[data-bilingual] h1 > [lang],
+[data-bilingual] h2 > [lang],
+[data-bilingual] h3 > [lang],
+[data-bilingual] .article-lede > [lang],
+[data-bilingual] .cover-sub > [lang],
+[data-bilingual] .pq-script > [lang],
+[data-bilingual] .pq-small-text > [lang],
+[data-bilingual] .pq-below > [lang],
+[data-bilingual] blockquote > [lang] { display: block; }
+[data-bilingual].lang-zh p > [lang="en"],
+[data-bilingual].lang-zh h1 > [lang="en"],
+[data-bilingual].lang-zh h2 > [lang="en"],
+[data-bilingual].lang-zh h3 > [lang="en"],
+[data-bilingual].lang-zh .article-lede > [lang="en"],
+[data-bilingual].lang-zh .cover-sub > [lang="en"],
+[data-bilingual].lang-zh .pq-script > [lang="en"],
+[data-bilingual].lang-zh .pq-small-text > [lang="en"],
+[data-bilingual].lang-zh .pq-below > [lang="en"],
+[data-bilingual].lang-zh blockquote > [lang="en"] { display: none; }
+
+.zine-masthead {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink); color: var(--bg);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 5vw; height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+
+.lang-switcher { display: none; align-items: center; gap: 2px; flex-shrink: 0; }
+[data-bilingual] .lang-switcher { display: flex; }
+.lang-btn {
+  font-family: 'Noto Sans Mono', monospace; font-size: 10px; letter-spacing: .14em;
+  padding: 4px 10px; border: 1px solid var(--btn-border);
+  background: var(--btn-bg); color: var(--bg); cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+  line-height: 1; opacity: .7;
+}
+.lang-btn:hover { opacity: 1; }
+.lang-btn.active { background: var(--btn-active); border-color: var(--btn-active); color: #fff; opacity: 1; }
+
+@media print { .zine-masthead { display: none; } }
+
+.zine-cover {
+  max-width: 960px; margin-inline: auto;
+  padding: 8vh 5vw 5vh; min-height: 85vh;
+  display: grid; grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+}
+.cover-meta {
+  display: flex; align-items: center; gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px); font-weight: 900;
+  line-height: 1.05; letter-spacing: -.022em;
+  color: var(--ink); margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px); font-weight: 300;
+  color: var(--ink-2); line-height: 1.72;
+  max-width: 50ch; padding-left: 18px;
+  border-left: 3px solid var(--accent); margin-bottom: 5vh;
+}
+
+.cover-image-slot {
+  background: var(--bg-warm); border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 26vh; margin-bottom: 4vh; overflow: hidden;
+}
+.cover-image-slot.empty::after {
+  content: attr(data-label);
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .2em;
+  color: var(--ink-3); text-transform: uppercase;
+}
+
+.cover-footer {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .14em; color: var(--ink-3);
+  border-top: 1px solid var(--rule); padding-top: 2vh; text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px; font-weight: 900; letter-spacing: -.02em;
+  color: var(--accent); opacity: .28; line-height: 1;
+}
+
+.zine-index {
+  max-width: 960px; margin-inline: auto;
+  padding: 6vh 5vw; border-bottom: 1px solid var(--rule);
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 3vh;
+  display: flex; align-items: center; gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid; grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline; gap: 12px;
+  padding: 1.4vh 0; border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+.pull-quote-section {
+  max-width: 960px; margin-inline: auto;
+  padding: 6vh 5vw; border-bottom: 1px solid var(--rule);
+}
+.tracing-card {
+  position: relative; padding: 36px 44px 32px;
+  background: var(--tracing-bg); backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow: 2px 4px 12px rgba(0,0,0,.07), 4px 8px 28px rgba(0,0,0,.05), inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 0; height: 0; border-style: solid; border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; line-height: 1.8; color: var(--ink-2);
+  max-width: 52ch; margin: 0 auto 24px; text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px); font-weight: 700;
+  line-height: 1.28; color: var(--ink); text-align: center;
+  margin-bottom: 20px; letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px; letter-spacing: .2em; color: var(--ink-3);
+  text-align: center; text-transform: uppercase; display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; line-height: 1.82; color: var(--ink-2);
+  max-width: 52ch; margin: 20px auto 0; text-align: center;
+}
+
+.zine-body {
+  max-width: 960px; margin-inline: auto;
+  padding: 5.5vh 5vw; border-bottom: 1px solid var(--rule);
+}
+.zine-body.two-col {
+  display: grid; grid-template-columns: 200px 1fr; gap: 4.5vw; align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+.sidebar-block { border-left: 2px solid var(--rule); padding-left: 14px; margin-bottom: 2.8vh; }
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px; font-weight: 300; color: var(--ink-2); line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block; font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; padding: 2px 7px; margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule); color: var(--ink-3); letter-spacing: .1em;
+}
+
+.article-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px); font-weight: 700;
+  line-height: 1.2; letter-spacing: -.015em; color: var(--ink);
+  margin-bottom: 2vh; padding-top: 1.2vh; border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px); font-style: italic; font-weight: 300;
+  color: var(--ink-2); line-height: 1.72; margin-bottom: 2vh;
+}
+
+.col-wide p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px); color: var(--ink-2);
+  line-height: 1.92; margin-bottom: 0;
+}
+.col-wide p + p { text-indent: 2em; }
+.col-wide h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px); font-weight: 700;
+  color: var(--ink); margin: 3.2vh 0 1.2vh; letter-spacing: -.01em;
+}
+.col-wide strong { font-weight: 600; color: var(--ink); }
+.col-wide mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+.col-wide blockquote {
+  margin: 20px 0; padding: 14px 20px; background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px; font-weight: 300; color: var(--ink-2); line-height: 1.82;
+}
+
+.tracing-appendix {
+  position: relative; max-width: 900px; margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg); backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow: 1px 3px 8px rgba(0,0,0,.06), 3px 6px 20px rgba(0,0,0,.07), inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg); transform-origin: top left;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · FU YE'; position: absolute; top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .24em; color: var(--ink-3);
+  text-transform: uppercase; background: var(--bg); padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 0; height: 0; border-style: solid; border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner { transform: rotate(.45deg); transform-origin: top left; }
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px; font-weight: 700; color: var(--ink);
+  margin-bottom: 22px; letter-spacing: -.01em; line-height: 1.2;
+}
+.appendix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 36px; }
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px; font-weight: 300; color: var(--ink-2);
+  line-height: 1.78; margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .18em; color: var(--ink-3);
+  text-transform: uppercase; opacity: .7;
+}
+
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--colophon-acc); margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px; font-weight: 300; color: var(--colophon-fg); line-height: 1.78;
+}
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .18em; color: var(--colophon-fg);
+  opacity: .35; text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+@media print {
+  .zine-masthead { display: none; }
+  .col-narrow    { position: static; }
+  .stamp         { opacity: .15; }
+  body           { font-size: 11pt; }
+}
+</style>
+</head>
+
+<body class="t-a" data-bilingual="true">
+
+<!-- ════ Masthead ════ -->
+<header class="zine-masthead">
+  <span class="masthead-name">MAGAZINE OWN</span>
+  <span class="masthead-issue">Vol.03 · 2026</span>
+  <div class="lang-switcher" role="group" aria-label="Language">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn"        id="btn-zh" onclick="setLang('zh')">中文</button>
+  </div>
+</header>
+
+<!-- ════ L01 · Cover ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.03 · 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">
+      <span lang="en">Habit Science</span>
+      <span lang="zh">习惯科学</span>
+    </span>
+  </div>
+
+  <h1 class="cover-title">
+    <span lang="en">Atomic<br><em>Habits</em></span>
+    <span lang="zh">原子<br><em>习惯</em></span>
+  </h1>
+
+  <p class="cover-sub">
+    <span lang="en">A visual summary of James Clear's bestselling book — how tiny, incremental changes compound into remarkable results, and why systems beat goals every single time.</span>
+    <span lang="zh">詹姆斯·克利尔畅销书的视觉摘要——微小的渐进式改变如何复利成非凡的结果，以及为什么系统比目标更重要。</span>
+  </p>
+
+  <div class="cover-image-slot empty" data-label="Image Slot · 3:4"></div>
+
+  <div class="cover-footer">
+    <span>
+      <span lang="en">Book Summary · James Clear</span>
+      <span lang="zh">读书摘要 · 詹姆斯·克利尔</span>
+    </span>
+    <span class="stamp">NO.03</span>
+  </div>
+</section>
+
+<!-- ════ L06 · Index ════ -->
+<section class="zine-index">
+  <div class="index-label">
+    <span lang="en">Table of Contents</span>
+    <span lang="zh">目 录</span>
+  </div>
+  <ul class="index-list">
+    <li>
+      <span class="index-num">01</span>
+      <span class="index-title"><span lang="en">The Plane & 3 Degrees</span><span lang="zh">飞机与3度偏航</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.02</span>
+    </li>
+    <li>
+      <span class="index-num">02</span>
+      <span class="index-title"><span lang="en">The Power of 1%</span><span lang="zh">1% 的力量</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.03</span>
+    </li>
+    <li>
+      <span class="index-num">03</span>
+      <span class="index-title"><span lang="en">Goals vs. Systems</span><span lang="zh">目标 vs 系统</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.04</span>
+    </li>
+    <li>
+      <span class="index-num">04</span>
+      <span class="index-title"><span lang="en">Identity & 3 Layers</span><span lang="zh">身份与行为三层</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.05</span>
+    </li>
+    <li>
+      <span class="index-num">05</span>
+      <span class="index-title"><span lang="en">The Habit Loop</span><span lang="zh">习惯回路</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.06</span>
+    </li>
+    <li>
+      <span class="index-num">06</span>
+      <span class="index-title"><span lang="en">The 4 Laws of Change</span><span lang="zh">行为改变四定律</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.07</span>
+    </li>
+    <li>
+      <span class="index-num">07</span>
+      <span class="index-title"><span lang="en">Putting It Into Practice</span><span lang="zh">实战应用</span></span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.10</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ════ L04 · Pull Quote ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+    <p class="pq-small-text">
+      <span lang="en">In 1890, the question wasn't how to change behavior — it was how to become someone worth changing for.</span>
+      <span lang="zh">1890年的问题不是如何改变行为——而是如何成为一个值得为之改变的人。</span>
+    </p>
+    <div class="pq-script">
+      <span lang="en">You do not rise to<br>the level of your goals.<br>You fall to the level<br>of your systems.</span>
+      <span lang="zh">你不会上升到<br>目标的高度。<br>你只会下降到<br>系统的水平。</span>
+    </div>
+    <span class="pq-cite">—— James Clear · Atomic Habits</span>
+    <p class="pq-below">
+      <span lang="en">Success is the product of daily habits — not once-in-a-lifetime transformations. The math is simple: 1% better every day compounds to 38× in a year.</span>
+      <span lang="zh">成功是日常习惯的产物——不是一生一次的蜕变。数学很简单：每天进步1%，一年后复利增长到38倍。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ════ Section 01 · The Plane ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Abstract</span><span lang="zh">摘要</span></h4>
+      <p><span lang="en">A plane from New York to LA, adjusted just 3 degrees before takeoff, lands near Tijuana instead. Habits work the same way — tiny shifts redirect your entire life trajectory.</span><span lang="zh">从纽约飞往洛杉矶的飞机，起飞前仅偏航3度，最终降落地点会靠近墨西哥的蒂华纳。习惯也是同理——微小的偏移会重新定向你的人生轨迹。</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Keywords</span><span lang="zh">关键词</span></h4>
+      <p>
+        <span lang="en"><span class="sidebar-tag">Compounding</span><span class="sidebar-tag">Trajectory</span><span class="sidebar-tag">Atomic</span></span>
+        <span lang="zh"><span class="sidebar-tag">复利</span><span class="sidebar-tag">轨迹</span><span class="sidebar-tag">原子级</span></span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Core Idea</span><span lang="zh">核心概念</span></h4>
+      <p><span lang="en">You are your habits. Tiny changes, invisible at first, become remarkable over time.</span><span lang="zh">你就是你的习惯。微小的改变起初不可见，但随着时间推移变得非凡。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 01</div>
+    <h2 class="article-title"><span lang="en">The Plane &amp; 3 Degrees</span><span lang="zh">飞机与3度偏航</span></h2>
+    <p class="article-lede"><span lang="en">Imagine a plane taking off from New York to Los Angeles. Just before takeoff, you adjust the plane by 3 degrees — barely 80 inches.</span><span lang="zh">想象一架从纽约飞往洛杉矶的飞机。起飞前你将飞机仅偏移3度——大约80英寸。</span></p>
+
+    <p><span lang="en">If you kept flying in a straight line, you would end up closer to Tijuana in Mexico than your intended destination of Los Angeles. The same goes for our habits. Tiny changes in our daily routines can change the trajectory of our lives in ways we can't even notice — until many years into the future, looking back.</span><span lang="zh">如果你沿直线飞行，最终会降落在墨西哥的蒂华纳附近，而不是目的地洛杉矶。习惯也是同理。日常行为中微小的改变会以我们无法察觉的方式改变人生轨迹——直到多年以后回头看才发现。</span></p>
+
+    <p><span lang="en">In both good ways and bad. <strong>You are your habits.</strong></span><span lang="zh">无论好坏。<strong>你就是你的习惯。</strong></span></p>
+
+    <h3><span lang="en">Massive Action vs. 1% Improvements</span><span lang="zh">大规模行动 vs 1%改进</span></h3>
+    <p><span lang="en">Far too often, we convince ourselves that massive success requires massive action. We expect to make some quantum leap that will gain others' attention. However, it is the tiny improvements — barely noticeable at first — that create incredible change.</span><span lang="zh">我们经常说服自己，巨大的成功需要大规模的行动。我们期待做出某种量子跃迁来吸引他人注意。然而，真正创造非凡改变的是那些微小的改进——起初几乎不可察觉。</span></p>
+
+    <blockquote><span lang="en">"A slight change in your daily habits can guide your life to a very different destination."</span><span lang="zh">"日常习惯中的微小改变，能引导你的人生走向截然不同的终点。"</span></blockquote>
+
+    <p><span lang="en">Let's look at the math: <mark>1% better every day for a year compounds to nearly 38× better.</mark> 1% worse every day brings you close to zero. Your habits can compound against you in the form of stress or negative self-talk — or they can compound for you as knowledge, productivity, skills, and relationships.</span><span lang="zh">看看数学：<mark>每天进步1%，一年后复利增长到近38倍。</mark>每天退步1%，一年后接近归零。习惯可以以压力或消极自我对话的形式反向复利——也可以以知识、生产力、技能和人际关系的形式正向复利。</span></p>
+
+    <h3><span lang="en">The Valley of Disappointment</span><span lang="zh">失望之谷</span></h3>
+    <p><span lang="en">When you start any endeavour, you expect linear progress. Here is what actually happens: in the beginning, small changes in progress are not even noticeable. James Clear calls this <strong>"the valley of disappointment."</strong> You've put in so much effort and can barely see results. This is where most people fail and slip back into old routines.</span><span lang="zh">当你开始任何事业时，你期望线性进步。但实际情况是：初期，进步中的微小变化甚至不可察觉。詹姆斯·克利尔称之为<strong>"失望之谷"</strong>。你投入了大量努力，却几乎看不到结果。这是大多数人失败并退回旧习惯的地方。</span></p>
+
+    <p><span lang="en">The most powerful outcomes of any compounding process are delayed. <strong>Patience is required.</strong></span><span lang="zh">任何复利过程中最强大的结果都是延迟的。<strong>需要耐心。</strong></span></p>
+  </article>
+</section>
+
+<!-- ════ Section 02 · Goals vs Systems ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Abstract</span><span lang="zh">摘要</span></h4>
+      <p><span lang="en">Goals set direction; systems make progress. Winners and losers share the same goals — the system is what differentiates them.</span><span lang="zh">目标设定方向；系统创造进步。赢家和输家有相同的目标——系统才是区分他们的关键。</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Key Quote</span><span lang="zh">关键引言</span></h4>
+      <p><span lang="en">"Forget about goals, focus on systems instead."</span><span lang="zh">"忘掉目标，专注于系统。"</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">3 Problems</span><span lang="zh">三个问题</span></h4>
+      <p><span lang="en">1. Winners & losers share the same goals<br>2. Achieving a goal changes life only momentarily<br>3. Goals create either-or conflict</span><span lang="zh">1. 赢家与输家有相同目标<br>2. 实现目标只改变一瞬间<br>3. 目标制造非此即彼的冲突</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 02</div>
+    <h2 class="article-title"><span lang="en">Goals vs. Systems</span><span lang="zh">目标 vs 系统</span></h2>
+    <p class="article-lede"><span lang="en">A goal is the result you want to accomplish. Systems deal with the processes that lead to results.</span><span lang="zh">目标是你想要达成的结果。系统处理通向结果的过程。</span></p>
+
+    <p><span lang="en">Conventional wisdom says the best way to achieve anything — getting in shape, building a business, spending time with family — is to set specific, realistic goals. But if you completely ignored your goals and focused only on your system, would you still succeed? The author argues that you would.</span><span lang="zh">传统观点认为，实现任何目标——健身、创业、陪伴家人——最好的方式是设定具体的、现实的目标。但如果你完全忽略目标，只专注于系统，你还会成功吗？作者认为会。</span></p>
+
+    <h3><span lang="en">Problems with Goals</span><span lang="zh">目标的问题</span></h3>
+    <p><span lang="en"><strong>1.</strong> Successful and unsuccessful people share the same goals, so the goal cannot be what differentiates winners from losers.</span><span lang="zh"><strong>1.</strong> 成功和不成功的人有相同的目标，所以目标不可能是区分赢家和输家的关键。</span></p>
+
+    <p><span lang="en"><strong>2.</strong> Achieving a goal only changes your life for a moment in time. If your goal was running a marathon, after completing it, your motivation will quickly fade and you'll slip back into old routines.</span><span lang="zh"><strong>2.</strong> 实现目标只在一瞬间改变你的生活。如果你的目标是跑马拉松，完成后动力会迅速消退，你会退回旧习惯。</span></p>
+
+    <p><span lang="en"><strong>3.</strong> Goals create an either-or conflict: either you achieve the goal and succeed, or you don't and are a failure — even if you were making progress in the right direction.</span><span lang="zh"><strong>3.</strong> 目标制造非此即彼的冲突：要么实现目标算成功，要么没有就算失败——即使你一直在朝正确方向进步。</span></p>
+
+    <blockquote><span lang="en">"Goals are good for setting a direction, but systems are best for making progress."</span><span lang="zh">"目标适合设定方向，但系统更适合创造进步。"</span></blockquote>
+
+    <h3><span lang="en">A System of Atomic Habits</span><span lang="zh">原子习惯的系统</span></h3>
+    <p><span lang="en">The problem with changing your habits is not you. The reason you repeat the same bad habit isn't because you don't want to change — it's because you have the wrong system for change.</span><span lang="zh">改变习惯的问题不在于你。你重复同一个坏习惯的原因不是你不想改变——而是你用错了改变的系统。</span></p>
+
+    <p><span lang="en">Atomic habits are small routines and behaviors that accumulate to produce incremental positive outcomes over time. Big breakthroughs tend to get more attention than small improvements. But what really matters are the little daily decisions and actions we take.</span><span lang="zh">原子习惯是积累产生渐进式积极结果的小惯例和行为。大的突破比小的改进更容易引起注意。但真正重要的是我们每天做出的微小决定和行动。</span></p>
+
+    <blockquote><span lang="en">"Just as atoms are the building blocks of molecules, atomic habits are the building blocks of remarkable results."</span><span lang="zh">"正如原子是分子的组成部分，原子习惯是非凡结果的组成部分。"</span></blockquote>
+  </article>
+</section>
+
+<!-- ════ Section 03 · Identity & 3 Layers ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">3 Layers</span><span lang="zh">行为三层</span></h4>
+      <p><span lang="en">1. Outcomes — what you get<br>2. Process — what you do<br>3. Identity — what you believe</span><span lang="en">1. 结果——你得到的<br>2. 过程——你做的<br>3. 身份——你相信的</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Shift</span><span lang="zh">转变</span></h4>
+      <p><span lang="en">Most people focus on outcomes. The best way: focus on the person you want to become.</span><span lang="zh">大多数人关注结果。最好的方式：关注你想成为的人。</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Mantra</span><span lang="zh">心法</span></h4>
+      <p><span lang="en">Every workout = you are an athlete. Every line of code = you are a coder. Each time you lead = you are a leader.</span><span lang="zh">每次锻炼=你是运动员。每行代码=你是程序员。每次领导=你是领导者。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 03</div>
+    <h2 class="article-title"><span lang="en">Three Layers of Behavior Change</span><span lang="zh">行为改变的三个层次</span></h2>
+    <p class="article-lede"><span lang="en">Most people focus on outcomes. The best way to change your habits is to focus on the person you want to become.</span><span lang="zh">大多数人关注结果。改变习惯最好的方式是关注你想成为的人。</span></p>
+
+    <p><span lang="en">There are three layers to behavior change:</span><span lang="zh">行为改变有三个层次：</span></p>
+
+    <p><span lang="en"><strong>The first layer — changing outcomes.</strong> The result. Losing weight, writing a book, winning the season. Outcomes are what you get.</span><span lang="zh"><strong>第一层——改变结果。</strong>结果。减重、写书、赢得赛季。结果是你得到的。</span></p>
+
+    <p><span lang="en"><strong>The second layer — changing your process.</strong> What you do. The new workout routine, developing a daily reading habit.</span><span lang="zh"><strong>第二层——改变过程。</strong>你做什么。新的锻炼计划、培养每日阅读习惯。</span></p>
+
+    <p><span lang="en"><strong>The third layer — changing your identity.</strong> What you believe. Your worldviews, how you think about yourself and others.</span><span lang="zh"><strong>第三层——改变身份。</strong>你相信什么。你的世界观、你如何看待自己和他人。</span></p>
+
+    <blockquote><span lang="en">"The goal isn't to learn an instrument, it is to become a musician. The goal isn't to run a marathon, it is to become a runner."</span><span lang="zh">"目标不是学一门乐器，而是成为一个音乐家。目标不是跑马拉松，而是成为一个跑者。"</span></blockquote>
+
+    <p><span lang="en">When something you want in your life becomes part of your identity, that is when your behaviors will naturally change. When you tell yourself and others "I'm a runner," you want to live up to that identity.</span><span lang="zh">当你想要的东西成为你身份的一部分，你的行为就会自然而然地改变。当你告诉自己和他人"我是跑者"时，你会想要对得起这个身份。</span></p>
+
+    <p><span lang="en"><mark>Remind yourself:</mark> Every time you do a workout, you are an athlete. Every time you write a line of code, you are a coder. Each time you instruct your team, you are a leader.</span><span lang="zh"><mark>提醒自己：</mark>每次锻炼，你是运动员。每写一行代码，你是程序员。每次指导团队，你是领导者。</span></p>
+  </article>
+</section>
+
+<!-- ════ Section 04 · The Habit Loop ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">The Loop</span><span lang="zh">习惯回路</span></h4>
+      <p><span lang="en">Cue → Craving → Response → Reward</span><span lang="zh">提示 → 渴望 → 反应 → 奖励</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Example 1</span><span lang="zh">示例一</span></h4>
+      <p><span lang="en">Cue: Phone buzzes. Craving: Want to know who messaged. Response: Pick up phone. Reward: Problem solved.</span><span lang="zh">提示：手机震动。渴望：想知道谁发了消息。反应：拿起手机。奖励：问题解决。</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Example 2</span><span lang="zh">示例二</span></h4>
+      <p><span lang="en">Cue: Mind goes blank. Craving: Alleviate frustration. Response: Check social media. Reward: Feel less frustrated. → 20 min wasted.</span><span lang="zh">提示：大脑放空。渴望：缓解挫败感。反应：刷社交媒体。奖励：感觉好些了。→ 浪费20分钟。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 04</div>
+    <h2 class="article-title"><span lang="en">The Habit Loop</span><span lang="zh">习惯回路</span></h2>
+    <p class="article-lede"><span lang="en">A habit is when something has been repeated enough times that it becomes automatic. The key to creating habits that stick is to create feedback loops that are continuously improved.</span><span lang="zh">习惯是某件事被重复足够多次后变得自动化的状态。创建持久习惯的关键是创建持续改进的反馈回路。</span></p>
+
+    <p><span lang="en">A habit is formed and reinforced by means of a continuous feedback loop:</span><span lang="zh">习惯通过持续的反馈回路形成和强化：</span></p>
+
+    <blockquote><span lang="en"><strong>Cue + Craving + Response + Reward</strong></span><span lang="zh"><strong>提示 + 渴望 + 反应 + 奖励</strong></span></blockquote>
+
+    <p><span lang="en">Over time, rewards become associated with cues. Checking social media becomes tied to your mind going blank at work. Then checking Facebook may be the cue to check Instagram, which becomes the cue to check YouTube. And before you know it, your mind going blank has led to 20 minutes of wasted time.</span><span lang="zh">随着时间推移，奖励与提示产生关联。刷社交媒体变成了与大脑放空的关联。然后看Facebook可能成为看Instagram的提示，后者又成为看YouTube的提示。不知不觉中，大脑放空导致了20分钟的浪费。</span></p>
+
+    <p><span lang="en">The more you repeat these habit loops, the stronger and more automatic they become. Cues can be anything: a smell, a sound, a sight, a person, a location. <strong>Try to think of cues in your daily life that are initiating your good or bad habit loops.</strong></span><span lang="zh">你越重复这些习惯回路，它们就越强、越自动化。提示可以是任何东西：一种气味、一个声音、一个场景、一个人、一个地点。<strong>试着想想日常生活中触发你好习惯或坏习惯回路的提示。</strong></span></p>
+
+    <p><span lang="en">So how can we influence the habit loop to work for us? This book shows us <mark>the 4 laws</mark> that will guide us to do just that.</span><span lang="zh">那么我们如何让习惯回路为我们工作？这本书展示了<mark>四条定律</mark>来指导我们做到这一点。</span></p>
+  </article>
+</section>
+
+<!-- ════ Section 05 · Law 1 & 2 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Law 1</span><span lang="zh">定律一</span></h4>
+      <p><span lang="en">Make it Obvious</span><span lang="zh">让它显而易见</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Tools</span><span lang="zh">工具</span></h4>
+      <p><span lang="en">· Habit Scorecard<br>· Implementation Intention<br>· Habit Stacking<br>· Environment Design</span><span lang="zh">· 习惯计分卡<br>· 执行意图<br>· 习惯叠加<br>· 环境设计</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Formula</span><span lang="zh">公式</span></h4>
+      <p><span lang="en">I will [behavior] at [time] in [location]. After [current habit], I will [new habit].</span><span lang="zh">我将在[时间]在[地点]做[行为]。在[当前习惯]之后，我将做[新习惯]。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 05 · Law 1</div>
+    <h2 class="article-title"><span lang="en">Make It Obvious</span><span lang="zh">让它显而易见</span></h2>
+    <p class="article-lede"><span lang="en">Most of your current habits are so automatic that you don't even realize them. You must first become aware of your habits before you can change them.</span><span lang="zh">你当前的大多数习惯如此自动化，以至于你都没意识到。你必须先觉察到你的习惯，才能改变它们。</span></p>
+
+    <h3><span lang="en">The Habit Scorecard</span><span lang="zh">习惯计分卡</span></h3>
+    <p><span lang="en">Write down all your daily behaviors from the moment you wake up until you go to bed. Categorize each as positive (+), negative (-), or neutral (=) based on whether it helps you become the person you aspire to be. At this stage, we aren't trying to change anything — just observe what is actually going on.</span><span lang="zh">把你从醒来到睡觉的所有日常行为写下来。根据是否有助于你成为理想中的自己，将每个习惯标记为积极(+)、消极(-)或中性(=)。这个阶段我们不是要改变任何东西——只是观察真实发生了什么。</span></p>
+
+    <blockquote><span lang="en">"Until you make the unconscious conscious, it will direct your life and you will call it fate." — Carl Jung</span><span lang="zh">"除非你让无意识变为有意识，否则它将主导你的生活，而你会称之为命运。"——卡尔·荣格</span></blockquote>
+
+    <h3><span lang="en">Implementation Intention</span><span lang="zh">执行意图</span></h3>
+    <p><span lang="en">Vagueness is a real problem. Studies show people fail to stick to habits not because of lack of motivation, but because of lack of clarity. "One day I will get into shape" is too vague. <mark>You need a time and a place.</mark></span><span lang="zh">模糊是真正的问题。研究表明，人们无法坚持习惯不是因为缺乏动力，而是因为缺乏清晰度。"有一天我要健身"太模糊了。<mark>你需要一个时间和一个地点。</mark></span></p>
+
+    <p><span lang="en"><strong>Bad:</strong> "I will read more this month."<br><strong>Good:</strong> "I will read a book for 15 minutes daily at 6am in the spare bedroom."</span><span lang="zh"><strong>坏的：</strong>"我这个月要多读书。"<br><strong>好的：</strong>"我每天早上6点在次卧读15分钟书。"</span></p>
+
+    <h3><span lang="en">Habit Stacking</span><span lang="zh">习惯叠加</span></h3>
+    <p><span lang="en">Tie a desired habit to an existing habit: <strong>"After [current habit], I will [new habit]."</strong> For example: "After I brush my teeth, I will stretch for 5 minutes." You can chain habits: brush teeth → meditate 10 min → plan the day → check social media.</span><span lang="zh">把想要的习惯绑定到已有习惯上：<strong>"在[当前习惯]之后，我将做[新习惯]。"</strong>比如："刷完牙后，我会拉伸5分钟。"你可以串联习惯：刷牙→冥想10分钟→规划一天→看社交媒体。</span></p>
+
+    <h3><span lang="en">Environment Design</span><span lang="zh">环境设计</span></h3>
+    <p><span lang="en">Motivation is highly overrated. You can better shape your behavior by designing your environment. We are more influenced by our environment than by willpower. <strong>Environment is the invisible hand that shapes human behavior.</strong></span><span lang="zh">动力被高度高估了。你可以通过设计环境来更好地塑造行为。环境比意志力对我们影响更大。<strong>环境是塑造人类行为的无形之手。</strong></span></p>
+
+    <p><span lang="en">Make cues for desired habits visible: place water bottles around the house, leave your book where you'll see it, keep the guitar out of the closet. For bad habits, make them invisible: put your phone in another room, remove junk food from the house.</span><span lang="zh">让好习惯的提示可见：在家里各处放水瓶，把书放在你能看到的地方，吉他不要收进柜子。对于坏习惯，让它们不可见：把手机放到另一个房间，把垃圾食品从家里移除。</span></p>
+
+    <p><span lang="en"><strong>One space, one use.</strong> The couch where one person reads for an hour is where another watches Netflix and eats pizza. If your relationship with the couch is "relax," getting work done there is difficult. Create separate zones for different activities.</span><span lang="zh"><strong>一个空间，一个用途。</strong>一个人读一小时书的沙发，可能正是另一个人看Netflix吃披萨的地方。如果你和沙发的关系是"放松"，在那里完成工作就很困难。为不同活动创建独立的区域。</span></p>
+  </article>
+</section>
+
+<!-- ════ Section 06 · Law 2 & 3 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Law 2</span><span lang="zh">定律二</span></h4>
+      <p><span lang="en">Make it Attractive</span><span lang="zh">让它有吸引力</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Tools</span><span lang="zh">工具</span></h4>
+      <p><span lang="en">· Temptation Bundling<br>· Premack's Principle<br>· Group Influence<br>· Reprogramming</span><span lang="zh">· 诱惑捆绑<br>· 普雷马克原理<br>· 群体影响<br>· 重新编程</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Dopamine</span><span lang="zh">多巴胺</span></h4>
+      <p><span lang="en">Released in anticipation, not in the reward itself. The craving drives action.</span><span lang="zh">在期待中释放，而非奖励本身。渴望驱动行动。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 06 · Law 2</div>
+    <h2 class="article-title"><span lang="en">Make It Attractive</span><span lang="zh">让它有吸引力</span></h2>
+    <p class="article-lede"><span lang="en">The more rewarding an action is, the more likely we are to repeat it until it becomes a habit. The first step to forming good habits is to make them more attractive.</span><span lang="zh">一个行为越有回报，我们就越可能重复它直到成为习惯。养成好习惯的第一步是让它更有吸引力。</span></p>
+
+    <h3><span lang="en">Dopamine &amp; Feedback Loops</span><span lang="zh">多巴胺与反馈回路</span></h3>
+    <p><span lang="en">Dopamine is released not only when we experience pleasure, but also when we <strong>anticipate</strong> it. Gambling addicts have a dopamine spike right before placing a bet — not after winning. Seeing junk food surges dopamine, not eating it. <mark>The craving is what causes us to take action.</mark></span><span lang="zh">多巴胺不仅在我们体验快乐时释放，也在我们<strong>期待</strong>时释放。赌徒在下注前多巴胺飙升——而非赢钱后。看到垃圾食品时多巴胺飙升，而非吃的时候。<mark>渴望才是驱使我们行动的原因。</mark></span></p>
+
+    <h3><span lang="en">Temptation Bundling</span><span lang="zh">诱惑捆绑</span></h3>
+    <p><span lang="en">Combine an action you need to do with one you want to do. Bundle watching Netflix (want) with working out (need). This applies Premack's Principle: more probable behaviors reinforce less probable behaviors. Even if you're not looking forward to exercise, you'll become conditioned to do it because you get to do something you enjoy.</span><span lang="zh">把你需要做的事和想做的事结合。把看Netflix（想做）和锻炼（需要做）捆绑。这运用了普雷马克原理：更高概率的行为会强化更低概率的行为。即使你不想锻炼，你也会因为能做自己享受的事而被条件化去做。</span></p>
+
+    <h3><span lang="en">Group Influence</span><span lang="zh">群体影响</span></h3>
+    <p><span lang="en">We are continually wondering "What will others think of me?" and altering our behavior based on the answer. If you want to build a new habit, find and become part of a culture where that habit is the norm. Want to get fit? Surround yourself with fit people. Want to read more? Join a book club.</span><span lang="zh">我们不断在想"别人会怎么看我？"并据此调整行为。如果你想建立新习惯，找到并加入一个将该习惯作为常态的文化。想健身？和健康的人在一起。想多读书？加入读书俱乐部。</span></p>
+
+    <h3><span lang="en">Reprogramming Hard Habits</span><span lang="zh">重新编程困难习惯</span></h3>
+    <p><span lang="en">Highlight the benefits rather than downsides: <strong>Fitness</strong> = health and wellbeing, not fatigue. <strong>Cleaning</strong> = a peaceful environment, not wasted time. <strong>Saving money</strong> = future freedom, not sacrifice. These subtle shifts aren't magic, but they can change your feelings toward habits.</span><span lang="zh">强调好处而非坏处：<strong>健身</strong>=健康和幸福，而非疲劳。<strong>打扫</strong>=宁静的环境，而非浪费时间。<strong>存钱</strong>=未来的自由，而非牺牲。这些微妙的转变不是魔法，但能改变你对习惯的感受。</span></p>
+
+    <p><span lang="en">To break a bad habit, do the same but in reverse: highlight the benefits of <strong>not</strong> doing that habit, making it as unattractive as possible.</span><span lang="zh">要戒除坏习惯，反过来做：强调<strong>不做</strong>那个习惯的好处，让它尽可能没有吸引力。</span></p>
+  </article>
+</section>
+
+<!-- ════ Section 07 · Law 3 & 4 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Law 3</span><span lang="zh">定律三</span></h4>
+      <p><span lang="en">Make it Easy</span><span lang="zh">让它简单</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Key Insight</span><span lang="zh">关键洞察</span></h4>
+      <p><span lang="en">Habit formation = number of repetitions, NOT number of days. Reduce friction for good habits, increase friction for bad ones.</span><span lang="zh">习惯养成=重复次数，而非天数。减少好习惯的摩擦力，增加坏习惯的摩擦力。</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">2-Minute Rule</span><span lang="zh">两分钟法则</span></h4>
+      <p><span lang="en">Scale down to a 2-min version. Marathon → put on shoes & stretch. Reading 1hr → read 1 page. Anchor the routine first, then build up.</span><span lang="zh">缩减到2分钟版本。马拉松→穿上鞋拉伸。读1小时→读1页。先锚定惯例，再逐步加量。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 07 · Law 3</div>
+    <h2 class="article-title"><span lang="en">Make It Easy</span><span lang="zh">让它简单</span></h2>
+    <p class="article-lede"><span lang="en">Framing habit formation in terms of time is flawed. It should be framed in terms of the number of repetitions.</span><span lang="zh">用时间来衡量习惯养成是有缺陷的。应该用重复次数来衡量。</span></p>
+
+    <h3><span lang="en">The Law of Least Effort</span><span lang="zh">最小努力定律</span></h3>
+    <p><span lang="en">The more energy required, the less likely it is to happen. It takes almost no energy to read one page of a book each day. The bigger the obstacle, the more friction. If you need to travel 20 minutes out of your way to the gym, chances are you won't. If the gym is on your commute, friction drops dramatically.</span><span lang="zh">所需能量越多，越不可能发生。每天读一页书几乎不需要能量。障碍越大，摩擦力越大。如果你需要绕路20分钟去健身房，大概率不会去。如果健身房在你通勤路上，摩擦力大幅降低。</span></p>
+
+    <h3><span lang="en">Prime the Environment</span><span lang="zh">预备环境</span></h3>
+    <p><span lang="en">By setting up your environment, you reduce friction for future action: "I will lay out my workout clothes at night so I can get up and get moving in the morning." Place the pan on the stove and gather ingredients the night before for a healthier breakfast.</span><span lang="zh">通过设置环境，你为未来行动减少摩擦："我晚上把运动服放好，这样早上就能起来运动。"把锅放在炉子上，前一天晚上把食材准备好，做一顿更健康的早餐。</span></p>
+
+    <h3><span lang="en">The Two-Minute Rule</span><span lang="zh">两分钟法则</span></h3>
+    <p><span lang="en">Find a simple, 2-minute version of your desired habit. Scale down your outcome: running a marathon becomes putting on your shoes and stretching. Reading an hour per day becomes reading one page. <strong>Get the routine anchored in place, then slowly build up the difficulty.</strong></span><span lang="zh">找到你想要的习惯的一个简单的2分钟版本。缩减你的目标：跑马拉松变成穿上鞋拉伸。每天读一小时变成读一页。<strong>先把惯例锚定到位，然后慢慢增加难度。</strong></span></p>
+
+    <p><span lang="en">To make bad habits harder, create barriers of friction. Unplug the TV after each use and put the remote in an inconvenient location. Leave your credit cards under the car seat if you have a spending habit. <mark>Make bad habits as impractical as possible.</mark></span><span lang="zh">要让坏习惯更难，制造摩擦障碍。每次用完电视拔掉插头，把遥控器放在不方便的地方。如果有消费习惯，把信用卡留在车座下面。<mark>让坏习惯尽可能不实际。</mark></span></p>
+
+    <hr style="border:none;height:1px;background:var(--rule);margin:30px 0;">
+
+    <div class="article-eyebrow">Chapter 08 · Law 4</div>
+    <h2 class="article-title"><span lang="en">Make It Satisfying</span><span lang="zh">让它令人满足</span></h2>
+    <p class="article-lede"><span lang="en">"What is immediately rewarded is repeated. What is immediately punished is avoided."</span><span lang="zh">"立即被奖励的行为会被重复。立即被惩罚的行为会被避免。"</span></p>
+
+    <h3><span lang="en">The Mismatch of Returns</span><span lang="zh">即时回报与延迟回报的错位</span></h3>
+    <p><span lang="en">With bad habits, we feel good about immediate results but bad about long-term outcomes. With good habits, the immediate result is unpleasant but the ultimate outcome is satisfying. <strong>Add a little immediate pleasure to habits that pay off in the long run, and a little pain to those that won't.</strong></span><span lang="zh">坏习惯让我们对即时结果感觉良好，但对长期结果感觉糟糕。好习惯的即时结果不愉快，但最终结果令人满足。<strong>给长期有回报的习惯加一点即时快乐，给没有回报的加一点痛苦。</strong></span></p>
+
+    <h3><span lang="en">Habit Tracker</span><span lang="zh">习惯追踪器</span></h3>
+    <p><span lang="en">It is satisfying to make progress. Use visual measures: for each sales call, move a marble from one jar to another. For each 25 minutes of writing, move a paperclip. Crossing a day off the calendar becomes the reward — and it forces you not to break the chain.</span><span lang="zh">取得进步令人满足。使用视觉化方法：每打一个销售电话，把一个弹珠从一个罐子移到另一个。每写25分钟，移动一个回形针。在日历上划掉一天成为奖励——它迫使你不想中断链条。</span></p>
+
+    <blockquote><span lang="en">"Lost days hurt you more than successful days help you. Missing twice is the start of a bad habit; never do it."</span><span lang="zh">"错过的日子对你的伤害大于成功日子对你的帮助。连续错过两次是坏习惯的开始；永远不要这样做。"</span></blockquote>
+
+    <h3><span lang="en">Accountability &amp; The Habit Contract</span><span lang="zh">问责与习惯契约</span></h3>
+    <p><span lang="en">A behavior is less likely to occur when pain is immediate. Being held accountable by a partner is a good way to keep habits in check. We all want to be liked and respected, so we'd rather avoid punishment. Create a habit contract — verbal or written — with clear punishments: "I owe you $10 every time I miss a workout." <strong>Behavior is more likely to be influenced by concrete, immediate consequences.</strong></span><span lang="zh">当痛苦是即时的时候，行为不太可能发生。被伙伴问责是保持习惯的好方法。我们都想被喜欢和尊重，所以宁愿避免惩罚。创建一个习惯契约——口头的或书面的——带有明确的惩罚："每次错过锻炼我欠你10美元。"<strong>行为更可能被具体的、即时的后果所影响。</strong></span></p>
+  </article>
+</section>
+
+<!-- ════ Section 08 · Putting It Into Practice ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Goal Habits</span><span lang="zh">目标习惯</span></h4>
+      <p><span lang="en">Build: consistent workout + reading<br>Eliminate: social media distraction</span><span lang="zh">建立：坚持锻炼+阅读<br>戒除：社交媒体分心</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Workout System</span><span lang="zh">锻炼系统</span></h4>
+      <p><span lang="en">6am living room. Dumbbells visible. Bundle with podcasts. 2-min rule: put on clothes + stretch. Track + photo to partner.</span><span lang="zh">早上6点客厅。哑铃可见。捆绑播客。2分钟法则：穿衣服+拉伸。追踪+拍照给伙伴。</span></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label"><span lang="en">Reading System</span><span lang="zh">阅读系统</span></h4>
+      <p><span lang="en">After coffee → read 90 min. Balcony = reading zone. 2-min rule: read 1 page. Built up from 1 page to 90 min.</span><span lang="zh">泡咖啡后→读90分钟。阳台=阅读区。2分钟法则：读1页。从1页逐步增加到90分钟。</span></p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 09 · Practice</div>
+    <h2 class="article-title"><span lang="en">Putting It Into Practice</span><span lang="zh">实战应用</span></h2>
+    <p class="article-lede"><span lang="en">It's one thing to read a book, another to actually apply it. Here's how one reader personally used Atomic Habits to build systems around their habits.</span><span lang="zh">读一本书是一回事，实际应用是另一回事。以下是一位读者如何亲自用《原子习惯》来围绕自己的习惯建立系统。</span></p>
+
+    <h3><span lang="en">The Habit Scorecard</span><span lang="zh">习惯计分卡</span></h3>
+    <p><span lang="en">First, completing the Habit Scorecard gave a clear picture of habits to eliminate — and more importantly, daily habits already in place that could be used for stacking.</span><span lang="zh">首先，完成习惯计分卡让人清楚地看到需要戒除的习惯——更重要的是，看到已有的日常习惯可以用来做叠加。</span></p>
+
+    <h3><span lang="en">Building the Workout Habit</span><span lang="zh">建立锻炼习惯</span></h3>
+    <p><span lang="en"><strong>Make it obvious:</strong> Implementation intention — "I will workout at 6am in the living room." Environment design — took the dumbbell set out of the closet, put them in the living room. Found pictures of healthy physiques and placed them around the house as cues.</span><span lang="zh"><strong>让它显而易见：</strong>执行意图——"我早上6点在客厅锻炼。"环境设计——把哑铃从柜子里拿出来放在客厅。找到健康体型的照片放在家里各处作为提示。</span></p>
+
+    <p><span lang="en"><strong>Make it attractive:</strong> Temptation bundling — workout while listening to favorite podcasts. Reprogramming — "I don't 'have to' workout, I 'get to' build strength and a healthier body."</span><span lang="zh"><strong>让它有吸引力：</strong>诱惑捆绑——边锻炼边听最喜欢的播客。重新编程——"我不是'不得不'锻炼，我是'有机会'变强壮和更健康。"</span></p>
+
+    <p><span lang="en"><strong>Make it easy:</strong> 2-minute rule — putting on workout clothes and stretching. If that's all you accomplish, that's fine, because you showed up. <mark>But once you're there, motivation comes after you get started.</mark> Priming the environment — placing shoes, yoga mat, and dumbbells out the night before skyrocketed the show-up rate.</span><span lang="zh"><strong>让它简单：</strong>2分钟法则——穿上运动服和拉伸。如果只做到这些也没关系，因为你出现了。<mark>但一旦你开始，动力会在行动之后到来。</mark>预备环境——前一天晚上把鞋子、瑜伽垫和哑铃放好，大大提高了出现率。</span></p>
+
+    <p><span lang="en"><strong>Make it satisfying:</strong> Habit tracker — crossing the day off the calendar becomes the reward. Take a picture of calories burnt and send to partner. Identity focus — "I want to become the kind of person who enjoys fitness and doesn't miss workouts."</span><span lang="zh"><strong>让它令人满足：</strong>习惯追踪器——在日历上划掉一天成为奖励。拍下消耗的卡路里照片发给伙伴。身份聚焦——"我想成为那种享受健身、不缺席锻炼的人。"</span></p>
+
+    <h3><span lang="en">Building the Reading Habit</span><span lang="zh">建立阅读习惯</span></h3>
+    <p><span lang="en">Habit stack: <strong>After [making coffee], I will [read for 90 minutes].</strong> One space, one use: reading on the balcony. The dopamine spike from wanting coffee becomes associated with reading. 2-minute rule: read 1 page of The Daily Stoic. Started with showing up, then slowly built up to 90 minutes.</span><span lang="zh">习惯叠加：<strong>在[泡咖啡]之后，我将[阅读90分钟]。</strong>一个空间一个用途：在阳台阅读。渴望咖啡带来的多巴胺飙升与阅读产生关联。2分钟法则：读1页《每日斯多葛》。先从出现开始，然后慢慢增加到90分钟。</span></p>
+
+    <h3><span lang="en">Eliminating Social Media</span><span lang="zh">戒除社交媒体</span></h3>
+    <p><span lang="en"><strong>Make it invisible:</strong> Made the phone as boring as possible — deleted many apps. <strong>Make it unattractive:</strong> Reprogramming — "Consuming is the easy, lazy option of the masses. Producing is difficult but rewarding. Random scrolling is for losers." <strong>Increase friction:</strong> Left the phone out of sight in a drawer in another room. <strong>Make it unsatisfying:</strong> Accountability partner enforces — if she sees social media during work time, $10 owed.</span><span lang="zh"><strong>让它不可见：</strong>让手机尽可能无聊——删除了很多APP。<strong>让它没吸引力：</strong>重新编程——"消费是大众的懒惰选择。生产困难但有回报。随意刷屏是失败者的行为。"<strong>增加摩擦：</strong>把手机放在另一个房间的抽屉里，眼不见为净。<strong>让它不满足：</strong>问责伙伴执行——如果她在工作时间看到我用社交媒体，欠10美元。</span></p>
+  </article>
+</section>
+
+<!-- ════ Tracing Appendix ════ -->
+<div class="tracing-appendix">
+  <div class="appendix-inner">
+    <div class="appendix-title">
+      <span lang="en">Afterword</span>
+      <span lang="zh">附言</span>
+    </div>
+
+    <div class="appendix-grid">
+      <div class="appendix-block">
+        <div class="appendix-label"><span lang="en">The 4 Laws</span><span lang="zh">四条定律</span></div>
+        <p><span lang="en">1. Make it Obvious (Cue)<br>2. Make it Attractive (Craving)<br>3. Make it Easy (Response)<br>4. Make it Satisfying (Reward)</span><span lang="zh">1. 让它显而易见（提示）<br>2. 让它有吸引力（渴望）<br>3. 让它简单（反应）<br>4. 让它令人满足（奖励）</span></p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label"><span lang="en">For Bad Habits</span><span lang="zh">戒除坏习惯</span></div>
+        <p><span lang="en">1. Make it Invisible<br>2. Make it Unattractive<br>3. Make it Difficult<br>4. Make it Unsatisfying</span><span lang="zh">1. 让它不可见<br>2. 让它没吸引力<br>3. 让它困难<br>4. 让它不满足</span></p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label"><span lang="en">Key Formula</span><span lang="zh">关键公式</span></div>
+        <p><span lang="en">I will [behavior] at [time] in [location].<br>After [current habit], I will [new habit].</span><span lang="zh">我将在[时间]在[地点]做[行为]。<br>在[当前习惯]之后，我将做[新习惯]。</span></p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label"><span lang="en">Audience</span><span lang="zh">适合人群</span></div>
+        <p><span lang="en">Anyone who has ever set a New Year's resolution and failed. Anyone who wants to build systems instead of chasing goals. Anyone who feels stuck in old routines.</span><span lang="zh">任何曾立新年决心却失败的人。任何想建立系统而非追逐目标的人。任何感觉困在旧习惯中的人。</span></p>
+      </div>
+    </div>
+
+    <div class="appendix-rule"></div>
+    <div class="appendix-fine">
+      <span lang="en">This appendix is printed on tracing paper · Vol.03 · 2026</span>
+      <span lang="zh">本附页以硫酸纸印刷 · Vol.03 · 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════ Colophon ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5><span lang="en">About This Issue</span><span lang="zh">关于本期</span></h5>
+        <p><span lang="en">A visual summary of "Atomic Habits" by James Clear — exploring how tiny changes compound, why systems beat goals, and the four laws of behavior change.</span><span lang="zh">詹姆斯·克利尔《原子习惯》的视觉摘要——探索微小改变如何复利、为什么系统胜过目标，以及行为改变的四条定律。</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Publication</span><span lang="zh">出版信息</span></h5>
+        <p><span lang="en">2026 · Magazine Own<br>Based on James Clear's bestselling book</span><span lang="zh">2026 · Magazine Own<br>基于詹姆斯·克利尔畅销书</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Design</span><span lang="zh">设计信息</span></h5>
+        <p><span lang="en">Kraft Paper Archive theme<br>Noto Serif SC + Dancing Script</span><span lang="zh">牛皮纸档案主题<br>Noto Serif SC + Dancing Script</span></p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">© 2026 · MAGAZINE OWN · All Rights Reserved</p>
+  </div>
+</footer>
+
+<script>
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'zh') {
+      body.classList.add('lang-zh');
+      document.getElementById('btn-zh').classList.add('active');
+      document.getElementById('btn-en').classList.remove('active');
+      document.documentElement.lang = 'zh-CN';
+    } else {
+      body.classList.remove('lang-zh');
+      document.getElementById('btn-en').classList.add('active');
+      document.getElementById('btn-zh').classList.remove('active');
+      document.documentElement.lang = 'en';
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const isBilingual = body.hasAttribute('data-bilingual');
+    if (!isBilingual) return;
+    document.getElementById('btn-en').classList.add('active');
+    document.getElementById('btn-zh').classList.remove('active');
+  });
+</script>
+
+</body>
+</html>

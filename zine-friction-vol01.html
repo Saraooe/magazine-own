@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Friction Starved · Vol.01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ══════════════════════════════════════
+   0. RESET
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+/* ══════════════════════════════════════
+   1. THEME TOKENS · 牛皮纸档案 (t-a)
+══════════════════════════════════════ */
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+  --btn-bg:       rgba(42,32,24,.08);
+  --btn-border:   rgba(42,32,24,.18);
+  --btn-active:   #8b2e1a;
+}
+
+/* ══════════════════════════════════════
+   2. BASE
+══════════════════════════════════════ */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s ease, color .3s ease;
+}
+
+/* 纸张纹理叠加 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ══════════════════════════════════════
+   3. BILINGUAL · 双语切换
+══════════════════════════════════════ */
+[lang="en"], [lang="zh"] { display: inline; }
+[data-bilingual] [lang="zh"] { display: none; }
+[data-bilingual] [lang="en"] { display: inline; }
+[data-bilingual].lang-zh [lang="zh"] { display: inline; }
+[data-bilingual].lang-zh [lang="en"] { display: none; }
+
+[data-bilingual] p > [lang],
+[data-bilingual] h1 > [lang],
+[data-bilingual] h2 > [lang],
+[data-bilingual] h3 > [lang],
+[data-bilingual] .article-lede > [lang],
+[data-bilingual] .cover-sub > [lang],
+[data-bilingual] .pq-script > [lang],
+[data-bilingual] .pq-small-text > [lang],
+[data-bilingual] .pq-below > [lang],
+[data-bilingual] blockquote > [lang] {
+  display: block;
+}
+[data-bilingual].lang-zh p > [lang="en"],
+[data-bilingual].lang-zh h1 > [lang="en"],
+[data-bilingual].lang-zh h2 > [lang="en"],
+[data-bilingual].lang-zh h3 > [lang="en"],
+[data-bilingual].lang-zh .article-lede > [lang="en"],
+[data-bilingual].lang-zh .cover-sub > [lang="en"],
+[data-bilingual].lang-zh .pq-script > [lang="en"],
+[data-bilingual].lang-zh .pq-small-text > [lang="en"],
+[data-bilingual].lang-zh .pq-below > [lang="en"],
+[data-bilingual].lang-zh blockquote > [lang="en"] {
+  display: none;
+}
+
+/* ══════════════════════════════════════
+   4. MASTHEAD
+══════════════════════════════════════ */
+.zine-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw;
+  height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+
+.lang-switcher {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+[data-bilingual] .lang-switcher { display: flex; }
+
+.lang-btn {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  padding: 4px 10px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--bg);
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+  line-height: 1;
+  opacity: .7;
+}
+.lang-btn:hover { opacity: 1; }
+.lang-btn.active {
+  background: var(--btn-active);
+  border-color: var(--btn-active);
+  color: #fff;
+  opacity: 1;
+}
+
+@media print { .zine-masthead { display: none; } }
+
+/* ══════════════════════════════════════
+   5. L01 · 封面
+══════════════════════════════════════ */
+.zine-cover {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 8vh 5vw 5vh;
+  min-height: 85vh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+  z-index: 2;
+}
+.cover-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.022em;
+  color: var(--ink);
+  margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  max-width: 50ch;
+  padding-left: 18px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 5vh;
+}
+
+.cover-image-slot {
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26vh;
+  margin-bottom: 4vh;
+  overflow: hidden;
+  position: relative;
+}
+.cover-image-slot img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.75) contrast(1.05); }
+.cover-image-slot.empty::after {
+  content: attr(data-label);
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+
+/* 封面装饰图 —— 用 CSS 画一个简约的阶梯/上升线条图案 */
+.cover-art {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  padding: 20px 40px;
+  opacity: .5;
+}
+.cover-art span {
+  display: block;
+  width: 12px;
+  background: var(--accent);
+  opacity: .6;
+}
+
+.cover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  padding-top: 2vh;
+  text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: var(--accent);
+  opacity: .28;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════
+   6. L04 · Pull Quote 硫酸纸卡片
+══════════════════════════════════════ */
+.pull-quote-section {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+.tracing-card {
+  position: relative;
+  padding: 36px 44px 32px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow:
+    2px 4px 12px rgba(0,0,0,.07),
+    4px 8px 28px rgba(0,0,0,.05),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px);
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.82;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 20px auto 0;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════
+   7. L02 · 双栏正文
+══════════════════════════════════════ */
+.zine-body {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 5.5vh 5vw;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+.zine-body.two-col {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4.5vw;
+  align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+
+.sidebar-block {
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin-bottom: 2.8vh;
+}
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  padding: 2px 7px;
+  margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  letter-spacing: .1em;
+}
+
+/* ══════════════════════════════════════
+   8. L03 · 单栏长文
+══════════════════════════════════════ */
+.zine-body.one-col { display: block; }
+.col-center { max-width: 660px; margin: 0 auto; }
+
+/* ══════════════════════════════════════
+   9. 文章通用
+══════════════════════════════════════ */
+.article-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  margin-bottom: 2vh;
+  padding-top: 1.2vh;
+  border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  margin-bottom: 2vh;
+}
+
+.col-wide p, .col-center p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  color: var(--ink-2);
+  line-height: 1.92;
+  margin-bottom: 0;
+}
+.col-wide p + p, .col-center p + p { text-indent: 2em; }
+
+.col-wide h3, .col-center h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 3.2vh 0 1.2vh;
+  letter-spacing: -.01em;
+}
+.col-wide strong, .col-center strong { font-weight: 600; color: var(--ink); }
+.col-wide mark, .col-center mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+
+.col-wide blockquote, .col-center blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.82;
+}
+
+/* ══════════════════════════════════════
+   10. L06 · 目录页
+══════════════════════════════════════ */
+.zine-index {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  z-index: 2;
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 1.4vh 0;
+  border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+/* ══════════════════════════════════════
+   12. TRACING APPENDIX · 硫酸纸附页
+══════════════════════════════════════ */
+.tracing-appendix {
+  position: relative;
+  max-width: 900px;
+  margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow:
+    1px 3px 8px rgba(0,0,0,.06),
+    3px 6px 20px rgba(0,0,0,.07),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg);
+  transform-origin: top left;
+  z-index: 2;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · 附页';
+  position: absolute;
+  top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  background: var(--bg);
+  padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner {
+  transform: rotate(.45deg);
+  transform-origin: top left;
+}
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 22px;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.appendix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 36px;
+}
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.78;
+  margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+/* ══════════════════════════════════════
+   13. L07 · 尾页
+══════════════════════════════════════ */
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; position: relative; z-index: 2; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--colophon-acc);
+  margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--colophon-fg);
+  line-height: 1.78;
+}
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  color: var(--colophon-fg);
+  opacity: .35;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   14. UTILITIES
+══════════════════════════════════════ */
+.section-hr {
+  border: none; height: 1px;
+  background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  max-width: 960px; margin: 40px auto;
+}
+
+/* ══════════════════════════════════════
+   15. RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+@media print {
+  .zine-masthead { display: none; }
+  .col-narrow    { position: static; }
+  .stamp         { opacity: .15; }
+  body           { font-size: 11pt; }
+}
+
+</style>
+</head>
+
+<body class="t-a" data-bilingual="true">
+
+<!-- ════ 顶部页眉 ════ -->
+<header class="zine-masthead">
+  <span class="masthead-name">FRICTION ZINE · 摩擦力志</span>
+  <span class="masthead-issue">Vol.01 · 2026</span>
+  <div class="lang-switcher" role="group" aria-label="Language">
+    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn"        id="btn-zh" onclick="setLang('zh')">中文</button>
+  </div>
+</header>
+
+<!-- ════ L01 · 封面 ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.01 · 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">
+      <span lang="en">Friction Starved</span>
+      <span lang="zh">摩擦饥渴</span>
+    </span>
+  </div>
+
+  <h1 class="cover-title">
+    <span lang="en">Built for<br><em>Friction</em></span>
+    <span lang="zh">为摩擦<br><em>而生</em></span>
+  </h1>
+
+  <p class="cover-sub">
+    <span lang="en">Our hunter-gatherer ancestors walked 16,000 steps a day. The modern adult walks four times less, sits for 10 hours, and outsources thinking to AI. We weren't built for frictionless lives — and it's making us miserable.</span>
+    <span lang="zh">我们的狩猎采集祖先每天走 16,000 步。现代人走的路少四倍，坐 10 小时，还把思考外包给 AI。我们不是为无摩擦的生活而生的——而这正在让我们痛苦。</span>
+  </p>
+
+  <div class="cover-image-slot">
+    <div class="cover-art">
+      <span style="height:20%"></span>
+      <span style="height:35%"></span>
+      <span style="height:28%"></span>
+      <span style="height:52%"></span>
+      <span style="height:44%"></span>
+      <span style="height:68%"></span>
+      <span style="height:60%"></span>
+      <span style="height:82%"></span>
+      <span style="height:75%"></span>
+      <span style="height:95%"></span>
+      <span style="height:88%"></span>
+      <span style="height:100%"></span>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <span>
+      <span lang="en">Why comfort is killing us — and what to do about it</span>
+      <span lang="zh">为什么舒适正在杀死我们——以及该怎么办</span>
+    </span>
+    <span class="stamp">NO.01</span>
+  </div>
+</section>
+
+<!-- ════ L06 · 目录 ════ -->
+<section class="zine-index">
+  <h3 class="index-label">
+    <span lang="en">Contents</span>
+    <span lang="zh">目录</span>
+  </h3>
+  <ol class="index-list">
+    <li>
+      <span class="index-num">01</span>
+      <span class="index-title">
+        <span lang="en">The Comfort Confession</span>
+        <span lang="zh">舒适的自白</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.03</span>
+    </li>
+    <li>
+      <span class="index-num">02</span>
+      <span class="index-title">
+        <span lang="en">Evolutionary Mismatch</span>
+        <span lang="zh">进化错配</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.05</span>
+    </li>
+    <li>
+      <span class="index-num">03</span>
+      <span class="index-title">
+        <span lang="en">Hormesis & Neuroplasticity</span>
+        <span lang="zh">适度压力与神经可塑性</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.07</span>
+    </li>
+    <li>
+      <span class="index-num">04</span>
+      <span class="index-title">
+        <span lang="en">The London Cabbie's Brain</span>
+        <span lang="zh">伦敦出租车司机的大脑</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.09</span>
+    </li>
+    <li>
+      <span class="index-num">05</span>
+      <span class="index-title">
+        <span lang="en">The Identity Shift</span>
+        <span lang="zh">身份的转变</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.11</span>
+    </li>
+    <li>
+      <span class="index-num">06</span>
+      <span class="index-title">
+        <span lang="en">Four Frictions to Engineer Back</span>
+        <span lang="zh">四种值得找回的摩擦</span>
+      </span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.13</span>
+    </li>
+  </ol>
+</section>
+
+<!-- ════ L04 · Pull Quote 硫酸纸卡片 ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+
+    <p class="pq-small-text">
+      <span lang="en">A generation that engineered away every friction — and woke up wondering why nothing feels real anymore.</span>
+      <span lang="zh">一代人消除了生活中的所有摩擦——然后在某天醒来，纳闷为什么一切都不再真实。</span>
+    </p>
+
+    <div class="pq-script">
+      <span lang="en">We were never built<br>for frictionless lives</span>
+      <span lang="zh">我们从不是为<br>无摩擦的生活而生</span>
+    </div>
+
+    <span class="pq-cite">—— Izzy · Cambridge-trained doctor & tech co-founder</span>
+
+    <p class="pq-below">
+      <span lang="en">The more comfort we add, the worse we feel. Anxious, restless, purposeless, burned out — or just flat. This is friction starvation, and it has a name.</span>
+      <span lang="zh">舒适加得越多，我们感觉越糟。焦虑、不安、空虚、倦怠——或者只是麻木。这就是摩擦饥渴，它值得被命名。</span>
+    </p>
+
+  </div>
+</section>
+
+<!-- ════ L02 · 双栏正文 01 — The Comfort Confession ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Author</span>
+        <span lang="zh">作者</span>
+      </h4>
+      <p>
+        <span lang="en">Izzy — mom, tech co-founder, Cambridge-trained doctor.</span>
+        <span lang="zh">Izzy——母亲、科技联合创始人、剑桥医学博士。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Key Concept</span>
+        <span lang="zh">核心概念</span>
+      </h4>
+      <p>
+        <span lang="en">
+          <span class="sidebar-tag">Friction Starvation</span>
+          <span class="sidebar-tag">Comfort Crisis</span>
+          <span class="sidebar-tag">Hormesis</span>
+        </span>
+        <span lang="zh">
+          <span class="sidebar-tag">摩擦饥渴</span>
+          <span class="sidebar-tag">舒适危机</span>
+          <span class="sidebar-tag">适度压力</span>
+        </span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Data Point</span>
+        <span lang="zh">数据点</span>
+      </h4>
+      <p>
+        <span lang="en">Hadza: ~16,000 steps/day. Modern adult: ~4,000 steps/day.</span>
+        <span lang="zh">哈扎人：约 16,000 步/天。现代人：约 4,000 步/天。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">
+      <span lang="en">Chapter 01</span>
+      <span lang="zh">第一章</span>
+    </div>
+
+    <h2 class="article-title">
+      <span lang="en">The Comfort Confession</span>
+      <span lang="zh">舒适的自白</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">A slightly embarrassing confession: my life has gotten too comfortable, and I'm not enjoying it.</span>
+      <span lang="zh">一个有点尴尬的自白：我的生活变得太舒适了，而我并不享受它。</span>
+    </p>
+
+    <p>
+      <span lang="en">A lot of us are feeling anxious or restless, dissatisfied, feeling purposeless, or burned out, or even just feeling kind of flat. And it seems like the more comfort that we add in, the worse it gets, because we were actually never built for frictionless lives like this.</span>
+      <span lang="zh">我们很多人都在感到焦虑或不安、不满、空虚、倦怠，甚至只是觉得平淡。而且似乎舒适加得越多，情况就越糟——因为我们从不是为这样无摩擦的生活而生的。</span>
+    </p>
+    <p>
+      <span lang="en">So it's no wonder that we're finding it hard to do hard things, because we're just not used to it anymore. And my hot take on this is that our entire generation is basically <strong>friction starved</strong>.</span>
+      <span lang="zh">难怪我们觉得难以去做困难的事情，因为我们已经不习惯了。我的看法是：我们这代人基本上处于<strong>摩擦饥渴</strong>状态。</span>
+    </p>
+    <p>
+      <span lang="en">If you're new here, I'm Izzy. I'm a mom, tech co-founder, and Cambridge-trained doctor. And on this channel, we explore the strategies and mindsets to help you create a life that you love.</span>
+      <span lang="zh">如果你是新观众，我是 Izzy——母亲、科技联合创始人、剑桥医学博士。在这个频道，我们探索帮助你创造自己热爱的生活的策略和心态。</span>
+    </p>
+
+    <h3>
+      <span lang="en">What This Issue Covers</span>
+      <span lang="zh">本期内容</span>
+    </h3>
+    <p>
+      <span lang="en">In this issue, we'll walk through understanding the science behind why our bodies and brains need challenge to grow, the identity shift that gets your brain to actually crave hard work, and four specific kinds of friction that are actually worth engineering back into your life so you can do the very things that you were built for.</span>
+      <span lang="zh">在这一期中，我们将理解为什么我们的身体和大脑需要挑战才能成长的科学原理，那种让你的大脑真正渴望努力工作的身份转变，以及四种值得重新设计回你生活中的摩擦——这样你就能做你生来该做的事。</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"The more comfort we add in, the worse it gets — because we were never built for frictionless lives."</span>
+      <span lang="zh">"舒适加得越多，情况越糟——因为我们从不是为无摩擦的生活而生的。"</span>
+    </blockquote>
+  </article>
+</section>
+
+<!-- ════ L02 · 双栏正文 02 — Evolutionary Mismatch ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Timeline</span>
+        <span lang="zh">时间线</span>
+      </h4>
+      <p>
+        <span lang="en">200,000 yrs ago — Modern humans<br>10,000 yrs ago — Agriculture<br>150 yrs ago — Industrial Revolution<br>30 yrs ago — Internet<br>Now — AI</span>
+        <span lang="zh">20 万年前——现代人类<br>1 万年前——农业<br>150 年前——工业革命<br>30 年前——互联网<br>现在——AI</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Key Term</span>
+        <span lang="zh">关键术语</span>
+      </h4>
+      <p>
+        <span lang="en"><strong>Evolutionary Mismatch:</strong> The environment we evolved for no longer matches the reality we're in.</span>
+        <span lang="zh"><strong>进化错配：</strong>我们为之进化的环境不再匹配我们身处的现实。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">
+      <span lang="en">Chapter 02</span>
+      <span lang="zh">第二章</span>
+    </div>
+
+    <h2 class="article-title">
+      <span lang="en">Evolutionary Mismatch</span>
+      <span lang="zh">进化错配</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">You might think you're lazy. According to evolutionary biology, that's pretty much the furthest thing from the truth.</span>
+      <span lang="zh">你可能觉得自己懒。但根据进化生物学，这离真相差了十万八千里。</span>
+    </p>
+
+    <p>
+      <span lang="en">During my time at Cambridge, I spent one year studying biological anthropology — essentially studying human biology and evolution over hundreds of thousands or millions of years. And for almost all of human history, our ancestors lived in environments where being physically and cognitively challenged was the only way to stay alive.</span>
+      <span lang="zh">在剑桥期间，我花了一年时间学习生物人类学——本质上是研究人类生物学和数百万年的进化。在几乎整个人类历史中，我们的祖先生活的环境中，身体和认知上接受挑战是活下去的唯一方式。</span>
+    </p>
+    <p>
+      <span lang="en">Movement, effort, problem-solving, navigation, memory, building relationships, skills — these were all structural features of being alive and surviving. They weren't optional add-ons. And so, for the last 200,000 years of human existence, no one ever intentionally exercised, because they didn't need to. Life naturally supplied the friction and the exercise that they needed.</span>
+      <span lang="zh">运动、努力、解决问题、导航、记忆、建立关系、技能——这些都是生存的结构性特征，不是可选的附加品。在过去 20 万年的人类存在中，没有人刻意去锻炼，因为他们不需要。生活自然地提供了他们所需的摩擦和运动。</span>
+    </p>
+
+    <h3>
+      <span lang="en">My Grandma's Generation</span>
+      <span lang="zh">我奶奶那一代</span>
+    </h3>
+    <p>
+      <span lang="en">My grandma's generation in China, they find it confusing as to why people actively pay money to a personal trainer to be made to exercise. Because for many of them, movement and farming and lifting things and carrying things was just a natural part of daily life.</span>
+      <span lang="zh">我奶奶那一代中国人，他们觉得困惑——为什么人们要花钱请私人教练来逼自己运动。对他们来说，运动、种地、搬东西、扛东西就是日常生活的自然组成部分。</span>
+    </p>
+    <p>
+      <span lang="en">Anthropologists studying modern hunter-gatherer communities like the Hadza in Tanzania did studies measuring their daily activity. On average, the Hadza take about <mark>16,000 steps a day</mark>, versus the modern adult takes around <mark>4,000 steps a day</mark>. And there's a name for this: <strong>evolutionary mismatch</strong> — where the environment and lifestyle that we evolved for no longer matches the reality that we're actually in.</span>
+      <span lang="zh">研究坦桑尼亚哈扎人等现代狩猎采集社区的人类学家测量了他们的日常活动量。哈扎人平均每天走 <mark>16,000 步</mark>，而现代人大约 <mark>4,000 步</mark>。这有一个名字：<strong>进化错配</strong>——我们为之进化的环境和生活方式不再匹配我们实际身处的现实。</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"All of the engineering away of the environment and the frictions happened in a very tiny sliver of time — the last 100 years or so."</span>
+      <span lang="zh">"所有对环境和摩擦的消除都发生在一个极短的时间窗口里——大约过去 100 年。"</span>
+    </blockquote>
+  </article>
+</section>
+
+<!-- ════ L02 · 双栏正文 03 — Hormesis & Neuroplasticity ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Core Principle</span>
+        <span lang="zh">核心原理</span>
+      </h4>
+      <p>
+        <span lang="en"><strong>Hormesis:</strong> Small, repeated doses of stress make a biological system stronger over time.</span>
+        <span lang="zh"><strong>适度压力（Hormesis）：</strong>小量、反复的压力刺激会让生物系统随时间变得更强。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Researcher</span>
+        <span lang="zh">研究者</span>
+      </h4>
+      <p>
+        <span lang="en">Dr. Mark Mattson, former chief of the Laboratory of Neurosciences, National Institute on Aging.</span>
+        <span lang="zh">Mark Mattson 博士，美国国家老龄化研究所神经科学实验室前主任。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Analogy</span>
+        <span lang="zh">类比</span>
+      </h4>
+      <p>
+        <span lang="en">Lifting weights causes micro-tears in muscles. Short-term weakness triggers long-term rebuilding — stronger than before.</span>
+        <span lang="zh">举重造成肌肉微撕裂。短期变弱触发长期重建——比以前更强。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">
+      <span lang="en">Chapter 03</span>
+      <span lang="zh">第三章</span>
+    </div>
+
+    <h2 class="article-title">
+      <span lang="en">Hormesis & Neuroplasticity</span>
+      <span lang="zh">适度压力与神经可塑性</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">In biology and medical science, hormesis describes how small repeated doses of stress can actually make a biological system stronger over time.</span>
+      <span lang="zh">在生物学和医学中，hormesis（适度压力）描述了小量反复的压力刺激如何让生物系统随时间变得更强。</span>
+    </p>
+
+    <p>
+      <span lang="en">An example of hormesis is when you lift heavy weights, you actually cause micro tears and micro damage to your muscles, which in the short term technically makes them weaker. Over the course of a weightlifting session, you can actually lift less and less weight because your muscles start to accrue a little bit of damage. But then ultimately, this stimulus of some stress and damage and weakening actually triggers your muscles to rebuild even stronger.</span>
+      <span lang="zh">举重就是一个 hormesis 的例子：你实际上对肌肉造成了微撕裂和微损伤，短期内技术上是让它们变弱了。在一次举重训练中，你能举的重量会越来越少，因为肌肉开始累积损伤。但最终，这种压力、损伤和变弱的刺激会触发肌肉重建——比以前更强。</span>
+    </p>
+    <p>
+      <span lang="en">Dr. Mark Mattson, who used to be the chief of the laboratory of neurosciences at the National Institute on Aging, has spent decades researching exactly this, showing how hormetic stresses trigger adaptive responses that keep your cells healthy and can even prevent or slow down things like memory loss, neurodegeneration, and metabolic diseases.</span>
+      <span lang="zh">Mark Mattson 博士曾任美国国家老龄化研究所神经科学实验室主任，花了数十年研究这一现象，表明适度压力触发适应性反应，保持细胞健康，甚至可以预防或减缓记忆衰退、神经退行性疾病和代谢疾病。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Neuroplasticity: Brains Grow Under Challenge</span>
+      <span lang="zh">神经可塑性：大脑在挑战中成长</span>
+    </h3>
+    <p>
+      <span lang="en">The same principle applies to our brains. The core principle that brains grow under challenge is one of the most established findings in modern neuroscience. It's called <strong>neuroplasticity</strong> — the brain's ability to physically reorganize itself in response to use, forming new connections, strengthening existing ones, and even growing new tissue in regions that are being challenged.</span>
+      <span lang="zh">同样的原理适用于我们的大脑。"大脑在挑战中成长"是现代神经科学最确证的发现之一。它叫做<strong>神经可塑性</strong>——大脑根据使用情况物理重组自身的能力，形成新连接、强化现有连接，甚至在被挑战的区域生长新组织。</span>
+    </p>
+    <p>
+      <span lang="en">Critically, meaningful change requires meaningful challenge. Because the brain only puts in the effort to rewire itself in a significant way when the work is actually hard enough that the existing pathways can't quite handle it.</span>
+      <span lang="zh">关键在于，有意义的改变需要有意义的挑战。因为大脑只有在工作足够困难——现有通路无法应对时——才会投入精力进行显著的重构。</span>
+    </p>
+    <p>
+      <span lang="en">But then coming back to this comfort crisis, modern life has actually engineered most of that cognitive tension out. Maps navigate for us, search engines remember things for us, AI now even just thinks for us and tells us what we should do and think. Our brains can actually be very, very chill and do very little to survive.</span>
+      <span lang="zh">但回到这个舒适危机，现代生活实际上已经消除了大部分认知张力。地图为我们导航，搜索引擎替我们记忆，AI 现在甚至替我们思考，告诉我们该做什么、想什么。我们的大脑可以非常非常放松，几乎不需要做什么就能生存。</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"If we go with the flow and lean into what's comfortable, both our physical and mental faculties are downgrading at the same time — not because we're broken, but because we're adaptable."</span>
+      <span lang="zh">"如果我们随波逐流、向舒适倾斜，我们的身体和精神能力同时在降级——不是因为我们坏了，而是因为我们有适应能力。"</span>
+    </blockquote>
+  </article>
+</section>
+
+<!-- ════ L02 · 双栏正文 04 — The London Cabbie's Brain ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Study</span>
+        <span lang="zh">研究</span>
+      </h4>
+      <p>
+        <span lang="en">Maguire et al., 2000 — UCL. London taxi drivers vs. non-cabbies.</span>
+        <span lang="zh">Maguire 等，2000 年——伦敦大学学院。伦敦出租车司机 vs. 非司机。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">The Knowledge</span>
+        <span lang="zh">The Knowledge 考试</span>
+      </h4>
+      <p>
+        <span lang="en">To drive a black cab in London, you must memorize ~25,000 streets and thousands of landmarks. Most drivers take 3–4 years to pass.</span>
+        <span lang="zh">要在伦敦开黑色出租车，必须记住约 25,000 条街道和数千个地标。大多数司机需要 3-4 年才能通过。</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Hebb's Law (1949)</span>
+        <span lang="zh">赫布定律 (1949)</span>
+      </h4>
+      <p>
+        <span lang="en">"Neurons that fire together wire together." — Donald Hebb</span>
+        <span lang="zh">"一起放电的神经元会连接在一起。"——唐纳德·赫布</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">
+      <span lang="en">Chapter 04</span>
+      <span lang="zh">第四章</span>
+    </div>
+
+    <h2 class="article-title">
+      <span lang="en">The London Cabbie's Brain</span>
+      <span lang="zh">伦敦出租车司机的大脑</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">One of my favorite examples of neuroplasticity in real life — a study that literally shows brains physically growing from cognitive effort.</span>
+      <span lang="zh">我最喜欢的神经可塑性真实案例——一项从认知努力中看到大脑物理生长的研究。</span>
+    </p>
+
+    <p>
+      <span lang="en">In 2000, a neuroscientist at UCL called Eleanor Maguire and her team published a really cool study. They recruited a cohort of London taxi drivers. And a bit of fun context: to get a license to drive a black cab in London, you have to pass this mega test called <strong>The Knowledge</strong>.</span>
+      <span lang="zh">2000 年，伦敦大学学院的神经科学家 Eleanor Maguire 和她的团队发表了一项很酷的研究。他们招募了一群伦敦出租车司机。一个有趣的背景：要在伦敦获得黑色出租车执照，你必须通过一个叫 <strong>The Knowledge</strong> 的超级考试。</span>
+    </p>
+    <p>
+      <span lang="en">To pass The Knowledge, you need to memorize about <mark>25,000 streets</mark> and thousands of landmarks across the entire city. And it actually takes most drivers three or four years of studying and taking the test to actually pass it.</span>
+      <span lang="zh">要通过 The Knowledge，你需要记住全城约 <mark>25,000 条街道</mark>和数千个地标。大多数司机需要三四年学习和考试才能通过。</span>
+    </p>
+
+    <h3>
+      <span lang="en">The Finding</span>
+      <span lang="zh">发现</span>
+    </h3>
+    <p>
+      <span lang="en">What they found was the part of the taxi drivers' brains that handles spatial memory — called the <strong>posterior hippocampus</strong> — was actually measurably bigger in volume compared to non-cabbies. And the longer they had been driving, the bigger this region of their brain actually was.</span>
+      <span lang="zh">他们发现：出租车司机大脑中负责空间记忆的部分——叫做<strong>后海马体</strong>——体积上明显比非司机更大。而且开车时间越长，这个脑区就越大。</span>
+    </p>
+    <p>
+      <span lang="en">The cognitive work of constantly memorizing, recalling, and using this knowledge of all the streets was literally physically growing this part of their brains. And as well as growing the volume, this active recall strengthens connections between neurons, which links to the principle of <strong>Hebbian plasticity</strong>.</span>
+      <span lang="zh">不断记忆、回忆和使用所有街道知识的认知工作，确确实实在物理上让大脑这个区域生长了。除了体积增长，这种主动回忆还强化了神经元之间的连接——这关联到<strong>赫布可塑性</strong>原理。</span>
+    </p>
+    <p>
+      <span lang="en">Back in 1949, a psychologist called Donald Hebb came up with what's known as Hebb's law: <strong>neurons that fire together wire together</strong>. Our brains are not fixed even as an adult. They constantly change, reform, reshape, create new connections, prune old ones in response to the cognitive stimuli that we get in our day-to-day lives.</span>
+      <span lang="zh">1949 年，心理学家唐纳德·赫布提出了赫布定律：<strong>一起放电的神经元会连接在一起</strong>。即使成年后，我们的大脑也不是固定的。它们不断改变、重塑、创造新连接、修剪旧连接——响应我们日常生活中的认知刺激。</span>
+    </p>
+    <p>
+      <span lang="en">It's kind of like training a muscle, where the more reps of cognitive work that you give your brain, the stronger, more efficient, higher performance you actually get from it.</span>
+      <span lang="zh">这有点像训练肌肉：你给大脑的认知"次数"越多，它就越强、越高效、性能越高。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ L02 · 双栏正文 05 — The Identity Shift ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Three Levels of Change</span>
+        <span lang="zh">改变的三个层次</span>
+      </h4>
+      <p>
+        <span lang="en">1. <strong>Outcome</strong> — "I want to lose 10 lb."<br>2. <strong>Process</strong> — "I'll run 4×/week."<br>3. <strong>Identity</strong> — "I am someone who runs."</span>
+        <span lang="zh">1. <strong>结果</strong>——"我想减 10 磅。"<br>2. <strong>过程</strong>——"我每周跑 4 次。"<br>3. <strong>身份</strong>——"我是一个跑步的人。"</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">The Shift</span>
+        <span lang="zh">转变</span>
+      </h4>
+      <p>
+        <span lang="en">Stop asking "What should I do?"<br>Start asking "Who am I becoming?"</span>
+        <span lang="zh">别再问"我该做什么？"<br>开始问"我正在成为谁？"</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Stat</span>
+        <span lang="zh">数据</span>
+      </h4>
+      <p>
+        <span lang="en">80% of New Year's resolutions die by February. The gym is half empty by March.</span>
+        <span lang="zh">80% 的新年决心在二月份前消亡。三月份健身房已经半空。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">
+      <span lang="en">Chapter 05</span>
+      <span lang="zh">第五章</span>
+    </div>
+
+    <h2 class="article-title">
+      <span lang="en">The Identity Shift</span>
+      <span lang="zh">身份的转变</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">Just changing behavior doesn't reach the root. The level we need to work on is actually identity.</span>
+      <span lang="zh">仅仅改变行为触及不到根源。我们需要改变的层面其实是身份。</span>
+    </p>
+
+    <p>
+      <span lang="en">When we don't choose to do hard things and we choose to take the easy way, it isn't because we're lazy or lack willpower. Because the honest truth is that your body is just doing exactly what evolution designed it to do: be energy efficient.</span>
+      <span lang="zh">当我们不去选择做困难的事、选择走捷径时，不是因为我们懒或缺乏意志力。因为真相是：你的身体只是在做进化设计的恰恰该做的事——节能。</span>
+    </p>
+    <p>
+      <span lang="en">For nearly all of human history, food was scarce and effort was costly. So the brains and bodies that survived were those that took the easiest path, which was most efficient. What we sometimes call laziness is actually one of the most ancient and well-developed survival instincts that we actually have.</span>
+      <span lang="zh">在几乎整个人类历史中，食物稀缺、行动代价高昂。所以存活下来的大脑和身体是那些选择最省力、最高效路径的。我们有时称之为"懒"的东西，其实是我们最古老、最发达的生存本能。</span>
+    </p>
+
+    <h3>
+      <span lang="en">The Problem With Willpower</span>
+      <span lang="zh">意志力的问题</span>
+    </h3>
+    <p>
+      <span lang="en">The problem is we've now engineered the world to be so frictionless and so easy that the same energy-saving instinct is starting to work against us. We often try to push through this with sheer willpower. But this usually breaks down quite easily — and is the reason why <mark>80% of New Year's resolutions die off by February</mark>, and the gym is half empty by March.</span>
+      <span lang="zh">问题是我们现在把世界设计得如此无摩擦、如此简单，以至于同样的节能本能开始反过来伤害我们。我们经常试图用纯粹的意志力来突破。但这通常很容易崩溃——这就是为什么 <mark>80% 的新年决心在二月前消亡</mark>，三月健身房就半空了。</span>
+    </p>
+
+    <h3>
+      <span lang="en">Identity > Process > Outcome</span>
+      <span lang="zh">身份 > 过程 > 结果</span>
+    </h3>
+    <p>
+      <span lang="en">We can try to change our lives on three different levels. We can try to change the outcomes: "I want to lose 10 lb." We can try to change our processes: "I'm going to run four times a week." Or we can change our identity: "I am someone who runs regularly."</span>
+      <span lang="zh">我们可以在三个不同层面上尝试改变生活。改变结果："我想减 10 磅。"改变过程："我每周跑四次。"或者改变身份："我是一个经常跑步的人。"</span>
+    </p>
+    <p>
+      <span lang="en">It's so easy to start at either outcome or process-based change. But that's why it doesn't really last — because the identity underneath it all never shifted. What I found worked was to stop asking "What should I do?" and instead ask <strong>"Who am I becoming?"</strong></span>
+      <span lang="zh">从结果或过程层面开始改变太容易了。但这就是为什么它撑不住——因为底层的身份从未改变。我发现有效的是：不再问"我该做什么？"，而是问<strong>"我正在成为谁？"</strong></span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"I am someone built for friction and doing hard things."</span>
+      <span lang="zh">"我是一个为摩擦和做困难的事而生的人。"</span>
+    </blockquote>
+
+    <p>
+      <span lang="en">Once we have the identity of being someone who chooses and embraces challenge, the actual behaviors and practices stop feeling like things we need to discipline ourselves into. They start to feel like just natural expressions of who you actually are.</span>
+      <span lang="zh">一旦我们拥有了"选择并拥抱挑战的人"这个身份，那些行为和实践就不再感觉是需要自律才能做的事。它们开始感觉像你真实自我的自然表达。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ L02 · 双栏正文 06 — Four Frictions ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Four Frictions</span>
+        <span lang="zh">四种摩擦</span>
+      </h4>
+      <p>
+        <span lang="en">1. <strong>Physical</strong> — movement, temperature, hunger, lifting<br>2. <strong>Sensory</strong> — boredom, silence, slowness<br>3. <strong>Cognitive</strong> — challenge, deep work, less AI<br>4. <strong>Social</strong> — deeper, harder connections</span>
+        <span lang="zh">1. <strong>身体</strong>——运动、温度、饥饿、负重<br>2. <strong>感官</strong>——无聊、沉默、慢<br>3. <strong>认知</strong>——挑战、深度工作、少用 AI<br>4. <strong>社交</strong>——更深、更难的连接</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">
+        <span lang="en">Action Points</span>
+        <span lang="zh">行动点</span>
+      </h4>
+      <p>
+        <span lang="en">1. Cast one identity vote in the next 12 hours.<br>2. Run one micro-experiment for 7 days.</span>
+        <span lang="zh">1. 在接下来 12 小时内投出一票身份选票。<br>2. 做 7 天一个微实验。</span>
+      </p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">
+      <span lang="en">Chapter 06</span>
+      <span lang="zh">第六章</span>
+    </div>
+
+    <h2 class="article-title">
+      <span lang="en">Four Frictions to Engineer Back</span>
+      <span lang="zh">四种值得找回的摩擦</span>
+    </h2>
+
+    <p class="article-lede">
+      <span lang="en">The theory stops here. Four specific categories of friction worth strategically engineering back into your life — physical, sensory, cognitive, and social.</span>
+      <span lang="zh">理论到此为止。四种值得策略性地重新设计回你生活中的摩擦——身体、感官、认知、社交。</span>
+    </p>
+
+    <p>
+      <span lang="en">Not all friction in life is equal. Some friction is worth keeping — like the kind that makes you sharper, more resilient, healthier. But the other type is just tax, like email admin. The point isn't to do all of these at once. It's to find one or two ideas from each category that you can experiment with over the next few weeks.</span>
+      <span lang="zh">不是所有摩擦都一样。有些摩擦值得保留——比如让你更敏锐、更有韧性、更健康的那种。但另一种就是纯粹的负担，比如邮件行政。关键不是一次性做所有这些，而是从每个类别中找一两个你可以在接下来几周尝试的想法。</span>
+    </p>
+
+    <h3>
+      <span lang="en">① Physical Friction</span>
+      <span lang="zh">① 身体摩擦</span>
+    </h3>
+    <p>
+      <span lang="en">Movement, exercise, effort, temperature, hunger, manual work — all the demands our bodies evolved to expect. The body gets stronger by being asked to handle small repeated doses of discomfort (hormesis). Practices: take the stairs instead of the lift. Walk instead of taking a car for anything under a kilometer. Sauna — regular use boosts cardiovascular health and triggers heat shock proteins. Cold exposure — end your shower with 30 seconds of cold. Fasting / time-restricted feeding. Lift something heavy a few times a week — body weight, kettlebells, groceries up the stairs.</span>
+      <span lang="zh">运动、锻炼、努力、温度、饥饿、手工劳动——所有我们身体进化来期待的需求。身体通过承受小量反复的不适（hormesis）变得更强。实践：走楼梯而不是电梯。一公里以内走路而不是坐车。桑拿——规律使用促进心血管健康，触发热休克蛋白。冷暴露——洗澡最后 30 秒用冷水。断食/限时进食。每周举几次重物——自重、壶铃、把购物搬上楼梯。</span>
+    </p>
+
+    <h3>
+      <span lang="en">② Sensory Friction</span>
+      <span lang="zh">② 感官摩擦</span>
+    </h3>
+    <p>
+      <span lang="en">Adding boredom, silence, slowness, spaciousness. The <strong>default mode network</strong> — a brain network that switches on when you're not focused on a task — consolidates memories, processes emotions, generates creative insight. But constant input (scrolling, social media, podcasts, notifications) means it barely gets to run. Practices: sit still for 5 minutes without your phone. Eat at least one meal per day without a screen. Walk or drive without podcasts or music. Don't reach for your phone for the first 20–30 minutes after waking. Try one screen-free evening a week.</span>
+      <span lang="zh">增加无聊、沉默、缓慢、留白。<strong>默认模式网络</strong>——一个在你没有专注于任务时启动的大脑网络——整合记忆、处理情绪、产生创意洞察。但持续的输入（刷手机、社交媒体、播客、通知）让它几乎没有机会运转。实践：不带手机静坐 5 分钟。每天至少一顿饭不看屏幕。走路或开车不听播客和音乐。醒来后前 20-30 分钟不碰手机。每周试一个无屏幕的晚上。</span>
+    </p>
+
+    <h3>
+      <span lang="en">③ Cognitive Friction</span>
+      <span lang="zh">③ 认知摩擦</span>
+    </h3>
+    <p>
+      <span lang="en">Deliberately challenging your brain — because neuroplasticity works in both directions: you either use it or you lose it. Especially with AI, it's getting easier to remove cognitive friction. Practices: write and do your own thinking first, only then refine with AI. Read the source, not just the AI summary. Before asking AI a question, write down what you think the answer is — then compare. Do mental math in your head instead of immediately using a calculator. Plan a route in your head before opening Google Maps. Handwrite things to engage more deeply. Train sustained attention — one cognitive task for at least 30 minutes, no task switching.</span>
+      <span lang="zh">刻意挑战你的大脑——因为神经可塑性是双向的：用进废退。尤其有了 AI 之后，消除认知摩擦变得越来越容易。实践：先自己写和思考，然后再用 AI 精炼。读原始来源，不只是 AI 摘要。问 AI 问题前，先写下你认为答案是什么——然后对比。用心算而不是立刻用计算器。开 Google 地图前先在脑中规划路线。手写笔记以更深入地参与。训练持续注意力——单一认知任务至少 30 分钟，不切换。</span>
+    </p>
+
+    <h3>
+      <span lang="en">④ Social Friction</span>
+      <span lang="zh">④ 社交摩擦</span>
+    </h3>
+    <p>
+      <span lang="en">Choosing the harder, more intense version of any human interaction. "Everyone wants a village, but no one wants to be a villager." You don't passively inherit community as an adult — you have to actively build it. Practices: call instead of text, especially for things that truly matter. Show up and say yes. Say the hard thing — the scary thing that feels important. Initiate — become the chief of your village. Send the invite, pick a date, make it happen. Make at least one new real friend this year — a deep, real friendship.</span>
+      <span lang="zh">选择任何人际互动中更难、更深入的版本。"每个人都想要一个村庄，但没有人想当村民。"成年后你不会被动地继承社区——你必须主动建设它。实践：打电话而不是发短信，尤其是真正重要的事。出席并说"好"。说难说的话——那些感觉重要但有点害怕的话。主动——成为你村庄的酋长。发出邀请、定好日期、让它发生。今年至少交一个真正的新朋友——一段深入、真实的友谊。</span>
+    </p>
+
+    <blockquote>
+      <span lang="en">"The map isn't the journey. The journey lies in the identity you decide to take on, and all the small votes you cast every single day for who you're becoming."</span>
+      <span lang="zh">"地图不是旅程本身。旅程在于你决定承担的身份，以及你每天为自己正在成为谁而投下的小小选票。"</span>
+    </blockquote>
+
+    <h3>
+      <span lang="en">Two Action Points to Start Today</span>
+      <span lang="zh">今天开始的两个行动点</span>
+    </h3>
+    <p>
+      <span lang="en"><strong>1. Cast one identity vote.</strong> Find one moment in the next 12 hours where you have to choose between easier and harder, and pre-commit to the harder one.</span>
+      <span lang="zh"><strong>1. 投出一票身份选票。</strong>在接下来 12 小时内找到一个你必须在"更容易"和"更难"之间选择的时刻，预先承诺选更难的那个。</span>
+    </p>
+    <p>
+      <span lang="en"><strong>2. Run one micro-experiment.</strong> Pick one of the four categories and try a single practice from it for the next 7 days.</span>
+      <span lang="zh"><strong>2. 做一个微实验。</strong>从四个类别中选一个，在接下来 7 天里尝试其中一项实践。</span>
+    </p>
+  </article>
+</section>
+
+<!-- ════ TRACING APPENDIX · 硫酸纸附页 ════ -->
+<div class="tracing-appendix">
+  <div class="appendix-inner">
+
+    <div class="appendix-title">
+      <span lang="en">Afterword</span>
+      <span lang="zh">附言</span>
+    </div>
+
+    <div class="appendix-grid">
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Summary</span>
+          <span lang="zh">总结</span>
+        </div>
+        <p>
+          <span lang="en">We evolved for friction. Modern life removed it. The result: a generation that's comfortable but miserable. The fix isn't willpower — it's identity, plus small repeated doses of productive discomfort across four domains.</span>
+          <span lang="zh">我们为摩擦而进化。现代生活消除了它。结果是：一代人舒适但痛苦。解药不是意志力——而是身份转变，加上在四个领域中持续小剂量的有益不适。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Audience</span>
+          <span lang="zh">适合人群</span>
+        </div>
+        <p>
+          <span lang="en">Anyone feeling anxious, restless, purposeless, burned out, or just flat — despite (or because of) a comfortable life. Especially those in their late 20s to 30s sensing something is off.</span>
+          <span lang="zh">任何在舒适生活中感到焦虑、不安、空虚、倦怠或麻木的人。尤其是二十末到三十多岁、感觉"哪里不对"的人。</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Further Reading</span>
+          <span lang="zh">延伸阅读</span>
+        </div>
+        <p>
+          <span lang="en">· The Comfort Crisis — Michael Easter<br>· Digital Anhedonia (sister concept)<br>· Hebb, D.O. (1949) The Organization of Behavior<br>· Maguire et al. (2000) — UCL taxi driver study</span>
+          <span lang="zh">· 《舒适危机》——Michael Easter<br>· 数字快感缺失（姊妹概念）<br>· Hebb, D.O. (1949) 行为的组织<br>· Maguire 等 (2000)——UCL 出租车司机研究</span>
+        </p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">
+          <span lang="en">Notes</span>
+          <span lang="zh">备注</span>
+        </div>
+        <p>
+          <span lang="en">Content adapted from Izzy's video essay. Key concepts: evolutionary mismatch, hormesis, neuroplasticity, Hebbian plasticity, default mode network, friction starvation. A free friction audit guide accompanies the original video.</span>
+          <span lang="zh">内容改编自 Izzy 的视频随笔。核心概念：进化错配、适度压力、神经可塑性、赫布可塑性、默认模式网络、摩擦饥渴。原视频附有免费的摩擦力审计指南。</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="appendix-rule"></div>
+    <div class="appendix-fine">
+      This appendix is printed on tracing paper · 本附页以硫酸纸印刷 · Vol.01 · 2026
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ L07 · 尾页 ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5><span lang="en">About This Issue</span><span lang="zh">关于本期</span></h5>
+        <p><span lang="en">Vol.01 explores why modern comfort is making us miserable — and how to strategically engineer friction back into our lives through physical, sensory, cognitive, and social practices.</span><span lang="zh">第 01 期探讨为什么现代舒适让我们痛苦——以及如何通过身体、感官、认知和社交实践，策略性地将摩擦重新设计回生活中。</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Publication</span><span lang="zh">出版信息</span></h5>
+        <p><span lang="en">2026 · Adapted from Izzy's essay<br>Cambridge-trained doctor & tech co-founder</span><span lang="zh">2026 · 改编自 Izzy 的随笔<br>剑桥医学博士 & 科技联合创始人</span></p>
+      </div>
+      <div>
+        <h5><span lang="en">Design</span><span lang="zh">设计信息</span></h5>
+        <p><span lang="en">Theme A · Kraft Paper Archive<br>Noto Serif SC · Dancing Script<br>Zine Skill v2 Template</span><span lang="zh">主题 A · 牛皮纸档案<br>Noto Serif SC · Dancing Script<br>Zine Skill v2 模板</span></p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">© 2026 · FRICTION ZINE · All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- ════ 语言切换脚本 ════ -->
+<script>
+  function setLang(lang) {
+    const body = document.body;
+    if (lang === 'zh') {
+      body.classList.add('lang-zh');
+      document.getElementById('btn-zh').classList.add('active');
+      document.getElementById('btn-en').classList.remove('active');
+      document.documentElement.lang = 'zh-CN';
+    } else {
+      body.classList.remove('lang-zh');
+      document.getElementById('btn-en').classList.add('active');
+      document.getElementById('btn-zh').classList.remove('active');
+      document.documentElement.lang = 'en';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const body = document.body;
+    const isBilingual = body.hasAttribute('data-bilingual');
+    if (!isBilingual) return;
+    document.getElementById('btn-en').classList.add('active');
+    document.getElementById('btn-zh').classList.remove('active');
+  });
+</script>
+
+</body>
+</html>

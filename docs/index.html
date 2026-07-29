@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magazine Own · 杂志架</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+:root {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 纸张纹理 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══ 顶部页眉 ═══ */
+.masthead {
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw;
+  height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.masthead-name { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+
+/* ═══ 封面区 ═══ */
+.hero {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 8vh 5vw 5vh;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 4vh;
+}
+.hero-meta .rule { flex: 1; max-width: 120px; height: 1px; background: var(--rule); }
+.hero-meta .theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.hero-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.022em;
+  color: var(--ink);
+  margin-bottom: 2vh;
+}
+.hero-title em { font-style: italic; color: var(--accent); }
+
+.hero-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  max-width: 50ch;
+  margin: 0 auto 4vh;
+  padding-left: 18px;
+  border-left: 3px solid var(--accent);
+  text-align: left;
+}
+
+/* 装饰线条 */
+.hero-art {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  height: 60px;
+  margin: 0 auto 2vh;
+  opacity: .4;
+  max-width: 400px;
+}
+.hero-art span {
+  display: block;
+  width: 8px;
+  background: var(--accent);
+}
+
+.hero-footer {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  border-top: 1px solid var(--rule);
+  padding-top: 2vh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.hero-footer .stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: var(--accent);
+  opacity: .28;
+  display: block;
+  margin-top: 4px;
+}
+
+/* ═══ 杂志列表 ═══ */
+.shelf {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 4vh 5vw;
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+.shelf-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.shelf-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.shelf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2.5vh 3vw;
+}
+
+/* 每本杂志卡片 */
+.zine-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-warm);
+  border: 1px solid var(--rule);
+  padding: 2.5vh 2vw;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.zine-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(42,32,24,.12);
+  border-color: var(--accent);
+}
+.zine-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 18px 18px 0;
+  border-color: transparent var(--bg) transparent transparent;
+  opacity: 0;
+  transition: opacity .25s;
+}
+.zine-card:hover::after { opacity: 1; }
+
+.card-issue {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1vh;
+}
+.card-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 1vh;
+}
+.card-title em { font-style: italic; color: var(--accent); }
+.card-desc {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  margin-bottom: 2vh;
+  flex: 1;
+}
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  padding-top: 1.5vh;
+}
+.card-theme {
+  padding: 2px 7px;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+}
+.card-arrow {
+  color: var(--accent);
+  font-size: 14px;
+  transition: transform .25s;
+}
+.zine-card:hover .card-arrow { transform: translateX(4px); }
+
+/* ═══ 占位卡片 ═══ */
+.zine-card.placeholder {
+  border: 1px dashed var(--rule);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 180px;
+  cursor: default;
+}
+.zine-card.placeholder:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--rule);
+}
+.placeholder-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  opacity: .5;
+}
+
+/* ═══ 尾页 ═══ */
+.colophon {
+  background: var(--colophon-bg);
+  padding: 5vh 5vw;
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+}
+.colophon-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4vw;
+}
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--colophon-acc);
+  margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--colophon-fg);
+  line-height: 1.78;
+}
+.colophon a {
+  color: var(--colophon-acc);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--colophon-acc);
+}
+.colophon a:hover { opacity: .8; }
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin: 2.5vh auto; max-width: 960px; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  color: var(--colophon-fg);
+  opacity: .35;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* ═══ 响应式 ═══ */
+@media (max-width: 640px) {
+  .shelf-grid { grid-template-columns: 1fr; }
+  .colophon-inner { grid-template-columns: 1fr; gap: 3vh; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ 顶部页眉 ═══ -->
+<header class="masthead">
+  <span class="masthead-name">MAGAZINE OWN · 杂志架</span>
+  <span class="masthead-issue">Vol.01 · 2026</span>
+</header>
+
+<!-- ═══ 封面区 ═══ -->
+<section class="hero">
+  <div class="hero-meta">
+    <span class="rule"></span>
+    <span class="theme">个人杂志合集</span>
+    <span class="rule"></span>
+  </div>
+
+  <h1 class="hero-title">Magazine<br><em>Own</em></h1>
+
+  <p class="hero-sub">这是一座私人杂志架。每一期都是一篇用文字和排版讲述的故事——牛皮纸、蓝图、油印机、森林墨水。挑一本，翻开看。</p>
+
+  <div class="hero-art">
+    <span style="height:20%"></span>
+    <span style="height:35%"></span>
+    <span style="height:28%"></span>
+    <span style="height:52%"></span>
+    <span style="height:44%"></span>
+    <span style="height:68%"></span>
+    <span style="height:60%"></span>
+    <span style="height:82%"></span>
+    <span style="height:75%"></span>
+    <span style="height:95%"></span>
+    <span style="height:88%"></span>
+    <span style="height:100%"></span>
+    <span style="height:90%"></span>
+    <span style="height:70%"></span>
+    <span style="height:55%"></span>
+    <span style="height:40%"></span>
+  </div>
+
+  <div class="hero-footer">
+    <span>出版中 · 1 期已上架</span>
+    <span class="stamp">M.O</span>
+  </div>
+</section>
+
+<!-- ═══ 杂志架 ═══ -->
+<section class="shelf">
+  <div class="shelf-label">书架 · The Shelf</div>
+  <div class="shelf-grid">
+
+    <!-- Vol.01 · Friction Starved -->
+    <a class="zine-card" href="zine-friction-vol01.html">
+      <div class="card-issue">Vol.01 · 2026</div>
+      <div class="card-title">Built for <em>Friction</em></div>
+      <p class="card-desc">我们的祖先每天走 16,000 步，现代人走不到四分之一。当生活变得无摩擦，我们为什么反而更焦虑？从进化生物学、神经可塑性到身份转变——四种值得找回的摩擦。</p>
+      <div class="card-meta">
+        <span class="card-theme">牛皮纸档案</span>
+        <span>阅读 <span class="card-arrow">→</span></span>
+      </div>
+    </a>
+
+    <!-- 占位：下一期 -->
+    <div class="zine-card placeholder">
+      <div class="placeholder-text">下一期即将到来<br>Coming Soon</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ 尾页 ═══ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div>
+      <h5>关于这座杂志架</h5>
+      <p>使用 Zine Skill 生成，牛皮纸档案风格。每期一个主题，排版成可在浏览器阅读的单页杂志。</p>
+    </div>
+    <div>
+      <h5>链接</h5>
+      <p>
+        <a href="https://github.com/Saraooe/magazine-own" target="_blank">GitHub 仓库</a><br>
+        访问地址：saraooe.github.io/magazine-own
+      </p>
+    </div>
+  </div>
+  <div class="colophon-rule"></div>
+  <p class="colophon-fine">© 2026 · MAGAZINE OWN · All Rights Reserved</p>
+</footer>
+
+</body>
+</html>

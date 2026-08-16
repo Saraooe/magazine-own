@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zine · Vol.05 · 无心插柳</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+  --btn-bg:       rgba(42,32,24,.08);
+  --btn-border:   rgba(42,32,24,.18);
+  --btn-active:   #8b2e1a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.zine-masthead {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink); color: var(--bg);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 5vw; height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+.masthead-back  { flex-shrink: 0; }
+.masthead-back a { color: var(--bg); text-decoration: none; opacity: .7; transition: opacity .2s; }
+.masthead-back a:hover { opacity: 1; }
+
+@media print { .zine-masthead { display: none; } }
+
+.zine-cover {
+  max-width: 960px; margin-inline: auto;
+  padding: 8vh 5vw 5vh; min-height: 85vh;
+  display: grid; grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+  position: relative; z-index: 2;
+}
+.cover-meta {
+  display: flex; align-items: center; gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px); font-weight: 900;
+  line-height: 1.05; letter-spacing: -.022em;
+  color: var(--ink); margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px); font-weight: 300;
+  color: var(--ink-2); line-height: 1.72;
+  max-width: 50ch; padding-left: 18px;
+  border-left: 3px solid var(--accent); margin-bottom: 5vh;
+}
+
+.cover-image-slot {
+  background: var(--bg-warm); border: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 26vh; margin-bottom: 4vh; overflow: hidden;
+  position: relative;
+}
+.cover-image-slot.empty::after {
+  content: attr(data-label);
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .2em;
+  color: var(--ink-3); text-transform: uppercase;
+}
+
+.cover-footer {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .14em; color: var(--ink-3);
+  border-top: 1px solid var(--rule); padding-top: 2vh; text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px; font-weight: 900; letter-spacing: -.02em;
+  color: var(--accent); opacity: .28; line-height: 1;
+}
+
+.zine-index {
+  max-width: 960px; margin-inline: auto;
+  padding: 6vh 5vw; border-bottom: 1px solid var(--rule);
+  position: relative; z-index: 2;
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 3vh;
+  display: flex; align-items: center; gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid; grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline; gap: 12px;
+  padding: 1.4vh 0; border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+.pull-quote-section {
+  max-width: 960px; margin-inline: auto;
+  padding: 6vh 5vw; border-bottom: 1px solid var(--rule);
+  position: relative; z-index: 2;
+}
+.tracing-card {
+  position: relative; padding: 36px 44px 32px;
+  background: var(--tracing-bg); backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow: 2px 4px 12px rgba(0,0,0,.07), 4px 8px 28px rgba(0,0,0,.05), inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 0; height: 0; border-style: solid; border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; line-height: 1.8; color: var(--ink-2);
+  max-width: 52ch; margin: 0 auto 24px; text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px); font-weight: 700;
+  line-height: 1.28; color: var(--ink); text-align: center;
+  margin-bottom: 20px; letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px; letter-spacing: .2em; color: var(--ink-3);
+  text-align: center; text-transform: uppercase; display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; line-height: 1.82; color: var(--ink-2);
+  max-width: 52ch; margin: 20px auto 0; text-align: center;
+}
+
+.zine-body {
+  max-width: 960px; margin-inline: auto;
+  padding: 5.5vh 5vw; border-bottom: 1px solid var(--rule);
+  position: relative; z-index: 2;
+}
+.zine-body.two-col {
+  display: grid; grid-template-columns: 200px 1fr; gap: 4.5vw; align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+.sidebar-block { border-left: 2px solid var(--rule); padding-left: 14px; margin-bottom: 2.8vh; }
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px; font-weight: 300; color: var(--ink-2); line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block; font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; padding: 2px 7px; margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule); color: var(--ink-3); letter-spacing: .1em;
+}
+
+.article-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px); font-weight: 700;
+  line-height: 1.2; letter-spacing: -.015em; color: var(--ink);
+  margin-bottom: 2vh; padding-top: 1.2vh; border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px); font-style: italic; font-weight: 300;
+  color: var(--ink-2); line-height: 1.72; margin-bottom: 2vh;
+}
+
+.col-wide p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px); color: var(--ink-2);
+  line-height: 1.92; margin-bottom: 0;
+}
+.col-wide p + p { text-indent: 2em; }
+.col-wide h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px); font-weight: 700;
+  color: var(--ink); margin: 3.2vh 0 1.2vh; letter-spacing: -.01em;
+}
+.col-wide strong { font-weight: 600; color: var(--ink); }
+.col-wide mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+.col-wide blockquote {
+  margin: 20px 0; padding: 14px 20px; background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px; font-weight: 300; color: var(--ink-2); line-height: 1.82;
+}
+
+.tracing-appendix {
+  position: relative; max-width: 900px; margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg); backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow: 1px 3px 8px rgba(0,0,0,.06), 3px 6px 20px rgba(0,0,0,.07), inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg); transform-origin: top left;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · 附页'; position: absolute; top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .24em; color: var(--ink-3);
+  text-transform: uppercase; background: var(--bg); padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 0; height: 0; border-style: solid; border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner { transform: rotate(.45deg); transform-origin: top left; }
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px; font-weight: 700; color: var(--ink);
+  margin-bottom: 22px; letter-spacing: -.01em; line-height: 1.2;
+}
+.appendix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 36px; }
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px; font-weight: 300; color: var(--ink-2);
+  line-height: 1.78; margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .18em; color: var(--ink-3);
+  text-transform: uppercase; opacity: .7;
+}
+
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; position: relative; z-index: 2; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--colophon-acc); margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px; font-weight: 300; color: var(--colophon-fg); line-height: 1.78;
+}
+.colophon a {
+  color: var(--colophon-acc); text-decoration: none;
+  border-bottom: 1px dotted var(--colophon-acc);
+}
+.colophon a:hover { opacity: .8; }
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .18em; color: var(--colophon-fg);
+  opacity: .35; text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+@media print {
+  .zine-masthead { display: none; }
+  .col-narrow    { position: static; }
+  .stamp         { opacity: .15; }
+  body           { font-size: 11pt; }
+}
+</style>
+</head>
+
+<body class="t-a">
+
+<!-- ════ Masthead ════ -->
+<header class="zine-masthead">
+  <span class="masthead-back"><a href="index.html">← 返回书架</a></span>
+  <span class="masthead-name">MAGAZINE OWN</span>
+  <span class="masthead-issue">Vol.05 · 2026</span>
+</header>
+
+<!-- ════ L01 · Cover ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.05 · 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">直播实录</span>
+  </div>
+
+  <h1 class="cover-title">无心插柳<br><em>系统化一种荒谬</em></h1>
+
+  <p class="cover-sub">我不知道自己是怎么来到这里的。花了五六年的时间自由职业，同时做旅行团、写付费专栏、做社群、接各种活——身边的人以为我运筹帷幄，其实我超级迷茫。这是一个关于非线性人生的故事，以及那些可以参考的、可复制的经验。</p>
+
+  <div class="cover-image-slot empty" data-label="Image Slot · 3:4"></div>
+
+  <div class="cover-footer">
+    <span>直播文字稿 · 整理排版</span>
+    <span class="stamp">NO.05</span>
+  </div>
+</section>
+
+<!-- ════ L06 · Index ════ -->
+<section class="zine-index">
+  <div class="index-label">目 录</div>
+  <ul class="index-list">
+    <li>
+      <span class="index-num">01</span>
+      <span class="index-title">我不知道自己是怎么来到这里的</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.02</span>
+    </li>
+    <li>
+      <span class="index-num">02</span>
+      <span class="index-title">三个故事：YouTube、旅行社、出书</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.03</span>
+    </li>
+    <li>
+      <span class="index-num">03</span>
+      <span class="index-title">来活就干：什么都做，什么都看</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.05</span>
+    </li>
+    <li>
+      <span class="index-num">04</span>
+      <span class="index-title">来得早的收割来得晚的</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.06</span>
+    </li>
+    <li>
+      <span class="index-num">05</span>
+      <span class="index-title">三种人：痞子、疯子、和那类人</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.07</span>
+    </li>
+    <li>
+      <span class="index-num">06</span>
+      <span class="index-title">成住坏空：尊重周期</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.08</span>
+    </li>
+    <li>
+      <span class="index-num">07</span>
+      <span class="index-title">高启动到高筛选</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.10</span>
+    </li>
+    <li>
+      <span class="index-num">08</span>
+      <span class="index-title">兴趣是最好的燃料</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.11</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ════ L04 · Pull Quote ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+    <p class="pq-small-text">别人看到的是"多多少少都拿到一些结果"，我看到的是"超级迷茫，超级不知道要干啥"。</p>
+    <div class="pq-script">你先做一个机会<br>足够丰盛的人，<br>然后我们再谈<br>往上成仙的事。</div>
+    <span class="pq-cite">—— 无心插柳 · 直播实录</span>
+    <p class="pq-below">金钱像水面的倒影，它倒的是别的东西。真正的权力、资源、周期向上的趋势，用什么来判断？来得早的收割来得晚的，胆大的收割胆小的。</p>
+  </div>
+</section>
+
+<!-- ════ Section 01 · 开场 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">摘要</h4>
+      <p>五六年的自由职业，同时做旅行团、付费专栏、社群、各种活。身边的人以为每一步都规划完整，其实内核是"超级迷茫，超级不知道要干啥"。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">关键词</h4>
+      <p>
+        <span class="sidebar-tag">非线性</span>
+        <span class="sidebar-tag">误读</span>
+        <span class="sidebar-tag">荒谬</span>
+        <span class="sidebar-tag">硬干</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">核心问题</h4>
+      <p>我究竟不知道自己真正的潜力和能力，做什么事最适合自己——我至今都不知道。我就是在硬干。但又确实跑出了一些东西。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 01</div>
+    <h2 class="article-title">我不知道自己是怎么来到这里的</h2>
+    <p class="article-lede">这次直播想跟大家聊一件事：我其实不知道自己是怎么来到这里的。</p>
+
+    <p>花了五六年的时间自由职业，真的就没有再回去上班了。然后在同时做很多很多事情——又在做旅行团，又在写付费的专栏小报童，还在做社群，还在接各种活，又处理各种事。</p>
+
+    <p>身边的人其实对我有非常多的误读。大家会觉得：哦好像你做很多事情，多多少少都能拿到一些结果，起码能让大家看到，起码都能跑通一些业务。那是不是你这个人就是特别运筹帷幄，思考特别清晰，把自己每一步都规划得特别完整？</p>
+
+    <p>这个误读让我觉得非常有意思。因为我自己觉得人生是很荒谬的，是很混沌的。我自己在这个过程中，一直<strong>超级迷茫，超级不知道要干啥</strong>。</p>
+
+    <p>如果大家有迷茫不知道，甚至很痛苦很伤心，这都是完全不用担心的。因为即使我做了这么多事情，我究竟自己所谓真正的潜力、能力，做什么事是最适合自己的，我其实至今都不知道。<mark>我就是在硬干。</mark></p>
+
+    <p>但又确实跑出了一些东西。所以我自己也在重新组织这件事：到底是为什么？如果说我做对了，那么到底做对了什么？想跟大家分享一下这个故事。</p>
+
+    <p>我把这个故事叫做：<strong>无心插柳</strong>。其次叫：<strong>我在系统化一种荒谬</strong>。虽然这件事很奇怪、很荒谬，但我们可以回过头来看，这个过程中哪些事情是可以参考的，或者是可复制的经验。</p>
+  </article>
+</section>
+
+<!-- ════ Section 02 · 三个故事 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">故事一</h4>
+      <p>美国做政治记者 → YouTube看政治脱口秀 → 发现古典脱口秀 → 算法推荐中国吐槽大会 → 投简历进笑果</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">故事二</h4>
+      <p>笑果项目假带薪一个月 → 同事叫我帮做攻略/一起出去玩 → 发现"大家对我有需求" → 种子 → 后来做旅行社</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">故事三</h4>
+      <p>朋友让帮忙卖酒 → 不懂酒 → 想出小册子做赠品 → 费劲做了一年 → 小册流落到编辑手里 → 编辑说可以出书</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 02</div>
+    <h2 class="article-title">三个故事：YouTube、旅行社、出书</h2>
+    <p class="article-lede">我挑的都是一些能说的故事。它们很具体、很直接，但它们最后的结论和逻辑是一样的——我其实从来不知道自己在干嘛。</p>
+
+    <h3>故事一：从YouTube到脱口秀</h3>
+    <p>最早为什么开始进入笑果？原因其实是我有一段时间在美国做政治类记者，一直在报道政治新闻。因为做政治新闻，就开始在YouTube上看政治脱口秀，什么 Jon Stewart 那种。</p>
+
+    <p>看着看着我就想说，那脱口秀到底是什么东西？在YouTube上随便刷，刷到了传统的古典脱口秀。那个时候就非常爱看 Louis CK，很爱看那个剧，顺着又开始看宋飞、看 George Carlin 这些人。YouTube 就根据这个又给我推了——哦现在中国也在做脱口秀，当时就是吐槽大会第一季。</p>
+
+    <p>我在YouTube上面看到了第一季，就说哦原来中国也在做这个东西，好有意思啊。然后我才意识到说，这个东西可能能跟我的职业也有关联，因为他们还在非常早期的阶段，说不定还缺人。后来就投了简历进了公司。</p>
+
+    <blockquote>我现在去想这件事情是很不线性的，很奇怪的。我是从上网，上到了这家公司。我没有读相关的专业，也没有做任何相关的事情，没有任何脱口秀经验、文娱经验。但是蠢蠢的就被算法推到了这里。</blockquote>
+
+    <h3>故事二：从带薪假期到旅行社</h3>
+    <p>第二个故事是怎么开始做旅行社的。笑果最早的时候，一年就两个节目，吐槽大会和脱口秀大会。做完两个节目中间有很长的阶段没有太多工作量，我们那个时候同事会有项目假，最长的时候有一个月，带薪的。</p>
+
+    <p>我的老板、前同事甚至艺人会说，你之前从美国回来的，经常出去旅游，你不然帮我做做攻略，或者推荐一些玩的地方，甚至叫我一起出去玩。那时候因为带人经常出去玩的这个经验，我才意识到说——<strong>这个事儿是大家真正对我有需求的</strong>。</p>
+
+    <p>平常除了项目假，其实有一些人是从来不找我的。我就意识到说，原来我还可以用这种方式给别人提供价值。所以后来开始做社群、做小报童的时候，大家说还有什么可以跟你产生连接的方式，我就很自然地想到了做旅行社。但如果没有之前免费带大家出去玩这个事儿，也不会有后续发生的一切。</p>
+
+    <h3>故事三：从卖酒到出书</h3>
+    <p>怎么说出书这件事也很神奇。我有一个朋友做酒的，他说你帮我卖酒吧。我说行，但我又不懂酒。那我要不出一本小册子，把大家比较喜欢的那些文章结集，作为赠品送给大家，这样酒就好卖一点。</p>
+
+    <p>那个事情当时只是说了想法，但我没有想到这件事给我带来了如此之大的折磨。做那个小册的过程极度辛苦，花了差不多一年多的时间。既要写新内容，又要做排版设计，还要想酒怎么做、选哪款酒。</p>
+
+    <p>但这件事情最好的点就是——那本小册出版之后，送给了很多朋友。其中一本流落到了一个编辑朋友那里，他说你写的东西也挺适合出版的，我们也可以把它做成一本书。这个可能是两三年之前的事情，非常草蛇灰线，变成了一年后大家会看到的书。</p>
+
+    <blockquote>如果当时没有做酒，没有特别费劲地做小册，这些东西可能都不会真正有渠道传达出去。它是以实体的形式被人看到，大家才会很自然地觉得——说不定我可以帮你去做出版。这些东西都是非线性的，我之前从来没有想过。</blockquote>
+  </article>
+</section>
+
+<!-- ════ Section 03 · 来活就干 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">筛选逻辑</h4>
+      <p>1. 有点意思<br>2. 不造成太大伤害<br>3. 没什么人干<br>4. 不是"低价"找你</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">冲浪的例子</h4>
+      <p>身边有人冲浪吗？发现没有。那这个经验在朋友圈内就是独一无二的。跑去冲了。并不是因为喜欢冲浪，而是因为"没人干"。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">木工的例子</h4>
+      <p>没人学的东西。去学了。认识了 Kevin。之后再也没聊过木工，但连线之后聊得非常好。美妙的缘分都通过奇怪的连接达成。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 03</div>
+    <h2 class="article-title">来活就干：什么都做，什么都看</h2>
+    <p class="article-lede">很长一段时间，这个事只要稍微有点意思，对我不造成太大伤害，我就会干。</p>
+
+    <p>我基本上不大去太考虑现实因素——户口啊、薪资啊这些，我考虑得相对来说很少。疯疯癫癫的。</p>
+
+    <p>来活就干，但也有简单的筛选：<strong>第一</strong>，这个事稍微有点意思；<strong>第二</strong>，对我不造成太大伤害；<strong>第三</strong>，没什么其他人干。如果大部分人已经在干了，或者找我的这个人只是觉得在我这会有更低的价格，那我可能就不干了。</p>
+
+    <p>比如说之前去冲浪，就是这个逻辑。我想了一下身边有人冲浪吗？发现好像没有。那这件事情在我的朋友圈或者同温层内，没有人能获得这样的经验。我的这个经验相对来说就是独一无二的，那我就跑去冲了。</p>
+
+    <blockquote>其实我并没有那么喜欢冲浪，也没有觉得这个能对我带来多大价值。但是——没人干。</blockquote>
+
+    <h3>为什么做不搭嘎的事？</h3>
+    <p>我是一个相对普通人家的小孩，父母都不是经商的，没办法给我提供太多社会经验。我到酒局上是不会说话的，看到一个商业是没有概念这个业务是怎么做成的。</p>
+
+    <p>这样的社会经验怎么获得？就是<mark>去做一些跟你的日常生活或者日常工作完全不搭嘎的事情</mark>。恰恰是因为你不搭噶，所以很多人会非常愿意开放自己，开放他们的数据点和感受给你——因为知道你不可能去抢他们的活，你也不是专业的。</p>
+
+    <p>你就在这个不断跑的过程中，能够积累非常有价值而且很真实的社会经验。你见过足够多的失败案例和完成过的周期，你就不会被一些行业、人或者叙事的光环所打动。</p>
+
+    <h3>同温层的局限</h3>
+    <p>你怎么去找到一些非常奇怪的信息，和大家日常不讨论的东西？就是通过一些诡异的兴趣，和什么都看、什么都玩、什么人都聊两句。</p>
+
+    <p>我是完整体验过这个周期的。我最早从 YouTube 知道笑果的时候，那家公司还没有真正爆发，脱口秀还是一个很小的亚文化。那个时候进入公司非常容易，很快就能做内核业务。到后来，做到脱口秀大会第二季的时候，进来的人精英属性变得更强了。到第三季第四季，如果我那个时候再进入公司，已经绝无可能再去做我当时能做的职位。</p>
+  </article>
+</section>
+
+<!-- ════ Section 04 · 来得早的收割来得晚的 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">两个逻辑</h4>
+      <p>1. 来得早的收割来得晚的<br>2. 胆大的收割胆小的</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">金钱的滞后性</h4>
+      <p>金钱是虚幻的，像水面的倒影。真正的权力、资源、周期向上的趋势，不是用金钱来判断的。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">判断指标</h4>
+      <p>怎么看一个行业到顶了？看有没有很多清华北大的人进入。这类学生最精致利己，最喜欢在行业看起来最高的时候进入。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 04</div>
+    <h2 class="article-title">来得早的收割来得晚的</h2>
+    <p class="article-lede">金钱这个东西是很虚幻的，它就像水面的倒影，它倒的是别的东西。</p>
+
+    <p>正是因为我不大去考虑金钱、功利、现实这些事情，所以我进入一个行业的始点一般来说还是相对超前的。行业在发展早期，还没有办法给你提供非常好的资源和报酬，但那个时候反而是你潜力能够迸发得比较大的时期。</p>
+
+    <p>金钱或者功利主义这些东西有相当大的滞后性。我后面深一点理解这件事情：<mark>真正的权利也好，资源也好，周期向上的趋势也好，用什么来判断？</mark></p>
+
+    <p>大概总结了两个逻辑：</p>
+
+    <p><strong>第一个：来得早的收割来得晚的。</strong></p>
+    <p><strong>第二个：胆大的收割胆小的。</strong></p>
+
+    <p>技术能力、教育背景、软技能——尤其是我看到过很多早期进入的行业，那些东西都不是特别重要。反而是：你怎么知道这个行业在起盘、在往前走？以及你在当下就能迅速跳进去？以及你能够在这个行业很早期、大家都很模糊、没有确定性的时候，去说"这个事我想干、我能干、我有这个胆"？</p>
+
+    <h3>主流是最后一个承认趋势的</h3>
+    <p>当一个行业慢慢往上走的时候，实际上很多人对他都是很抗拒、很反对，会对它有非常多的负面舆论。那其实有时候反而你去看整个舆论的风向，能够帮你判断这个行业是否还在很早期。</p>
+
+    <blockquote>当时做脱口秀，我们在沙漠上种玫瑰。为什么是沙漠？因为大家觉得这个东西是舶来品，跟中国水土不符，大家都不好好上班，出来做这种夜生活的东西。但正是因为这个事情对大家来说有风险、有问题，你进去的那个时间差不多才是对的。</blockquote>
+
+    <p>我现在甚至有点路径依赖——老去找那种有点问题的行业，大家不怎么喜欢，对它有很多刻板印象，觉得正经人都不会做的，我就会觉得说这个事我想来试一试。</p>
+  </article>
+</section>
+
+<!-- ════ Section 05 · 三种人 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">三种人</h4>
+      <p>1. 痞子 — 有匪气，纯靠胆量<br>2. 疯子 — 神经病，扔掉好工作，靠兴趣和感觉做重大决策<br>3. 那类人 — 自成一派，猛劲冲进去</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">反而抓不住趋势的人</h4>
+      <p>质感特别好的美女帅哥。从小被好环境滋养，要舍弃的东西太多，抛弃原来东西更不容易。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">敬畏</h4>
+      <p>看到一个行业里全是那种自成一派的人，我就说：这个行业应该不错。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 05</div>
+    <h2 class="article-title">三种人：痞子、疯子、和那类人</h2>
+    <p class="article-lede">在一个行业早期会经常出现三种人。</p>
+
+    <p><strong>第一种叫痞子。</strong>他有那种匪气，完全不害怕任何东西，在所有行业里面都是最早进去的，纯靠胆量在往前跑的人。</p>
+
+    <p><strong>第二种叫做疯子。</strong>我觉得我就是疯子。你原来好好地工作不做，把它说扔就扔。不断地依靠你的兴趣和爱好和一些感觉，来做非常重大的人生决策，把这个事搞得特别轻。</p>
+
+    <p><strong>第三种</strong>——反正你们身边肯定多多少少都有这样的人。就是那种自成一派的，往往非常能够抓到行业很前期的趋势。他们完全就是靠着一股猛劲冲进去，往往也能拿到还不错的结果。</p>
+
+    <p>反而是那些质感特别好的美女帅哥，因为要舍弃的东西特别多，从小到大都是被很好的环境和别人的赞扬所滋养大的，所以去抛弃自己原来的东西会更不容易。</p>
+
+    <blockquote>我对自成一派的人是有非常大的敬畏和尊重之心的。我看到一个行业里如果全是这类人，我就说——这个行业应该不错。</blockquote>
+
+    <h3>什么人能修这个流派？</h3>
+    <p>这条东西好的部分就是——任何人都可以修。你可以把自己变成一个叛逆反抗型，以及极其勤奋、极其被热爱驱动的人。这件事是可以做到的。</p>
+
+    <p>当然你也得有足够的愿力。但它不是那种你一生当中完全做不到的事。很多流派你根本就不可能去修，没这条件、没这水平、没这资源。但这个流派，<mark>任何人都可以玩这个游戏。</mark></p>
+  </article>
+</section>
+
+<!-- ════ Section 06 · 成住坏空 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">四阶段</h4>
+      <p><strong>成</strong> — 疯狂打点，画线<br><strong>住</strong> — 筛选、放大、超越<br><strong>坏</strong> — 迅速理解，不要太多情绪<br><strong>空</strong> — 享受空间，想下一阶段的成</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">关键认知</h4>
+      <p>不能一直有执着说之前在"成"的状态多么美好。那是对周期的不尊重。我们是多么渺小的蝼蚁众生，怎么可能打断和对抗这个周期？</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">止盈</h4>
+      <p>看到这支票有非常好的势头，但你没有下车，到它往下走的时候会产生执着和痛苦。能成功逃顶的人，不会被光环所迷惑。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 06</div>
+    <h2 class="article-title">成住坏空：尊重周期</h2>
+    <p class="article-lede">万事万物都有它的周期性。我们首先要承认它一定存在。</p>
+
+    <p>佛教里有"成住坏空"这个概念。万事万物都有周期性，我们首先要承认它一定存在。这件事、这个行业一定会出现坏空的。那我们现在到底在它哪个阶段？我们才能评判要花多少力气去做这件事。</p>
+
+    <h3>不同阶段不同打法</h3>
+    <p>有些传统行业，比如电影或者很重资产的行业，可能已经进入坏空阶段了。坏空还是有很多可以做的事情，甚至有一些红利可以拿。但坏空的阶段做事情的逻辑跟成住是不一样的。你不能用"成"的逻辑——疯狂飞跑、占位置——去思考坏空。</p>
+
+    <p>我的玩法是：<strong>成的时候</strong>疯狂打点；<strong>住的时候</strong>不断想怎么筛选、放大、超越，能不打的点就不打了；<strong>坏的时候</strong>迅速理解，不要有太多情绪；<strong>空的时候</strong>想怎么做下一个阶段的成，或者享受这个空间——我彻底享受现在什么都没有的状态。</p>
+
+    <blockquote>不能一直有执着说之前在"成"的状态多么美好。那是对周期的不尊重。我们是多么渺小的蝼蚁众生，怎么可能去打断和对抗这个周期呢？</blockquote>
+
+    <h3>你要经历过周期才能理解周期</h3>
+    <p>我自己有明显的感知——你要经历过周期才能够理解周期。同样的资产，我可能要经历两个周期，八九年的时间，才能抓准什么时候是熊市，什么时候是牛市。什么时候虽然无人问津，但你其实该买了、该定投了；什么时候看起来人生起飞，所有人都说还能再两倍、再四倍，但那个时候你该跑了。</p>
+
+    <p>这个道理所有人都能理解——低买高卖嘛。但你真的要完整经历过那个周期，跟足够多在行业里资深内核的人聊过天，完全理解这个资产的运行逻辑，才能在周期里每一个状态都找到合适的位置和发力的点位。</p>
+  </article>
+</section>
+
+<!-- ════ Section 07 · 高启动到高筛选 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">两个阶段</h4>
+      <p><strong>高启动</strong>：疯狂打洞，画点，connecting the dots<br><strong>高筛选</strong>：已经有足够多的点，可以开始画图</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">早期不能做减法</h4>
+      <p>数据点不足，闭环通路还没有足够多重复，不可能完成战略这件事。甚至你都没办法去想什么是战略，因为你根本看不到足够多的东西。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">这条路的特点</h4>
+      <p>极其快，超级快。如果你没什么背景和资源，纯小白、普通家庭，几乎想不到更快的路线。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 07</div>
+    <h2 class="article-title">高启动到高筛选</h2>
+    <p class="article-lede">你在启势的时候是高启动，疯狂地在打洞。上升阶段再进入高筛选。</p>
+
+    <p>我大概同时有五六个感兴趣的亚文化或行业赛道。打动式的到处 connect the dots 的方式实际上很花时间——每件事情你都想多多少少了解它的业务逻辑，想认识它里面比较内核的人。你基本上就没有什么正经时间可以放松休息了。</p>
+
+    <p>我到后面跟朋友去玩的方式都是说：我现在在接的这个活，你可以跟我一起来参加；或者我现在要认识这个人，你跟我一起去吧。最后把所有的朋友关系和休闲时间全部都变成了业务的一部分。</p>
+
+    <h3>什么时候用这个方法？</h3>
+    <p>这个方法有使用时机：<mark>在你早期势能刚刚开始创建的时候</mark>。你在早期势能在增加的时候，没有办法只能靠"增伤"的方式。</p>
+
+    <p>如果在一开始势能创建的时候，就抱着"我一定要 work-life balance"或者"我现在就开始做减法"的心态，你是非常难在你很年轻的时候就完成真正意义上的站住生态位、优势价值积累的。</p>
+
+    <blockquote>你看到这种极其黑暗的、恐怖的、混乱的、酒神迷幻的局面，你就会知道——那我现在是一个积累早期势能的时机。我就是以身试毒，亲自进入这种混乱当中。</blockquote>
+
+    <h3>数据点不够，不可能有战略</h3>
+    <p>一旦势能创建了之后，我们当然可以去说休息、健康、减伤、有更多思考空白。但在早期你的数据点不足、闭环通路还没有足够多重复的情况下，你根本不可能有足够的数据经验去完成战略这件事。你走的路是一段黑暗的路程。</p>
+
+    <p>所以这个超越、上升、变得更挑剔、变得更明确，是没有办法在早期硬完成的。你必须通过疯狂打动的方式，去先把价值、别人对你的信誉口碑、以及你的生态位积累起来。</p>
+
+    <p><strong>先获得足够多的信息，然后我们再谈往上成仙。</strong></p>
+  </article>
+</section>
+
+<!-- ════ Section 08 · 兴趣是最好的燃料 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">免费燃料</h4>
+      <p>兴趣是免费的燃料。别人被钱和资源吸引，你被兴趣驱动。免费的燃料更香、燃得更久、更优质。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">高精力的来源</h4>
+      <p>不是天生的，不是运动锻炼的。是痛苦锤炼出来的。青春期非常多的痛苦难受给了我巨大的张力——一直想要反抗、想要逃走、想要对立。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">不推荐所有人</h4>
+      <p>这个流派对气血和生命力、对这个世界的叛逆反抗性要求非常高。低精力人群不要使用这个方法。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 08</div>
+    <h2 class="article-title">兴趣是最好的燃料</h2>
+    <p class="article-lede">你要不是兴趣，谁给你免费干活？谁又给你爱发电？你有病吗？</p>
+
+    <p>一开始要有非常强的生命力和对这个事的热情，所以只能是纯兴趣干嘛。你要不是兴趣，谁给你免费干活？谁又给你爱发电？</p>
+
+    <p>但好处就是——<mark>兴趣是一个免费的燃料</mark>。最后你能在这个行业做到多好、做到多久，都是看你这个免费的燃料能够燃多久。别人被钱和一些资源吸引，你免费的这个燃料更香、燃得更久、更优质。你就是天然能跑赢别人。</p>
+
+    <h3>高精力从哪来？</h3>
+    <p>有人问我高精力是天生的还是运动锻炼出来的。我现在理解了——<strong>是痛苦锤炼出来的</strong>。</p>
+
+    <p>我在青春期有过非常多的痛苦难受，那个东西给了我非常大的张力。你可以把它形容为有人和事在虐我，与此同时我也一直在虐我自己。我一直想要反抗、想要逃走、想要对立。这个东西给你拉起来的就是一个巨大的能量源，能带你走非常非常远。</p>
+
+    <blockquote>如果你每天都高高兴兴的，对现在的生活非常满意，对身边的产品、电视上播的内容、手机上刷到的可爱小动物都觉得挺不错的——那你其实没有那么多的愤怒和痛苦，就很难有这个能量。</blockquote>
+
+    <h3>这条路极快但极难</h3>
+    <p>这条路是非常非常难走的，但是它极其快、超级快。如果你是一个没有什么背景和资源、纯纯小白、普通家庭、没有任何二代资源或者没人带你的人——我几乎想不到更快的路线。</p>
+
+    <p>它甚至在很多情况下是很危险的。它在早期势能创建的时候是有效的，但一旦势能创建之后，如果你还在不停打动，大脑非常难停下来，执行做得很快以至于没有太多时间用来思考战略。这种累的状态非常容易形成路径依赖。</p>
+
+    <p>所以——<strong>势能创建了之后，记得做减法。记得休息。记得养好气血。</strong></p>
+  </article>
+</section>
+
+<!-- ════ Tracing Appendix ════ -->
+<div class="tracing-appendix">
+  <div class="appendix-inner">
+    <div class="appendix-title">附言 · Afterword</div>
+
+    <div class="appendix-grid">
+      <div class="appendix-block">
+        <div class="appendix-label">核心公式</div>
+        <p>高启动（疯狂打点）→ 高筛选（画图、超越）<br>来得早的收割来得晚的<br>胆大的收割胆小的</p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">行业周期四阶段</div>
+        <p>成 — 疯狂打点，connecting the dots<br>住 — 筛选、放大、超越<br>坏 — 迅速理解，不要情绪<br>空 — 享受空间，准备下一个"成"</p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">三种人</div>
+        <p>1. 痞子 — 匪气，纯靠胆量<br>2. 疯子 — 扔掉一切，靠兴趣和感觉<br>3. 那类人 — 自成一派，猛劲冲</p>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">适用条件</div>
+        <p>· 普通家庭、无背景资源<br>· 高精力、高生命力<br>· 对世界有叛逆和反抗性<br>· 早期势能积累阶段</p>
+      </div>
+    </div>
+
+    <div class="appendix-rule"></div>
+    <div class="appendix-fine">本附页以硫酸纸印刷 · Vol.05 · 2026</div>
+  </div>
+</div>
+
+<!-- ════ Colophon ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5>关于本期</h5>
+        <p>一场直播的文字整理——讲述非线性人生的荒谬与系统化。从YouTube算法到脱口秀，从带薪假期到旅行社，从卖酒到出书，每一个转折都是无心插柳。</p>
+      </div>
+      <div>
+        <h5>出版信息</h5>
+        <p>2026 · Magazine Own<br>直播实录 · 整理排版<br>牛皮纸档案主题</p>
+      </div>
+      <div>
+        <h5>设计信息</h5>
+        <p>Kraft Paper Archive theme<br>Noto Serif SC + Dancing Script<br><a href="index.html">← 返回杂志架</a></p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">© 2026 · MAGAZINE OWN · All Rights Reserved</p>
+  </div>
+</footer>
+
+</body>
+</html>

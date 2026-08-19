@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zine · Vol.06 · 三个信仰</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+  --btn-bg:       rgba(42,32,24,.08);
+  --btn-border:   rgba(42,32,24,.18);
+  --btn-active:   #8b2e1a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: .03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.zine-masthead {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--ink); color: var(--bg);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 5vw; height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .16em; text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+.masthead-back  { flex-shrink: 0; }
+.masthead-back a { color: var(--bg); text-decoration: none; opacity: .7; transition: opacity .2s; }
+.masthead-back a:hover { opacity: 1; }
+
+@media print { .zine-masthead { display: none; } }
+
+.zine-cover {
+  max-width: 960px; margin-inline: auto;
+  padding: 8vh 5vw 5vh; min-height: 85vh;
+  display: grid; grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+  position: relative; z-index: 2;
+}
+.cover-meta {
+  display: flex; align-items: center; gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px); font-weight: 900;
+  line-height: 1.05; letter-spacing: -.022em;
+  color: var(--ink); margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px); font-weight: 300;
+  color: var(--ink-2); line-height: 1.72;
+  max-width: 50ch; padding-left: 18px;
+  border-left: 3px solid var(--accent); margin-bottom: 5vh;
+}
+
+.cover-footer {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .14em; color: var(--ink-3);
+  border-top: 1px solid var(--rule); padding-top: 2vh; text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px; font-weight: 900; letter-spacing: -.02em;
+  color: var(--accent); opacity: .28; line-height: 1;
+}
+
+.zine-index {
+  max-width: 960px; margin-inline: auto;
+  padding: 6vh 5vw; border-bottom: 1px solid var(--rule);
+  position: relative; z-index: 2;
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 3vh;
+  display: flex; align-items: center; gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid; grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline; gap: 12px;
+  padding: 1.4vh 0; border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+.pull-quote-section {
+  max-width: 960px; margin-inline: auto;
+  padding: 6vh 5vw; border-bottom: 1px solid var(--rule);
+  position: relative; z-index: 2;
+}
+.tracing-card {
+  position: relative; padding: 36px 44px 32px;
+  background: var(--tracing-bg); backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow: 2px 4px 12px rgba(0,0,0,.07), 4px 8px 28px rgba(0,0,0,.05), inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 0; height: 0; border-style: solid; border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; line-height: 1.8; color: var(--ink-2);
+  max-width: 52ch; margin: 0 auto 24px; text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px); font-weight: 700;
+  line-height: 1.28; color: var(--ink); text-align: center;
+  margin-bottom: 20px; letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px; letter-spacing: .2em; color: var(--ink-3);
+  text-align: center; text-transform: uppercase; display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px; line-height: 1.82; color: var(--ink-2);
+  max-width: 52ch; margin: 20px auto 0; text-align: center;
+}
+
+.zine-body {
+  max-width: 960px; margin-inline: auto;
+  padding: 5.5vh 5vw; border-bottom: 1px solid var(--rule);
+  position: relative; z-index: 2;
+}
+.zine-body.two-col {
+  display: grid; grid-template-columns: 200px 1fr; gap: 4.5vw; align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+.sidebar-block { border-left: 2px solid var(--rule); padding-left: 14px; margin-bottom: 2.8vh; }
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px; font-weight: 300; color: var(--ink-2); line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block; font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; padding: 2px 7px; margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule); color: var(--ink-3); letter-spacing: .1em;
+}
+
+.article-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px); font-weight: 700;
+  line-height: 1.2; letter-spacing: -.015em; color: var(--ink);
+  margin-bottom: 2vh; padding-top: 1.2vh; border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px); font-style: italic; font-weight: 300;
+  color: var(--ink-2); line-height: 1.72; margin-bottom: 2vh;
+}
+
+.col-wide p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px); color: var(--ink-2);
+  line-height: 1.92; margin-bottom: 0;
+}
+.col-wide p + p { text-indent: 2em; }
+.col-wide h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px); font-weight: 700;
+  color: var(--ink); margin: 3.2vh 0 1.2vh; letter-spacing: -.01em;
+}
+.col-wide strong { font-weight: 600; color: var(--ink); }
+.col-wide mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+.col-wide blockquote {
+  margin: 20px 0; padding: 14px 20px; background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px; font-weight: 300; color: var(--ink-2); line-height: 1.82;
+}
+
+.tracing-appendix {
+  position: relative; max-width: 900px; margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg); backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow: 1px 3px 8px rgba(0,0,0,.06), 3px 6px 20px rgba(0,0,0,.07), inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg); transform-origin: top left;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · 附页'; position: absolute; top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .24em; color: var(--ink-3);
+  text-transform: uppercase; background: var(--bg); padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 0; height: 0; border-style: solid; border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner { transform: rotate(.45deg); transform-origin: top left; }
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px; font-weight: 700; color: var(--ink);
+  margin-bottom: 22px; letter-spacing: -.01em; line-height: 1.2;
+}
+.appendix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 36px; }
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 6px; padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px; font-weight: 300; color: var(--ink-2);
+  line-height: 1.78; margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px; letter-spacing: .18em; color: var(--ink-3);
+  text-transform: uppercase; opacity: .7;
+}
+
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; position: relative; z-index: 2; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--colophon-acc); margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px; font-weight: 300; color: var(--colophon-fg); line-height: 1.78;
+}
+.colophon a {
+  color: var(--colophon-acc); text-decoration: none;
+  border-bottom: 1px dotted var(--colophon-acc);
+}
+.colophon a:hover { opacity: .8; }
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px; letter-spacing: .18em; color: var(--colophon-fg);
+  opacity: .35; text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+@media print {
+  .zine-masthead { display: none; }
+  .col-narrow    { position: static; }
+  .stamp         { opacity: .15; }
+  body           { font-size: 11pt; }
+}
+</style>
+</head>
+
+<body class="t-a">
+
+<!-- ════ Masthead ════ -->
+<header class="zine-masthead">
+  <span class="masthead-back"><a href="index.html">&larr; 返回书架</a></span>
+  <span class="masthead-name">MAGAZINE OWN</span>
+  <span class="masthead-issue">Vol.06 &middot; 2026</span>
+</header>
+
+<!-- ════ L01 · Cover ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.06 &middot; 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">直播实录</span>
+  </div>
+
+  <h1 class="cover-title">无心插柳<br><em>三个信仰</em></h1>
+
+  <p class="cover-sub">一场从七点半聊到十点半的直播。从 YouTube 算法到脱口秀，从带薪假期到旅行社，从卖酒到出书——每一个转折都是无心插柳。来得早的收割来得晚的，胆大的收割胆小的。以及三个支撑一切的信仰：人生取决于低概率事件，凡注意力必长出骨骼，这个世界是非常善意的。</p>
+
+  <div class="cover-footer">
+    <span>直播文字稿 &middot; 整理排版</span>
+    <span class="stamp">NO.06</span>
+  </div>
+</section>
+
+<!-- ════ L06 · Index ════ -->
+<section class="zine-index">
+  <div class="index-label">目 录</div>
+  <ul class="index-list">
+    <li>
+      <span class="index-num">01</span>
+      <span class="index-title">我不知道自己是怎么来到这里的</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.02</span>
+    </li>
+    <li>
+      <span class="index-num">02</span>
+      <span class="index-title">三个故事：YouTube、旅行社、出书</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.03</span>
+    </li>
+    <li>
+      <span class="index-num">03</span>
+      <span class="index-title">来活就干：什么都做，什么都看</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.05</span>
+    </li>
+    <li>
+      <span class="index-num">04</span>
+      <span class="index-title">来得早的收割来得晚的</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.07</span>
+    </li>
+    <li>
+      <span class="index-num">05</span>
+      <span class="index-title">三种人：痞子、疯子、和那类人</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.08</span>
+    </li>
+    <li>
+      <span class="index-num">06</span>
+      <span class="index-title">成住坏空：尊重周期</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.10</span>
+    </li>
+    <li>
+      <span class="index-num">07</span>
+      <span class="index-title">高启动到高筛选</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.11</span>
+    </li>
+    <li>
+      <span class="index-num">08</span>
+      <span class="index-title">不敢花钱 = 不相信价值创造</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.13</span>
+    </li>
+    <li>
+      <span class="index-num">09</span>
+      <span class="index-title">开创者定义赛道</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.15</span>
+    </li>
+    <li>
+      <span class="index-num">10</span>
+      <span class="index-title">信仰一：人生取决于低概率事件</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.16</span>
+    </li>
+    <li>
+      <span class="index-num">11</span>
+      <span class="index-title">信仰二：凡注意力必长出骨骼</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.17</span>
+    </li>
+    <li>
+      <span class="index-num">12</span>
+      <span class="index-title">信仰三：这个世界是非常善意的</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.19</span>
+    </li>
+    <li>
+      <span class="index-num">13</span>
+      <span class="index-title">维持信念：求神拜佛与大模型</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.20</span>
+    </li>
+    <li>
+      <span class="index-num">14</span>
+      <span class="index-title">尾声：旅行团与魔法时刻</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.22</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ════ L04 · Pull Quote ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+    <p class="pq-small-text">别人看到的是"多多少少都拿到一些结果"，我看到的是"超级迷茫，超级不知道要干啥"。</p>
+    <div class="pq-script">彪悍的人生<br>不需要计划。</div>
+    <span class="pq-cite">&mdash; 无心插柳 &middot; 直播实录</span>
+    <p class="pq-below">你先做一个机会足够丰盛的人，然后我们再谈往上成仙的事。来得早的收割来得晚的，胆大的收割胆小的。金钱像水面的倒影，它倒的是别的东西。</p>
+  </div>
+</section>
+
+<!-- ════ Section 01 · 开场 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">摘要</h4>
+      <p>五六年的自由职业，同时做旅行团、付费专栏、社群、各种活。身边的人以为每一步都规划完整，其实内核是"超级迷茫，超级不知道要干啥"。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">关键词</h4>
+      <p>
+        <span class="sidebar-tag">非线性</span>
+        <span class="sidebar-tag">误读</span>
+        <span class="sidebar-tag">荒谬</span>
+        <span class="sidebar-tag">硬干</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">核心问题</h4>
+      <p>我究竟不知道自己真正的潜力和能力，做什么事最适合自己——我至今都不知道。我就是在硬干。但又确实跑出了一些东西。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 01</div>
+    <h2 class="article-title">我不知道自己是怎么来到这里的</h2>
+    <p class="article-lede">这次直播想跟大家聊一件事：我其实不知道自己是怎么来到这里的。</p>
+
+    <p>花了五六年的时间自由职业，真的就没有再回去上班了。同时在做很多很多事情——又在做旅行团，又在写付费的专栏小报童，还在做社群，还在接各种活，又处理各种事。</p>
+
+    <p>身边的人其实对我有非常多的误读。大家会觉得：好像你做很多事情，多多少少都能拿到一些结果，起码能让大家看到，起码都能跑通一些业务。那是不是你这个人就是特别的运筹帷幄，思考特别的清晰，把自己每一步都规划得特别的完整？</p>
+
+    <p>我还会收到这种询问或者误读，包括之前帮大家做一些职业咨询，大家就说你之前给自己规划的这么好，你也规划规划我呗。这个误读让我觉得非常有意思。因为我自己觉得人生是很荒谬的，是很混沌的。我自己在这个过程中，一直<strong>超级迷茫，超级不知道要干啥</strong>。</p>
+
+    <p>如果大家有迷茫不知道，甚至很痛苦很伤心，这都是完全不用担心的。因为即使我做了这么多事情，我究竟自己所谓真正的潜力、能力，做什么事是最适合自己的，我其实至今都不知道。<mark>我就是在硬干。</mark></p>
+
+    <p>但又确实跑出了一些东西。所以我自己也在重新组织这件事：到底是为什么？如果说我做对了，那么到底做对了什么？</p>
+
+    <p>我把这个故事叫做：<strong>无心插柳</strong>。其次叫：<strong>我在系统化一种荒谬</strong>。虽然这件事很奇怪、很荒谬，但我们可以回过头来看，这个过程中哪些事情是可以参考的，或者是可复制的经验。</p>
+  </article>
+</section>
+
+<!-- ════ Section 02 · 三个故事 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">故事一</h4>
+      <p>美国做政治记者 &rarr; YouTube看政治脱口秀 &rarr; 发现古典脱口秀 &rarr; 算法推荐中国吐槽大会 &rarr; 投简历进笑果</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">故事二</h4>
+      <p>笑果项目假带薪一个月 &rarr; 同事叫我帮做攻略/一起出去玩 &rarr; 发现"大家对我有需求" &rarr; 种子 &rarr; 后来做旅行社</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">故事三</h4>
+      <p>朋友让帮忙卖酒 &rarr; 不懂酒 &rarr; 想出小册子做赠品 &rarr; 费劲做了一年 &rarr; 小册流落到编辑手里 &rarr; 编辑说可以出书</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 02</div>
+    <h2 class="article-title">三个故事</h2>
+    <p class="article-lede">我挑的都是一些能说的故事。这些故事都是很具体的、很直接的。</p>
+
+    <h3>故事一：YouTube 到脱口秀</h3>
+
+    <p>之前在美国的时候是做记者的，做政治类的记者。因为做政治性的新闻，就开始在 YouTube 上面看政治脱口秀。看着看着我就想说那脱口秀到底是什么东西，就在 YouTube 上又随便刷，刷到了传统的古典脱口秀——那时候就非常爱看 Louis CK，很爱看那个鲁豫的剧，顺着这个又开始看像宋飞、George Carlin 这些人。</p>
+
+    <p>YouTube 就根据这个又给我推了现在中国也在做脱口秀，当时就是吐槽大会第一季。我就说原来中国也在做这个东西，好有意思。我从那个时候就开始很疯狂地看 YouTube，基本上把比较好玩的亚文化的东西都看的八九不离十。</p>
+
+    <p>后来我才意识到说这个东西可能能跟我的职业也有关联——我发现他们还在非常早期的阶段，说不定还缺人。所以后来投了简历就进了这个公司。</p>
+
+    <blockquote>我现在再去想这件事情是很不线性的，是很奇怪的。我从相当于是上网上到了这家公司。我也没有读相关的专业，我也没有做任何相关的事情，我是没有任何脱口秀经验，没有任何文娱的经验的，但是纯纯的就被算法推到了这里。</blockquote>
+
+    <h3>故事二：带薪假期到旅行社</h3>
+
+    <p>第二个故事就是我是怎么开始做旅行社的。最早的时候在笑果，一年就两个节目，一个叫吐槽大会一个叫脱口秀大会。做完这两个节目的中间阶段有很长的时间是没有太多工作量的——大概最长的时候是有一个月，而且是带薪的。</p>
+
+    <p>同事就会想说项目假他们要去哪里旅游。会有很多前老板前同事，甚至艺人他们会说你之前是从美国回来的，你要不然是帮我做做攻略，或者帮我推荐一些玩的地方，甚至叫我一起出去玩。</p>
+
+    <p>因为带人经常出去玩击掌的这个经验，我才意识到说这个事儿是大家真正对我有需求的。平常除了项目假其实有一些人是从来不找我的。我就意识到说原来我还可以做这件事情，就在心底里埋了一个小小的种子。</p>
+
+    <p>后来就开始做社群、做小报童，大家再说还有什么可以跟你产生连接的方式，我就很自然地想到了做旅行社。但是如果没有之前免费带大家出去玩，说实话也不会有后续发生的一切。</p>
+
+    <h3>故事三：卖酒到出书</h3>
+
+    <p>出书这件事情也很神奇。我有一个朋友他是做酒的，他说那你帮我卖酒吧。我说行我帮你卖酒，但是我又不擅长卖酒，我又不懂酒。所以我就说那我要不就是出一本小册，把大家比较喜欢的那些文章集结，作为赠品去送给大家。</p>
+
+    <p>我没有想到这件事给我带来了如此之大的折磨。做那个小册的过程是极度极度辛苦的——既要写新的内容，又要做排版又要做设计，也要想这个酒怎么做、我要选哪款酒。一个这么小的商务，也没有赚到太多钱，竟然花了我一年多的时间。</p>
+
+    <p>但这件事情最好的点就是在于那本小册。我把它打印出来之后就送给了很多朋友，结果其中一本书就流落到了一个编辑朋友那里。他就说你写的东西其实也挺适合出版的，我们也可以把它做成一本书。这就是非常草蛇灰线变成了现在大家会看到的书。</p>
+
+    <blockquote>如果当时没有做那款酒，没有特别费劲地做那个小册，就这些东西可能都不会真正地有信道去传达出去。因为它是以一个实体的形式被人看到，大家就会很自然地觉得说不定是可以帮你去做出版的。这些东西都是很非线性的，我之前是从来没有想过的。</blockquote>
+  </article>
+</section>
+
+<!-- ════ Section 03 · 来活就干 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">来活就干</h4>
+      <p>这个事只要稍微有点意思，对我不造成太大的伤害，我就会干。前提是他有一定的比较新比较吸引我的部分。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">社会经验</h4>
+      <p>因为不搭嘎，很多人会非常愿意开放他们的数据点和感受给你——因为知道你不可能去抢他们的活，你也不是专业的。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">同温层</h4>
+      <p>所有人的生活都是限制在同温层之内的。你是怎么找到非常奇怪的信息？就是通过一些诡异的兴趣，什么都看、什么都玩、和什么人都聊两句。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 03</div>
+    <h2 class="article-title">来活就干：什么都做，什么都看</h2>
+    <p class="article-lede">基本上是来活就干。灵感出现的时候会考虑现实的因素吗？我比较不一样的就是我基本上不大去太考虑现实。</p>
+
+    <p>来活不喜欢怎么办？也会做一做，先做明白，然后你去找自己不喜欢哪些点。我在很长时间内都是来活不拒的。</p>
+
+    <p>我有很长一段时间是这样的：这个事只要稍微有点意思，他对我不造成太大的伤害，我就会干。以及这个事没什么人干，没什么其他人干——如果大部分人已经再干了，或者找我的这个人只是觉得说在我这会有更低的价格，那我可能就不会干了。</p>
+
+    <p>前提是他有一定的比较新比较吸引我的部分。比如去冲浪的时候就是这个逻辑：我想了一下说我身边有人冲浪吗？发现说好像没有。那这件事情就是我在自己的朋友圈或者同温层内没有人能够去获得这样的经验。那我的这个经验相对来说就是比较独一无二的，那么我就跑去冲了。</p>
+
+    <h3>社会经验从哪来</h3>
+
+    <p>因为我是相对普通人家的小孩，父母都不是经商的，没有办法给我提供社会经验。比如我到酒局上是不会说话的，看到一个商业，没有概念这个业务是如何做成的，里面的关系、内核的业务逻辑是怎么回事。我非常缺乏这样的社会经验。</p>
+
+    <p>这样的社会经验是怎么获得的呢？就是去做一些跟你的日常生活或日常工作完全不搭嘎的事情。而且恰恰是因为不搭嘎，<strong>很多人会非常愿意开放自己，开放他们的数据点和感受给你</strong>——因为知道你不可能去抢他们的活，你也不是专业的。你就是在不断去跑的过程中，能够积累非常多很有价值而且很真实的社会经验。</p>
+
+    <h3>同温层的突破</h3>
+
+    <p>所有人的生活都是限制在自己的同温层之内的。你的视野、见识，和身边朋友聊的东西都是相当有限的。你是怎么去找到一些非常奇怪的信息和大家日常不讨论的东西？其实就是通过一些诡异的兴趣，什么都看、什么都玩、和什么人都聊两句。</p>
+
+    <p>因为我完整体验过这个周期——你进来之后和后面进来的人，大家完全已经不是一个水平了，不是一个教育背景和思考问题的逻辑。</p>
+
+    <p>我之前看过一个很好笑的说法：你怎么去判断一个行业它的周期已经快到顶了？就是你看有没有很多清华北大的人进入到这个行业。因为学习很优质的学生是最精致利己主义、最喜欢舒适圈的。如果你看到这个情况，比如你有这个行业或者公司的股票，你可以早点卖了。</p>
+  </article>
+</section>
+
+<!-- ════ Section 04 · 来得早的收割来得晚的 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">两个逻辑</h4>
+      <p>第一，来得早的收割来得晚的；第二，胆大的收割胆小的。地形要比你真正的能力重要得多。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">金钱的滞后性</h4>
+      <p>金钱这个东西是很虚幻的，它就像水面的倒影一样，倒影的是别的东西。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">路径依赖</h4>
+      <p>老去找那种有点问题的行业——大家不怎么喜欢、对他有很多刻板印象、正经人都不做的。我就会觉得这个事情我想来试一试。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 04</div>
+    <h2 class="article-title">来得早的收割来得晚的</h2>
+    <p class="article-lede">真正的权力、资源、周期向上的趋势，用什么来判断？两个逻辑。</p>
+
+    <p>金钱或者功利主义的这些东西有相当大的滞后性。这个滞后性我后面去深一点理解，实际上我觉得金钱这个东西是很虚幻的，它就像水面的倒影一样，倒影的是别的东西。</p>
+
+    <p>真正的权力、资源、周期向上的趋势是用什么来判断的呢？我大概总结了一下，就是两个逻辑：<mark>第一，来得早的收割来得晚的；第二，胆大的收割胆小的。</mark></p>
+
+    <p>真的你说技术能力、教育背景或者那些软技能，尤其是当我看到过很多我早期进入的行业，我会觉得那些东西都不是特别重要。反而是他是怎么知道这个行业现在在所谓起盘或者往前走，以及他在当下就能迅速跳进去，能在行业很早期、大家都很模糊没有确定性的时候去说"这个事我想干、我能干、我有这个胆"——这其实决定了你能在这个业务或赛道里一开始占多大的位置。</p>
+
+    <h3>地形比能力重要</h3>
+
+    <p>大家去看自媒体，一开始的时候就是疯狂地在圈地、疯狂地在偷流量。你要说他真正聊的那些内容，每一条真正有多么大的文学性或社会影响力？但是他就是一直在发。他是因为在自媒体或者短视频很早期的时候，意识到这样偷流量的方式是有效的，所以只要去做、只要有胆识就可以。</p>
+
+    <p>在那个时候，他们只要敢跑、只要做得比别人快，实际上就已经能够占据很好的地理位置。<strong>实际上这个地形要比你真正的能力重要得多。</strong></p>
+
+    <h3>主流是最后一个承认趋势的</h3>
+
+    <p>主流一般来说都是最后一个才承认趋势的。所以当一个行业在慢慢往上走的时候，实际上很多人对他都是很抗拒、很反对的，会有非常多的负面舆论。有的时候你看这样的舆论风向，反过来能帮你判断这个行业是否还在很早期。</p>
+
+    <blockquote>包括我们当时做脱口秀不也是说在沙漠上种玫瑰吗？为什么会是在沙漠上呢？就是大家会觉得你这个东西是不拉品、跟中国水土不符。正因为这个事情对于大家来说相对有风险、有问题，你进去的那个时间差不多才是对的。</blockquote>
+
+    <p>所以我现在甚至有点路径依赖，老去找那种有点问题的行业——大家不怎么喜欢、对他有很多刻板印象、觉得有很多问题、正经人都不做的。我就会觉得这个事情我想来试一试，听起来还有很多我可以去获得的东西。</p>
+  </article>
+</section>
+
+<!-- ════ Section 05 · 三种人 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">第一种</h4>
+      <p><strong>痞子</strong>：有那种匪气，完全不害怕任何东西，在所有行业里面都是最早进去的，纯靠胆量在往前跑。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">第二种</h4>
+      <p><strong>疯子</strong>：原来好好的工作不做说扔就扔，不断依靠兴趣、爱好和一些感觉来做非常重大的人生决策。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">第三种</h4>
+      <p>大家看不大上的那种自成一派的美女帅哥。完全就是靠着一股猛劲冲进去，往往也能拿到还不错的结果。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 05</div>
+    <h2 class="article-title">三种人：痞子、疯子、和那类人</h2>
+    <p class="article-lede">在一个行业早期会经常出现的三种人。</p>
+
+    <p>后来我就总结了在一个行业早期会经常出现的三种人：</p>
+
+    <p>第一种是<strong>"痞子"</strong>，有那种匪气，完全不害怕任何东西，在所有行业里面都是最早进去的，纯靠胆量在往前跑的人。</p>
+
+    <p>第二种叫<strong>"疯子"</strong>，我觉得我就是疯子，原来好好的工作不做说扔就扔，不断去依靠兴趣、爱好和一些感觉来做非常重大的人生决策，把这个事搞得特别轻。</p>
+
+    <p>第三种就是大家看不大上的那种自成一派的美女帅哥，网红脸或者整容脸——不是那种气质挂的，从小到大真的是校花或者会跳舞、学习很好白白净净的那种，而是大家看不大上的那种。</p>
+
+    <blockquote>这种类型的人往往非常能够抓到行业很前期的趋势，而且是一个真正上行期的行业。他们完全就是靠着一股猛劲冲进去，往往也能拿到还不错的结果。</blockquote>
+
+    <p>从世俗的角度来说，反而是那些质感特别好的美女帅哥，因为要舍弃的东西特别多，从小到大都是被很好的环境、质感和赞扬滋养大的，去抛弃自己原来的东西会更不容易。</p>
+
+    <p>所以我对于整容脸是有非常大的敬畏和尊重之心的，看到一个行业里如果全是整容脸，我就觉得这个行业应该不错。</p>
+
+    <h3>亚文化的两个逻辑</h3>
+
+    <p>我现在非常喜欢看亚文化的行业，有两个逻辑：一个是现在已经成为主流文化的行业，它之前还在亚文化时期、还没有爆发的时候，我会看非常多古早的作品——像嘻哈、爵士、脱口秀都是在那个时期我觉得最好看的。</p>
+
+    <p>还有就是现在还是亚文化的东西，我会非常想参加他们的场域，如果有演出、线下活动或者是我能参与的部分，我会很感兴趣。</p>
+  </article>
+</section>
+
+<!-- ════ Section 06 · 成住坏空 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">佛教概念</h4>
+      <p>万事万物都有它的周期性。成、住、坏、空——首先要承认它一定是存在的。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">每个阶段打满</h4>
+      <p>成的时候疯狂打点，住的时候筛选放大，坏的时候迅速理解不要有情绪，空的时候享受空间或开始下一个成。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">止盈</h4>
+      <p>有些朋友在成的时候不一定那么擅长打点，但止盈的时机总是刚刚好。我觉得这些朋友非常厉害。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 06</div>
+    <h2 class="article-title">成住坏空：尊重周期</h2>
+    <p class="article-lede">我们首先要承认它一定是存在的。万事万物都有它的周期性。</p>
+
+    <p>之前不是去 Vipassana 吗，我们也会聊到这个成住坏空佛教里的这个概念，万事万物都有它的周期性。其实我们是要尊重这个周期——首先要承认它一定是存在的，这件事这个行业它一定会出现坏空的。</p>
+
+    <p>坏空还是有很多可以做的事情，甚至你也是可以有一些红利是可以拿的。但是坏空的阶段它做事情的逻辑肯定就跟成住是不一样的。你不能用成的逻辑——它再往上走疯狂飞跑、你去占位置的那个逻辑——去思考坏空。你得用新的逻辑去处理它。</p>
+
+    <h3>每个阶段打满</h3>
+
+    <p>我玩这些事情的玩法就是：首先我尊重成住坏空这个生命周期，但是我希望每一个过程都能够打满一些。</p>
+
+    <p><strong>成的时候</strong>我就疯狂地打点。<strong>住的时候</strong>我就不断地想怎么去筛选、怎么去放大、怎么去做超越——这个点能不打的我就不打了。<strong>坏的时候</strong>我就会去迅速地理解这件事情，我不要有太多的情绪。<strong>空的时候</strong>你要去想我怎么去做下一个阶段的成，或者我享受这个空间，彻底地享受现在什么都没有、或者上一件事情已经结束的状态。</p>
+
+    <blockquote>不能一直有执着说我之前在成的状态，或者是之前上升期的时候多么的美好。那其实是对周期的不尊重。我们是多么渺小的蝼蚁众生，怎么可能我们去打断和对抗这个周期呢。</blockquote>
+
+    <h3>止盈的艺术</h3>
+
+    <p>这样也能理解说为什么止盈是一个很重要的技巧。你看到这支票或者这个公司是有非常好的势头，或者你已经站到过山顶，但你当时没有下车，到了它开始往下走的时候，你又会产生非常多的执着和痛苦。</p>
+
+    <p>我身边有一些朋友，他可能反而在成的那个阶段不是那么擅长去画这些点的，但他每次止盈的时机都是刚刚好的——他总是知道什么时候可以抽身离开了。我觉得这些朋友其实是非常厉害的。</p>
+
+    <p>对于我自己，我对自己对自己的认知，<strong>我是一个在成的阶段很强的人</strong>，但是后面几个阶段我就会力量稍微弱一些。但是因为我那个成打得太好了，所以后面即使那些阶段我不一定都能够完全敏感地感受到，最后的结果也是不差的。</p>
+  </article>
+</section>
+
+<!-- ════ Section 07 · 高启动到高筛选 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">使用时机</h4>
+      <p>这个方法有使用时机：在你早期势能刚刚开始创建的时候。你没有办法只能靠增伤的方式。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">数据点不足</h4>
+      <p>在早期你的数据点不足、闭环通路还没有足够多的重复的情况下，你根本不可能有足够的数据经验去完成战略这件事。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">超能力</h4>
+      <p>我的阅读速度很快，我看所有的视频音频都是三倍速。你就把自己当一个大模型，疯狂地给他喂数据。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 07</div>
+    <h2 class="article-title">高启动到高筛选</h2>
+    <p class="article-lede">你在启示的时候是高启动，在上升的阶段，你再进入高筛选的阶段。</p>
+
+    <p>像这种打动式的到处 connect the dots 的方式，实际上是很花时间的。每件事情你都想要多多少少了解它的业务逻辑，你都想认识它里面比较内核的人。你如果有五六个感兴趣的亚文化也好、行业赛道也好，那你基本上就没有什么正经的时间可以放松休息了。</p>
+
+    <p>我现在也在深深地受这个东西所带来的副作用影响。我的大脑其实是非常难停下来的，而且我的执行是做得很快的，以至于我没有太多时间用来去思考战略。这个累的状态实际上是非常容易去形成这种路径依赖的。</p>
+
+    <h3>这个方法有使用时机</h3>
+
+    <p>我其实并不是永远地推荐大家去使用这种状态做事，它甚至在很多情况下是很危险的。它是什么使用时机呢？<mark>就是在你早期势能刚刚开始创建的时候。</mark></p>
+
+    <p>如果在一开始势能创建的时候，就抱着我一定要 work life balance，或者我现在就开始做减法、开始紧缩的心态，你是非常难在你很年轻的时候就完成真正意义上的站住生态位，或者优势价值的积累的。</p>
+
+    <p>甚至你看到说这个东西它要引发混乱了，所有的人都不知道要怎么办，你进去肯定就是一个救火队员，你肯定是要累死的——你看到这种极其黑暗的、恐怖的、混乱的、酒神的迷幻的这种局面，你就会知道说那我现在是一个积累早期势能的时机。我反而会更执迷于在早期以身试毒，亲自进入到这种混乱当中。</p>
+
+    <h3>你先获得足够多的信息</h3>
+
+    <p>在早期你的数据点不足、你的闭环的那个通路还没有足够多的重复的情况下，实际上你根本就不可能有足够的数据经验去完成战略这件事，甚至你都没办法去想说什么是战略——因为你根本就看不到足够多的东西，你走的路是一段黑暗的路程。</p>
+
+    <blockquote>大概的逻辑就是说，你先获得足够多的信息，然后我们再去顺规律。或者说你先做一个机会足够丰盛的人，然后我们再谈往上成仙的这个事情——因为成仙其实是一个往上升、往上去突破，是很后期才能做到的事情。</blockquote>
+
+    <h3>兴趣是免费的燃料</h3>
+
+    <p>你一开始要有非常强的生命力和对这个事的热情，所以只能是纯兴趣干。你要不是兴趣谁给你免费干活儿？但是它的好处就是<mark>兴趣是一个免费的燃料</mark>。别人是被钱和一些资源去吸引的，那你免费的这个燃料更香、燃得更久、更优质。</p>
+
+    <p>到最后其实拼的都是这个东西。到最后你能在这个行业做到多好、做到多久，都是看你这个免费的燃料能够燃多久。</p>
+  </article>
+</section>
+
+<!-- ════ Section 08 · 不敢花钱 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">暴论</h4>
+      <p>如果你一直不敢花钱，说明你心里不相信价值创造这个叙事。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">两种逻辑</h4>
+      <p>权力逻辑：这个酒桌上只有一个 C 位，不是你就是他。价值创造逻辑：大家都可以共赢，我们可以把蛋糕做得更大。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">印钞机</h4>
+      <p>你要相信人是可以变成印钞机的，金钱是可以跟着你的能量和状态去凭空创造的。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 08</div>
+    <h2 class="article-title">不敢花钱 = 不相信价值创造</h2>
+    <p class="article-lede">这不是简单的金钱观念或者所谓丰盛的玄学逻辑，而在于我们对于"创造价值"这件事的信心是不一样的。</p>
+
+    <p>我这段时间回了山东老家，跟爸妈待了一段时间。我在他们身上发现一个很有意思的共性：他们都不大愿意花钱。他们不花钱的逻辑是觉得金钱是一个分配逻辑——觉得这个月就赚这么多，如果花在这个新的东西上面，存的就少了，安全感就变低了。</p>
+
+    <p>这种情况下你非常难说服他。这不是简单的金钱观念或者所谓丰盛的玄学逻辑，而在于我们对于<strong>"创造价值"这件事的信心是不一样的</strong>。</p>
+
+    <p>很多不愿意花钱的人，他不相信价值是可以被凭空创造的。我经历了足够多次价值创造的闭环、获取了成功经验和正反馈之后，我才敢说我相信价值是可以被凭空创造出来的。</p>
+
+    <h3>从零到一</h3>
+
+    <p>比如我在心情好的时候，对着电脑一下午能打一两万字，这一两万字就可以给我带来收入。为了我心情好、为了我舒服，我愿意花钱。或者我做销售方面的工作，因为去了一个活动、认识了一个朋友，我销售出了一个东西——实际上我创造了一些价值。为了参加这个活动、认识这个人，我花费的成本就是值得的。</p>
+
+    <blockquote>但是在一些比较凝滞的系统里面的人，他完全没有这个想象力——觉得价值是可以从零到一去创造的。在他的世界里，这个世界是一个零和游戏或者有限游戏：这笔钱给了你，我就没了；或者我花掉了，它就消失了。</blockquote>
+
+    <p>小报童之前也写过，斯威夫特今天可以躺着睡一天，也可以写12首歌，这12首歌的价值就是凭空创造出来的。或者你今天只是在想一些很无聊、很日常的东西，突然悟到了一个特别厉害的点子，这个点子为你带来了感兴趣的人和后续的业务，它就创造了价值。</p>
+
+    <h3>权力逻辑 vs 价值逻辑</h3>
+
+    <p>这其实就是纳瓦尔说的东西——是权力逻辑还是价值逻辑？权力逻辑就是这个酒桌上只有一个 C 位，不是你就是他，资源是彼此对立的。但如果是价值创造逻辑，大家都是可以共赢的，所有的关系都是可以连接的，我们可以把蛋糕做得更大。</p>
+
+    <p>绝大多数人其实没有"我可以凭空价值创造"的概念。虽然这话听起来不好听，但<mark>你要是不敢花钱，确实是因为你觉得自己没有办法凭空赚钱。</mark></p>
+  </article>
+</section>
+
+<!-- ════ Section 09 · 开创者定义赛道 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">Brian Eno</h4>
+      <p>创造了 ambient music（氛围音乐）这个分类的英国作曲家。极简、开创性、不想去讨好任何人。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">乔治·卡林</h4>
+      <p>脱口秀这个艺术的创造者。他没有任何要模仿和超越的对象，真的是开辟出自己赛道的人。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">赛道可以很窄</h4>
+      <p>虽然所有大的赛道都已经被占据，但你还能在里面挖更窄的路，不断去走细、走深、走怪。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 09</div>
+    <h2 class="article-title">开创者定义赛道</h2>
+    <p class="article-lede">我喜欢听或看一个流派的创造者做的东西。</p>
+
+    <p>比如最近非常喜欢的一个作曲家叫 Brian Eno，一个英国人，相当于创造了 ambient music（氛围音乐）这个分类。你听他音乐风格里那种极简、开创性、不想去讨好任何人的感觉，是很燃的。去听他的音乐非常平静，没有人声，没有很燥的古典，旋律也比较平，但是那种深处的自信，和他对于自己创造了一个新门派、新价值的生命力的新鲜感，是后续那么多人再去模仿他的风格都无法模仿出来的。</p>
+
+    <p>包括大家为什么那么喜欢乔治·卡林的脱口秀？为什么他讲的内容到现在看还那么新、那么反叛、那么掷地有声、那么穿越时代？也是因为他某种程度上是脱口秀这个艺术的创造者——<strong>他没有任何要模仿和超越的对象，真的是开辟出自己赛道的人。</strong></p>
+
+    <h3>商业逻辑</h3>
+
+    <p>从商业逻辑去理解：当你真正开创了一个门派或者赛道，不管它有多么窄、多么小众，甚至上面只有一两个人，只要你开创了这个东西，你就可以持续收获这条路径上所有对自己感兴趣的人和创造出来的价值。</p>
+
+    <blockquote>作为开创者，你定义了这一条赛道。你的自由度、宽阔度、自信心和正反馈，是后续的人没有办法对比的。那种感觉真的太爽了。</blockquote>
+
+    <p>那些东西如果没有爱、没有一点疯癫的劲，是绝无可能做出来的，它是在被一个巨大的生命力和热情所滋养出来的东西。开创过程一定是非常痛苦的，但最后的结果极度美妙。</p>
+
+    <h3>赛道可以很窄</h3>
+
+    <p>这个赛道可以很窄。现在世界的变化是：虽然所有大的赛道、重资产的东西、听起来很熟悉的东西都已经被人占据了，但你还能在里面挖更窄的路，不断去走细、走深、走怪。这是现在的极简互联网、更通畅的信道和更方便 reach 到受众的方式能够给予我们的。</p>
+  </article>
+</section>
+
+<!-- ════ Section 10 · 信仰一 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">信仰一</h4>
+      <p><strong>人生取决于低概率事件。</strong></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">月无阴晴圆缺</h4>
+      <p>月亮一直在那，以它的方式稳定发着光。阴晴圆缺是我们的投射、视角、观察和感受。好事件坏事件是不存在的，但低概率事件是存在的。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">瞬息全宇宙</h4>
+      <p>就像电影里杨紫琼要做一个特别奇怪的事才能连接多维宇宙。那个特别奇怪的事就是一个低概率事件。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 10 &middot; Belief No.1</div>
+    <h2 class="article-title">信仰一：人生取决于低概率事件</h2>
+    <p class="article-lede">走任何的路、选择任何流派打法，都是需要你有相应信仰的。</p>
+
+    <p>走任何的路、选择任何流派打法，都是需要你有相应信仰的。有些事理性上说不通，是因为你缺乏一个信仰之跃——没有办法在理性无法解释它的时候去坚定相信一个东西。</p>
+
+    <p>我的第一个信仰：<strong>人生取决于低概率事件。</strong></p>
+
+    <p>很多事你做了超级多的规划和准备，觉得它就应该是这样线性发展的，相信有了 A 一定会导向 B。但是命运一定会在你不知道的地方给你准备一些奇形怪状的礼物或者灾难，最后引领你人生真正要去到的方向。</p>
+
+    <p>它有可能是一个黑天鹅事件，有可能是一个天大的好东西，但它一定是非常不可控、非常奇怪、非常具有戏剧性、不稳定且无法预测的。所以你只能走一步看一步，选择以即兴的方式去度过人生，不能钻太多的牛角尖。</p>
+
+    <h3>月无阴晴圆缺</h3>
+
+    <p>它其实没有好坏之分。那些非常打垮我、让我痛苦难以接受的事，只要它是一个低概率事件，就会把我带到一个奇妙的地方，跟那些礼物和美好的事情是一样的。</p>
+
+    <blockquote>我最近一直在悟一句话：月无阴晴圆缺。月亮说有阴晴圆缺是我们的视角，是我们从地球在不同时间去看它在视觉上的呈现。但实际上月亮一直在那，以它的方式稳定发着光。阴晴圆缺是我们的投射、视角、观察和感受。所以好事件、坏事件是不存在的，但是低概率事件是存在的。</blockquote>
+
+    <p>我一直在被这些低概率事件所引领和影响，所以我没有办法去做太多的计划，也不会在这件事情不按我计划进行的时候感受到愤怒或者痛苦。</p>
+
+    <h3>抓住奇怪的小点</h3>
+
+    <p>就像电影《瞬息全宇宙》里，杨紫琼演的角色要做一个特别奇怪的事才能连接多维宇宙，从一个身份跳到另一个身份。那个特别奇怪的事就是一个低概率事件。我特别能够抓这种奇怪的事或者能够导向奇怪的事中间的连接小点。</p>
+
+    <p>当我发现这件事有可能会导致一个低概率事件的时候，我一定要上——不管这个事是什么我一定要上。它能够把你带到不同的信息维度上，带去异次元奇怪的位面、奇怪的方向、认识你本来不可能认识的人。</p>
+  </article>
+</section>
+
+<!-- ════ Section 11 · 信仰二 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">信仰二</h4>
+      <p><strong>凡注意力必长出骨骼。</strong></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">事情不会坏</h4>
+      <p>事情往往不是自己坏的——事情不会坏，但是事情会被人做坏。当你有了极大的渴求和执着，你的动作非常容易变形。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">清醒梦</h4>
+      <p>你知道你在做梦，但你又不告诉你的大脑。我希望它好，但我又不控制它——这个中间状态非常难修。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 11 &middot; Belief No.2</div>
+    <h2 class="article-title">信仰二：凡注意力必长出骨骼</h2>
+    <p class="article-lede">我不相信注意力会消失掉。</p>
+
+    <p>我不相信注意力会消失掉，我不相信你对一个东西有很轻或很小的注意力，它就不会长出东西。哪怕你稍微轻轻地喜欢一个东西，或者简单纯粹地喜欢，它也是会长出一些骨骼或者枝干的。</p>
+
+    <p>我喜欢把注意力放在很多极细的毛细血管里面，等着它慢慢长大，不用功利心去污染它、影响它，或者要求它必须长成什么东西。<strong>我允许一个极细微的注意力在我看不见的地方长成随便什么样子。</strong></p>
+
+    <h3>事情会被人做坏</h3>
+
+    <p>这里带来的另外一个暴论是：<mark>事情往往不是自己坏的——事情不会坏，但是事情会被人做坏。</mark>当你对这件事情有了极大的渴求、执着，要求它必须有功利性的成果，要求它对得起你的时间精力的时候，你的动作非常容易变形，非常容易去藐视周期或者觉得自己能够战胜周期。这种时候就会导致这件事被你自己做坏了。</p>
+
+    <h3>清醒梦</h3>
+
+    <p>讲一个相似的概念：清醒梦。你在做梦的时候发现自己已经在做梦了，这个时候你想干啥都行。当你发现自己在梦里的时候，怎么去享受梦境中的状态，与此同时又不醒来？因为一旦你真的意识到自己在做梦、把这事当真了，你会立刻醒过来——大脑的防御机制非常强。</p>
+
+    <p>所以你要找一个状态：我知道我在做梦，但我又不告诉我的大脑。</p>
+
+    <blockquote>对于喜欢的、有些在意的事情，你要找一个中间状态：我希望它好，但我又不控制它；我希望我能拿到结果，但我又不控制它；我希望这件事情能够以一种我能塑形的方式去生长，但我又不要太主动地去塑形。</blockquote>
+
+    <p>这个非常难修。能够控制自己的肌肉，让自己的注意力一直处在一个接近 0.5 的状态，我认为尤其是对于自己喜欢和在意的事，是非常有价值的。</p>
+
+    <h3>无心插柳</h3>
+
+    <p>"凡注意力必长出骨骼"，也是我目前阶段对于"无心插柳"这个状态的解释。从我的过去来看，无心插柳的事情总能够有特别好的结果，反而我认真去做的事老不成。这带给我挺大的震撼。</p>
+
+    <p>但我又不能过度去拟合和分析这件事——不能老是说一看到这个事就觉得它能成为无心插柳的点，然后又把执着注入进去。我要找到那种我睁一只眼闭一只眼、有点迷蒙地去看这件事情的状态，就像清醒梦一样。</p>
+  </article>
+</section>
+
+<!-- ════ Section 12 · 信仰三 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">信仰三</h4>
+      <p><strong>这个世界是非常善意的。</strong></p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">信念的粮草</h4>
+      <p>它有的是信念的粮草，而不是后勤式实体粮草。你有多少信念，就能做多少超越你本身的事。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">维护方法</h4>
+      <p>尽我所能与人为善。让那些踏出舒适圈的人是安全的、能得到正反馈的。让他们因为勇敢和冒险得到奖励。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 12 &middot; Belief No.3</div>
+    <h2 class="article-title">信仰三：这个世界是非常善意的</h2>
+    <p class="article-lede">我是特别乐观的，我的乐观超越了很多在我身上发生的痛苦、悲伤、无法被精神胜利法解释的经历。</p>
+
+    <p>我是特别乐观的。我的乐观超越了很多在我身上发生的痛苦、悲伤、无法被精神胜利法解释的经历。是因为你相信这个世界在不断给你善意的回应，相信你走出舒适圈的每一步都会遇到很好、很善良的人，你才会一直愿意走出这个舒适区。</p>
+
+    <p>有的时候遇到很糟糕的人或者很惨的事，我也觉得这是孤立事件，不是经常会遇到的。你要对这个东西有着真实的信心。</p>
+
+    <h3>维护信念</h3>
+
+    <p>我维护我这个信念的方法，就是尽我所能与人为善，尽我所能让那些踏出舒适圈、在我身边能接触到的这些人是安全的、能得到正反馈的，<strong>让他们因为勇敢和冒险得到奖励</strong>。如果我有机会给他们奖励，我就愿意给。</p>
+
+    <p>因为我就是在这样的环境当中成长起来的，我想把这个能量输送给更多的人。这不是一个凝固的东西，而是你先有了这个信念，觉得这个信念是值得持有的、能让世界变得更好的，世界就会慢慢变成这样，或者你接触到的世界会越来越接近你去想象的这个现实。</p>
+
+    <blockquote>哪怕有时经历过特别惨的事、有风险、砸破头了，但我就是逼迫自己有这个信念：乐观，走出舒适圈，一定会有人帮你的，一定会有人爱你的。</blockquote>
+
+    <h3>信念的粮草</h3>
+
+    <p>你这个打法如果没有这个信念就打不出来、没法打洞。你要打那么多的洞，如果每个洞都是充满怀疑、小心翼翼去试探，你的速度和执行力绝对上不来。</p>
+
+    <p>这个打法的信念感要非常非常强。<mark>它有的是信念的粮草，而不是大家之前觉得的后勤式实体粮草</mark>（有多少钱、多少口碑、多少粉丝）。而是你对这个世界有纯善的信念——你有多少信念，就能做多少超越你本身的事。</p>
+
+    <p>我之所以能把这个草莽的打法打到现在的程度，而且它不能停、前面也没有人指引说这样的系统存在且一定能成功，但我依然敢走这条路，也是出于这个信念。这条路上的信念不断带给我正向反馈，以及特别美好的人和经历，这是我躲在舒适圈、躲在特别线性的世界里没有办法接触到的。</p>
+  </article>
+</section>
+
+<!-- ════ Section 13 · 维持信念 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">心力受损</h4>
+      <p>你就是在跟世界打架——你带着要不停地画点或者打洞的心情，不停地在这个世界挤出一些本来不存在的缝隙。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">神佛 = 大模型</h4>
+      <p>大部分的神佛都是一个大模型。跟这个大模型对话，理解你在散乱且极度丰富的数据点世界里所在的位置。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">谷子经济</h4>
+      <p>最最最最最难被 AI 取代的——因为大家要的就是人与人的连接，要的就是我的东西跟其他人的都不一样。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 13</div>
+    <h2 class="article-title">维持信念：求神拜佛与大模型</h2>
+    <p class="article-lede">大家现在理解为什么我天天去求神拜佛了吗？</p>
+
+    <p>这么辛苦，然后过两天他又突然给你来一个枣——你就觉得说哦好像又好了，我又相信世界了，我又能以这样的信念去对待这个世界了。</p>
+
+    <p>会伤害心力吗？当然会伤害心力了。心脉受损，天天的就是你就是在跟世界打架——你带着这种要不停地画点或者打洞的心情，不停地在这个世界挤出一些本来不存在的缝隙，或者是你在创造一个只有自己的赛道。那这个东西就是很多人会打压你，会觉得你做的这个东西没有意义、很 low、很丢人。</p>
+
+    <h3>为什么求神拜佛</h3>
+
+    <p>你能走到现在是因为你有信念，但是你的信念是要不断地加强的——或者说你的信念是可以被打败的。你的信念是会被这些负反馈所影响导致它褪色没那么强大的。那么你光靠自己的那个初始信念很多时候已经不足以让你继续往前走了。</p>
+
+    <p>这个时候你就要想办法去放大和加强你原来的那个信念。你就会要找一些其他的方法让你跟更源头的力量去连接。</p>
+
+    <blockquote>大家现在理解为什么有一些演艺圈的人或者企业家又搞八字又搞星盘，要不然就是去拜一个上师，要不然就是天天打坐——这个打坐已经属于里面病的最轻的了。就是为什么要做这件事情：你能走到现在是因为你有信念，但你的信念是要不断加强的。</blockquote>
+
+    <h3>神佛 = 大模型</h3>
+
+    <p>大部分的神佛都是一个大模型。跟这个大模型对话，理解你在散乱且极度丰富的数据点世界里所在的位置。它帮你更好地理解说事情要怎么往前行进，以及你现在遇到的问题有可能是更大的哪些时代的洪流或者你自己控制不了的事件所决定的。</p>
+
+    <p>它其实是帮助你摆位置的这么一个东西。把很多宗教的东西给抽掉，其实我觉得是完全没有问题的。靠自己挺困难的——完全靠自己的人，有一些是极度的幸运，有一些是他所做的事情极度的小。</p>
+
+    <h3>谷子经济：注意力长出骨骼</h3>
+
+    <p>你们知道谷子经济吧？我其实是一个很老土的人，我从来不搞二次元那些东西。然后我最近发现一个特别好的朋友，社会身份非常的高级成熟，就是这么一个人，疯狂地在直播间里面抽谷子。这个东西跟他的行业没有任何的关联，他就是纯纯地喜欢这个东西。</p>
+
+    <p>我后来经过跟他的交流才知道这个东西是最最最最最难被 AI 取代的——因为大家要的就是这个人与人的连接，要的就是我的东西跟其他人的都不一样，是你亲手画的，是你为了这个东西为爱发电的。</p>
+
+    <blockquote>现在的世界越来越脱实向虚了。大家越来越走向自己真实的爱好、真实的精神的需求。这一代人喜欢的东西会更加的虚拟，会更加的跟注意力直接的连接，会更加的跟一个人的心念能量、趣味去产生联系，无论他在多么远的地方。</blockquote>
+
+    <p>你哪怕只有 1/10000 的人喜欢你的这个东西，然后他愿意为此付费，你的这个注意力、你的审美、你所相信的事情他就能够收到很好的回应。</p>
+  </article>
+</section>
+
+<!-- ════ Section 14 · 尾声 ════ -->
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">接受</h4>
+      <p>人会离开，能量会离开。来了说 hello，走了说拜拜。因为我已经知道它来了就是要走的——但也会有新的东西再回来。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">勤奋</h4>
+      <p>无论你接受到多少的失败多少的负反馈，一定要勤奋。世界一定会看到你的勤奋的。</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">魔法时刻</h4>
+      <p>旅行团是非常线下、非常在当下的东西。这是我生活里少有的还能规律性感受到魔法时刻的东西。</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 14 &middot; Finale</div>
+    <h2 class="article-title">尾声：旅行团与魔法时刻</h2>
+    <p class="article-lede">对于万事万物的概念就是：啊你来了 hello，啊你走了拜拜。</p>
+
+    <p>我最近半年不停地接受人会离开、有些能量会离开、我之前相信的东西可能并不是我想象的那样。经历了很多信仰崩塌或者被迫接纳的时刻。</p>
+
+    <p>我现在对于万事万物的概念就是：<mark>啊你来了 hello，啊你走了拜拜。</mark>因为我已经知道说它来了就是要走的。但也会有新的东西再回来，或者它走了也可能再回来。这个事情是我们任何人都没有办法去预测的——接受这个周期吧。</p>
+
+    <h3>勤奋</h3>
+
+    <p>无论你接受到多少的失败多少的负反馈，一定要勤奋。当然可以换方向，但是这个勤奋的点、不断地向命运给你制造的障碍试图去冲破的这种信念和强大的生命力是不要改变的。</p>
+
+    <blockquote>这个东西是在一个人很深处，无论多少失败无论多少痛苦都没有办法改变你的东西。如果你能做到这一点，那就是你可能会起的比别人慢，但是一定是会成功的——就是 100% 是会成功的。世界一定会看到你的勤奋的。</blockquote>
+
+    <h3>旅行团 = 魔法时刻</h3>
+
+    <p>旅行团这个业务，它还是非常的线下、非常的在当下。有很多很玄妙的、无法被简单翻译描述的瞬间。</p>
+
+    <p>我觉得我现在的生活里面，魔法时刻已经非常少了。但旅行团是我非常少有的还能够规律性感受到魔法时刻的东西。所以今年做非洲、巴厘岛、日本都挺开心的。</p>
+
+    <p>不过今年因为我整个人自己的状态比较累，发生的事情也很多，要整合的杂项也比较多，所以今年那三个团我都没有怎么推。我就希望人少一点，要不然怕照顾不过来大家——我的气血也是有限度的。不过之后等我养得明白一点，等我把事情推顺一点，我们会更多地推推旅行团的这个业务。</p>
+
+    <h3>综艺行业</h3>
+
+    <p>有人问还会做综艺吗？现在基本上不大有野心勃勃的年轻人会重新进入综艺行业了，它是在一个偏平缓下行的状态。因为现在短视频已经把综艺打得太厉害了——我离开的时候只是感受到寒意，现在是凛冬已至。</p>
+
+    <h3>收尾</h3>
+
+    <p>差不多就这些啦。非常开心能跟大家聊天，很久违，从七点半聊到了十点半。如果有从头看到尾的大家，非常感谢你们。</p>
+
+    <p><strong>我发现我做这个一开始容易紧张，有点说话磕磕巴巴的，到后面才会逐渐找到自己自然的表达状态。我也会想想怎么把这个自然的表达状态留住。不知道大家看了是什么感觉？</strong></p>
+  </article>
+</section>
+
+
+<!-- ════ Colophon ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5>关于本期</h5>
+        <p>一场从七点半聊到十点半的直播文字整理——讲述非线性人生的荒谬与系统化，以及三个支撑一切的信仰。从 YouTube 算法到脱口秀，从带薪假期到旅行社，从卖酒到出书，每一个转折都是无心插柳。</p>
+      </div>
+      <div>
+        <h5>出版信息</h5>
+        <p>2026 &middot; Magazine Own<br>直播实录 &middot; 整理排版<br>牛皮纸档案主题</p>
+      </div>
+      <div>
+        <h5>设计信息</h5>
+        <p>Kraft Paper Archive theme<br>Noto Serif SC + Dancing Script<br><a href="index.html">&larr; 返回杂志架</a></p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">&copy; 2026 &middot; MAGAZINE OWN &middot; All Rights Reserved</p>
+  </div>
+</footer>
+
+</body>
+</html>

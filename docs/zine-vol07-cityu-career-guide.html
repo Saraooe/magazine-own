@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAGAZINE OWN · Vol.07 · 求职实战手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Sans+Mono&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ══════════════════════════════════════
+   0. RESET
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+/* ══════════════════════════════════════
+   1. THEME TOKENS · t-a 牛皮纸档案
+══════════════════════════════════════ */
+:root, body.t-a {
+  --bg:           #f5f0e8;
+  --bg-warm:      #ede8dc;
+  --bg-rule:      #d6ceb8;
+  --ink:          #2a2018;
+  --ink-2:        #4a3828;
+  --ink-3:        #8a7060;
+  --accent:       #8b2e1a;
+  --accent-dim:   rgba(139,46,26,.10);
+  --rule:         #c4b89a;
+  --mono-bg:      #e8e2d4;
+  --tracing-bg:   rgba(248,245,235,.55);
+  --tracing-fold: #d8d0bc;
+  --colophon-bg:  #2a2018;
+  --colophon-fg:  rgba(245,240,232,.65);
+  --colophon-acc: #d4916a;
+}
+
+/* ══════════════════════════════════════
+   2. BASE
+══════════════════════════════════════ */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════
+   3. MASTHEAD
+══════════════════════════════════════ */
+.zine-masthead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw;
+  height: 44px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  gap: 16px;
+}
+.masthead-name  { flex: 1; font-weight: 400; }
+.masthead-issue { color: var(--accent); flex-shrink: 0; }
+@media print { .zine-masthead { display: none; } }
+
+/* ══════════════════════════════════════
+   4. L01 · 封面
+══════════════════════════════════════ */
+.zine-cover {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 8vh 5vw 5vh;
+  min-height: 85vh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  border-bottom: 2px solid var(--ink);
+}
+.cover-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 5vh;
+}
+.issue-rule { flex: 1; height: 1px; background: var(--rule); }
+.issue-theme { padding: 3px 10px; border: 1px solid var(--rule); color: var(--accent); }
+
+.cover-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(40px, 7vw, 88px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -.022em;
+  color: var(--ink);
+  margin-bottom: 3vh;
+}
+.cover-title em { font-style: italic; color: var(--accent); }
+
+.cover-sub {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  max-width: 50ch;
+  padding-left: 18px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 5vh;
+}
+
+.cover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--ink-3);
+  border-top: 1px solid var(--rule);
+  padding-top: 2vh;
+  text-transform: uppercase;
+}
+.stamp {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: var(--accent);
+  opacity: .28;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════
+   5. L04 · Pull Quote 硫酸纸卡片
+══════════════════════════════════════ */
+.pull-quote-section {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+}
+.tracing-card {
+  position: relative;
+  padding: 36px 44px 32px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(128,120,100,.28);
+  box-shadow:
+    2px 4px 12px rgba(0,0,0,.07),
+    4px 8px 28px rgba(0,0,0,.05),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.65) 0%, rgba(240,235,218,.2) 100%);
+}
+.tracing-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 24px 24px 0;
+  border-color: transparent var(--tracing-fold) transparent transparent;
+  filter: drop-shadow(-2px 2px 3px rgba(0,0,0,.10));
+}
+.pq-small-text {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+.pq-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(30px, 4.4vw, 52px);
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: -.01em;
+}
+.pq-cite {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--ink-3);
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+}
+.pq-below {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  line-height: 1.82;
+  color: var(--ink-2);
+  max-width: 52ch;
+  margin: 20px auto 0;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════
+   6. L02 · 双栏正文
+══════════════════════════════════════ */
+.zine-body {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 5.5vh 5vw;
+  border-bottom: 1px solid var(--rule);
+}
+.zine-body.two-col {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 4.5vw;
+  align-items: start;
+}
+.col-narrow { position: sticky; top: 56px; }
+
+.sidebar-block {
+  border-left: 2px solid var(--rule);
+  padding-left: 14px;
+  margin-bottom: 2.8vh;
+}
+.sidebar-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+.sidebar-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+}
+.sidebar-tag {
+  display: inline-block;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  padding: 2px 7px;
+  margin: 2px 2px 2px 0;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  letter-spacing: .1em;
+}
+
+/* ══════════════════════════════════════
+   7. L03 · 单栏长文
+══════════════════════════════════════ */
+.zine-body.one-col { display: block; }
+.col-center { max-width: 660px; margin: 0 auto; }
+
+/* ══════════════════════════════════════
+   8. 文章通用
+══════════════════════════════════════ */
+.article-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+.article-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+.article-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(22px, 2.8vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  margin-bottom: 2vh;
+  padding-top: 1.2vh;
+  border-top: 2px solid var(--accent);
+}
+.article-lede {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14.5px, 1.6vw, 17px);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.72;
+  margin-bottom: 2vh;
+}
+
+.col-wide p, .col-center p {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  color: var(--ink-2);
+  line-height: 1.92;
+  margin-bottom: 0;
+}
+.col-wide p + p, .col-center p + p { text-indent: 2em; }
+
+.col-wide h3, .col-center h3 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 700;
+  color: var(--ink);
+  margin: 3.2vh 0 1.2vh;
+  letter-spacing: -.01em;
+}
+.col-wide strong, .col-center strong { font-weight: 600; color: var(--ink); }
+.col-wide mark, .col-center mark { background: var(--accent-dim); color: var(--accent); padding: 1px 3px; }
+
+.col-wide blockquote, .col-center blockquote {
+  margin: 20px 0;
+  padding: 14px 20px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--rule);
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13.5px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.82;
+}
+
+/* ══════════════════════════════════════
+   9. 表格样式（zine 内嵌）
+══════════════════════════════════════ */
+.zine-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2vh 0;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 13px;
+}
+.zine-table th {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1.5px solid var(--ink);
+  padding: 8px 10px;
+  text-align: left;
+}
+.zine-table td {
+  border-bottom: 1px solid var(--bg-rule);
+  padding: 8px 10px;
+  color: var(--ink-2);
+  line-height: 1.7;
+}
+.zine-table td:first-child {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* 清单样式 */
+.checklist {
+  list-style: none;
+  margin: 1vh 0;
+}
+.checklist li {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  color: var(--ink-2);
+  line-height: 1.92;
+  padding: 6px 0 6px 28px;
+  position: relative;
+}
+.checklist li::before {
+  content: '☐';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 15px;
+  color: var(--accent);
+}
+
+/* 编号列表 */
+.num-list {
+  list-style: none;
+  counter-reset: numlist;
+  margin: 1vh 0;
+}
+.num-list li {
+  counter-increment: numlist;
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  color: var(--ink-2);
+  line-height: 1.92;
+  padding: 6px 0 6px 32px;
+  position: relative;
+}
+.num-list li::before {
+  content: counter(numlist, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: .06em;
+}
+
+/* ══════════════════════════════════════
+   10. L06 · 目录页
+══════════════════════════════════════ */
+.zine-index {
+  max-width: 960px;
+  margin-inline: auto;
+  padding: 6vh 5vw;
+  border-bottom: 1px solid var(--rule);
+}
+.index-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 3vh;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.index-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.index-list { list-style: none; }
+.index-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr auto 32px;
+  align-items: baseline;
+  gap: 12px;
+  padding: 1.4vh 0;
+  border-bottom: 1px solid var(--bg-rule);
+  font-family: 'Noto Serif SC', serif;
+}
+.index-num { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: .1em; }
+.index-title { font-size: clamp(14px, 1.5vw, 17px); font-weight: 400; color: var(--ink); }
+.index-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin-bottom: 4px; }
+.index-page { font-family: 'Noto Sans Mono', monospace; font-size: 11px; color: var(--ink-3); letter-spacing: .1em; }
+
+/* ══════════════════════════════════════
+   11. TRACING APPENDIX · 硫酸纸附页
+══════════════════════════════════════ */
+.tracing-appendix {
+  position: relative;
+  max-width: 900px;
+  margin: 52px auto 0;
+  padding: 32px 40px 28px;
+  background: var(--tracing-bg);
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(128,120,100,.3);
+  box-shadow:
+    1px 3px 8px rgba(0,0,0,.06),
+    3px 6px 20px rgba(0,0,0,.07),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  background-image: linear-gradient(135deg, rgba(255,255,255,.62) 0%, rgba(235,228,210,.22) 100%);
+  transform: rotate(-.45deg);
+  transform-origin: top left;
+}
+.tracing-appendix::before {
+  content: 'APPENDIX · 附页';
+  position: absolute;
+  top: -11px; left: 20px;
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  background: var(--bg);
+  padding: 0 8px;
+}
+.tracing-appendix::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 0 20px 20px;
+  border-color: transparent transparent var(--tracing-fold) transparent;
+  filter: drop-shadow(-1px -1px 2px rgba(0,0,0,.08));
+}
+.appendix-inner {
+  transform: rotate(.45deg);
+  transform-origin: top left;
+}
+.appendix-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 22px;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.appendix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 36px;
+}
+.appendix-label {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+  padding-bottom: 5px;
+  border-bottom: 1px dashed var(--rule);
+}
+.appendix-block p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--ink-2);
+  line-height: 1.78;
+  margin-bottom: 0;
+}
+.appendix-block p + p { margin-top: 6px; }
+.appendix-rule { height: 1px; background: rgba(128,120,100,.25); margin: 20px 0 12px; }
+.appendix-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  opacity: .7;
+}
+
+/* ══════════════════════════════════════
+   12. L07 · 尾页
+══════════════════════════════════════ */
+.colophon { background: var(--colophon-bg); padding: 6vh 5vw 7vh; }
+.colophon-inner { max-width: 960px; margin-inline: auto; }
+.colophon-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4vw; margin-bottom: 4vh; }
+.colophon h5 {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--colophon-acc);
+  margin-bottom: 10px;
+}
+.colophon p {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 12.5px;
+  font-weight: 300;
+  color: var(--colophon-fg);
+  line-height: 1.78;
+}
+.colophon-rule { height: 1px; background: rgba(128,120,100,.2); margin-bottom: 2.5vh; }
+.colophon-fine {
+  font-family: 'Noto Sans Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  color: var(--colophon-fg);
+  opacity: .35;
+  text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════
+   13. UTILITIES
+══════════════════════════════════════ */
+.section-hr {
+  border: none; height: 1px;
+  background: linear-gradient(to right, transparent, var(--rule) 20%, var(--rule) 80%, transparent);
+  max-width: 960px; margin: 40px auto;
+}
+
+/* ══════════════════════════════════════
+   14. RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 640px) {
+  .zine-body.two-col  { grid-template-columns: 1fr; }
+  .col-narrow         { position: static; }
+  .colophon-grid      { grid-template-columns: 1fr; gap: 3vh; }
+  .appendix-grid      { grid-template-columns: 1fr; }
+  .index-list li      { grid-template-columns: 32px 1fr 28px; }
+  .index-dots         { display: none; }
+  .tracing-appendix   { margin: 40px 0 0; }
+}
+@media print {
+  .zine-masthead { display: none; }
+  .col-narrow    { position: static; }
+  .stamp         { opacity: .15; }
+  body           { font-size: 11pt; }
+}
+
+</style>
+</head>
+
+<body class="t-a">
+
+<!-- ════ 顶部页眉 ════ -->
+<header class="zine-masthead">
+  <span class="masthead-name">MAGAZINE OWN · 自有志</span>
+  <span class="masthead-issue">Vol.07 · 2026</span>
+</header>
+
+<!-- ════ L01 · 封面 ════ -->
+<section class="zine-cover">
+  <div class="cover-meta">
+    <span class="issue-tag">Vol.07 · 2026</span>
+    <span class="issue-rule"></span>
+    <span class="issue-theme">求职分享 · Career Notes</span>
+  </div>
+
+  <h1 class="cover-title">求职实战手册<br><em>城大就业笔记</em></h1>
+
+  <p class="cover-sub">
+    CityU 求职经验 &amp; 校内资源分享会整理笔记。分享人：苍蔓学姐（金融专业校友）。涵盖校内资源、秋招时间线、网申策略、简历要点、笔试面试、踩坑经验、薪资市场、语言背景、社交人脉——十二个板块，一份读完即可上手的行动指南。
+  </p>
+
+  <div class="cover-footer">
+    <span>MAGAZINE OWN · 分享会笔记系列</span>
+    <span class="stamp">NO.07</span>
+  </div>
+</section>
+
+<!-- ════ L06 · 目录页 ════ -->
+<section class="zine-index">
+  <h3 class="index-label">目录 CONTENTS</h3>
+  <ol class="index-list">
+    <li>
+      <span class="index-num">01</span>
+      <span class="index-title">校内可利用的就业资源</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.03</span>
+    </li>
+    <li>
+      <span class="index-num">02</span>
+      <span class="index-title">秋招时间线与整体节奏</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.06</span>
+    </li>
+    <li>
+      <span class="index-num">03</span>
+      <span class="index-title">网申投递策略（重点避坑）</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.08</span>
+    </li>
+    <li>
+      <span class="index-num">04</span>
+      <span class="index-title">简历撰写要点</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.11</span>
+    </li>
+    <li>
+      <span class="index-num">05</span>
+      <span class="index-title">Cover Letter 结构</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.13</span>
+    </li>
+    <li>
+      <span class="index-num">06</span>
+      <span class="index-title">笔试相关（各行业占比+备考资源）</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.14</span>
+    </li>
+    <li>
+      <span class="index-num">07</span>
+      <span class="index-title">面试相关（三轮面试、无领导小组、结构化）</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.16</span>
+    </li>
+    <li>
+      <span class="index-num">08</span>
+      <span class="index-title">学姐踩坑经验总结</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.19</span>
+    </li>
+    <li>
+      <span class="index-num">09</span>
+      <span class="index-title">薪资与岗位市场参考</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.22</span>
+    </li>
+    <li>
+      <span class="index-num">10</span>
+      <span class="index-title">语言与背景相关</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.23</span>
+    </li>
+    <li>
+      <span class="index-num">11</span>
+      <span class="index-title">学校求职支持资源</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.24</span>
+    </li>
+    <li>
+      <span class="index-num">12</span>
+      <span class="index-title">社交与人脉资源</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.25</span>
+    </li>
+    <li>
+      <span class="index-num">13</span>
+      <span class="index-title">行动建议清单（附页）</span>
+      <span class="index-dots"></span>
+      <span class="index-page">P.27</span>
+    </li>
+  </ol>
+</section>
+
+<!-- ════ L04 · Pull Quote 硫酸纸卡片 ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+
+    <p class="pq-small-text">
+      分享人苍蔓学姐在 CityU 求职经验分享会上的核心建议。不是"能不能找到工作"的问题，而是"你有没有用尽身边的资源"。
+    </p>
+
+    <div class="pq-script">
+      不要自我设限<br>资源多到用不完
+    </div>
+
+    <span class="pq-cite">—— 苍蔓学姐 · CityU 金融专业校友</span>
+
+    <p class="pq-below">
+      学校的简历修改、模拟面试、职业规划指导"多到用不完"——关键在于你有没有主动去关注邮箱通知、有没有积极报名。港府资助的实习计划、RA 机会、校内招聘会，这些资源的入口就在你身边。
+    </p>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 01 · 校内可利用的就业资源
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>校内资源 · 资金 · 实习渠道</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">关键词</h4>
+      <p>
+        <span class="sidebar-tag">校企合作</span>
+        <span class="sidebar-tag">HKIB</span>
+        <span class="sidebar-tag">港府资助</span>
+        <span class="sidebar-tag">CISA</span>
+        <span class="sidebar-tag">RA</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">核心渠道</h4>
+      <p>CISA 群 / CISA 公众号 / CC 公众号 / 小红书 / 阳楼招聘会</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 01 · 资源地图</div>
+
+    <h2 class="article-title">校内可利用的就业资源</h2>
+
+    <p class="article-lede">
+      学费不白交——学校、港府、行业机构三层资源，很多同学到毕业都没用上。以下是苍蔓学姐梳理的六条主线。
+    </p>
+
+    <h3>校企合作 / 实习实训活动</h3>
+    <p>
+      学校会与知名企业开展校企合作，形式类似"实习实训营"（如提到的 <strong>CPP 活动</strong>）。参与者可能获得与港企相关的短期实习经历；表现优秀者甚至被知名商场（如维港边的大型商场）直接录用。
+    </p>
+
+    <h3>香港银行业联会（HKIB）等行业活动</h3>
+    <p>
+      常见形式：2–3 天的活动，邀请<strong>汇丰、渣打</strong>等资深银行高管做分享或担任行业导师。
+    </p>
+    <p>
+      <mark>建议做法</mark>：加导师微信，主动请教职业发展经验、面试官看重的特质、面试表现技巧。一次活动建立的人脉，可能比海投 50 份简历更有用。
+    </p>
+
+    <h3>内地城市来港招聘会</h3>
+    <p>
+      上海、北京等各地高校 / 城市会定期来港举办人才招聘会。每年大概率会有一次，针对目标城市的顶尖企业 + 当地领导直接来分享 / 招聘。<strong>关注渠道</strong>：CISA 公众号会同步信息。
+    </p>
+
+    <h3>港府资助资源</h3>
+    <p>
+      <strong>学费不白交，一定要利用。</strong>以下三项均由港府出资或赞助：
+    </p>
+
+    <ol class="num-list">
+      <li><strong>内地文化交流团</strong>（一年 2 次）：类似旅游 + 社交，能认识很多朋友。</li>
+      <li><strong>创业主题交流团</strong>（一年 2 次）：带队参访当地人社局 / 双创中心，可了解人才政策、人才补贴，认识创业者和志愿者。费用大约 <strong>500–1700 元</strong>左右，四五天行程。</li>
+      <li><strong>港府资助的实习计划</strong>：港府赞助不同 NGO，NGO 再对接企业（华为、腾讯等）及顶尖机构（如深圳的金源资本等顶级 VC）提供实习名额。通过该渠道申请通常比自己海投更容易进入这些机构。深圳的相关活动是<strong>免费的，且包食宿</strong>。</li>
+    </ol>
+
+    <blockquote>
+      获取渠道：CISA 群、CISA 公众号、小红书。深圳的活动免费且包食宿——没有理由不去。
+    </blockquote>
+
+    <h3>校内春秋招 / 实习信息群</h3>
+    <p>
+      CISA 有专门的实习信息发放群（往年由学姐学妹维护），持续搜集各企业招聘进度。CC 公众号也会发布招聘相关贴文。校内（"阳楼"）几乎每月举办 1–2 场招聘会，分内地主题和香港主题。
+    </p>
+    <p>
+      <mark>真实案例</mark>：有同学在四大摊位与面试官聊天后当场被面试，直接省去笔试 / 一面 / 二面流程，当场拿到 offer 意向。
+    </p>
+    <p>
+      <strong>建议</strong>：一定要积极参加，哪怕只是扫码线上投递，也有机会遇到"捡漏"机会。
+    </p>
+
+    <h3>RA（Research Assistant）机会</h3>
+    <p>
+      入学后每学期都可以主动联系老师询问是否需要 RA，是否需要因老师而异（很多导师优先用自己带的博士生）。好处：如果被老师看重，有机会获得读博机会或更强的就业资源链接。
+    </p>
+  </article>
+</section>
+
+<!-- ════ Pull Quote ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+    <p class="pq-small-text">
+      关于秋招节奏——时间窗口比你想象的窄得多，大厂的"抢人"从暑假就开始了。
+    </p>
+    <div class="pq-script">
+      越早投越好<br>滚动筛选不等截止日
+    </div>
+    <span class="pq-cite">—— 网申策略 · 第一原则</span>
+    <p class="pq-below">
+      很多公司是"滚动筛选"，标注的截止日期不代表真实截止时间。早投更容易被录取；临近截止日期扎堆提交容易遇到系统卡顿 / 提交失败。
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 02 · 秋招时间线与整体节奏
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>时间线 · 节奏 · 决策</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">关键词</h4>
+      <p>
+        <span class="sidebar-tag">6-7月启动</span>
+        <span class="sidebar-tag">滚动筛选</span>
+        <span class="sidebar-tag">春招补录</span>
+      </p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">决策节点</h4>
+      <p>第二学期开学初决定是否选 Summer Term → 决定 10 月还是次年毕业</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 02 · 时间线</div>
+
+    <h2 class="article-title">秋招时间线与整体节奏</h2>
+
+    <p class="article-lede">
+      大厂 6 月就开始抢人，四大和国企稍晚。秋招岗位数量整体多于春招——春招多为秋招中被放弃 / 空出的岗位。
+    </p>
+
+    <table class="zine-table">
+      <thead>
+        <tr>
+          <th>时间段</th>
+          <th>招聘主体</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>6–7 月</td>
+          <td>大厂率先启动秋招（抢人才，锁定优秀候选人）</td>
+        </tr>
+        <tr>
+          <td>8–11 月</td>
+          <td>第一梯队互联网公司信息集中放出，竞争也更激烈；快消行业也集中在此时间段</td>
+        </tr>
+        <tr>
+          <td>稍晚</td>
+          <td>四大会计师事务所、国企（国企一般不会像大厂那样早开）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>春招 vs 秋招</h3>
+    <p>
+      <strong>秋招</strong>岗位数量整体更多。<strong>春招</strong>多为秋招中被放弃 / 空出的岗位（有人拿到更好 offer 后放弃了原岗位）。
+    </p>
+
+    <h3>实习安排没有固定模板</h3>
+    <p>
+      有人整年在一家公司实习后留用；有人换 3 个不同公司各实习 3 个月积累多元经验。可根据自身课业压力灵活安排。
+    </p>
+
+    <h3>关于是否参加"当年"秋招建议</h3>
+    <p>
+      <mark>强烈建议无论如何都先投一次</mark>，哪怕没有理想结果，也是一次实战演练（笔试 / 面试经验、反问面试官了解岗位需求的机会）。
+    </p>
+    <p>
+      金融专业：第二学期开学初才需决定是否选 Summer Term（决定是否 10 月毕业），因此第一学期有充足时间尝试当年秋招。若第一学期没投上，仍可在第二学期初申请"10 月毕业"，抓住第二年秋招。
+    </p>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 03 · 网申投递策略
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>网申 · 投递 · 避坑</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">关键工具</h4>
+      <p>投递记录表 / 塔塔网申插件 / 小红书内推码</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">投递分层</h4>
+      <p>保底（户籍地）→ 稳妥 → 冲刺（热门城市）</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 03 · 投递策略</div>
+
+    <h2 class="article-title">网申与投递策略（重点避坑）</h2>
+
+    <p class="article-lede">
+      七条策略，每一条都是踩过坑之后的教训。核心原则：早投、记录、分层、不要 All in。
+    </p>
+
+    <ol class="num-list">
+      <li>
+        <strong>越早投越好</strong>：很多公司是"滚动筛选"，标注的截止日期不代表真实截止时间，早投更容易被录取；临近截止日期扎堆提交容易遇到系统卡顿 / 提交失败。
+      </li>
+      <li>
+        <strong>建立个人投递记录表</strong>（强烈建议）：记录——投递公司、岗位、投递用的简历版本、截止时间、笔试 / 面试时间。原因：面试官可能根据你投递时所写的具体内容提问，答不上来会显得"没有用心"。很多公司投递后无法再查看当时填写的内容（岗位下线后 JD 也可能看不到）。
+      </li>
+      <li>
+        <strong>简历不要"一份走天下"</strong>：应根据不同岗位方向准备不同版本简历，突出与该岗位相关的经历。HR 看一份简历平均可能只有 <strong>10 秒</strong>左右，量化成果 + 关键处加粗（不要全篇加粗）非常重要。
+      </li>
+      <li>
+        <strong>内推</strong>：小红书上可搜索大量内推码；内推码不保证录取，但能保证 HR 至少认真看一眼简历（避免被系统海量简历淹没）。
+      </li>
+      <li>
+        <strong>代投简历</strong>：不建议。机构 / 个人代投可能不及时处理，容易错过时间窗口。
+      </li>
+      <li>
+        <strong>多层次投递</strong>（避免"只投好岗位 / 好城市"）：建议按"保底 / 稳妥 / 冲刺"分层投递——<mark>保底</mark>：户籍所在地公司（很多企业看重稳定性 / 是否本地人）；<mark>稳妥</mark>：其他有把握的城市和岗位；<mark>冲刺</mark>：热门城市 / 热门岗位（如投研、战略岗竞争极大）。不要 All in 单一城市，热门城市（成都、重庆、北京、上海、武汉、深圳）竞争激烈。
+      </li>
+      <li>
+        <strong>暑期留用实习的风险</strong>：留用答辩可能被无限期推迟，导致一边实习一边到处飞面试，非常辛苦，要提前评估风险。
+      </li>
+    </ol>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 04 · 简历撰写要点
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>简历 · STAR · 香港细则</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">核心法则</h4>
+      <p>S → T → A → R，结果必须量化</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">香港简历禁忌</h4>
+      <p>不放照片 · 不写生日 · 不写性别 · 用英文 · Gmail · 港号</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 04 · 简历</div>
+
+    <h2 class="article-title">简历撰写要点</h2>
+
+    <p class="article-lede">
+      HR 看一份简历平均 3–10 秒。STAR 法则 + 量化成果 + 关键处加粗，是过简历关的基本功。
+    </p>
+
+    <h3>STAR 法则</h3>
+    <p>
+      <strong>S</strong>ituation（情景）→ <strong>T</strong>ask（任务）→ <strong>A</strong>ction（行动）→ <strong>R</strong>esult（结果）。结果一定要量化，避免"产出一篇研报"这种泛化表述，应写清围绕什么主题、多少字。
+    </p>
+
+    <h3>香港简历特别注意</h3>
+
+    <table class="zine-table">
+      <thead>
+        <tr>
+          <th>项目</th>
+          <th>要求</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>照片</td><td><strong>不要放</strong>（香港重视隐私，放照片可能起反效果）</td></tr>
+        <tr><td>生日</td><td><strong>不要写</strong></td></tr>
+        <tr><td>性别</td><td><strong>不要写</strong></td></tr>
+        <tr><td>语言</td><td>用<strong>英文</strong>书写（哪怕是香港 local 公司，工作语言也是英语）</td></tr>
+        <tr><td>邮箱</td><td>用 <strong>Gmail</strong>（不要用 163 / QQ 邮箱）</td></tr>
+        <tr><td>电话</td><td>用<strong>香港本地号码</strong></td></tr>
+        <tr><td>联系方式</td><td>必须留清晰联系方式（电话 + 邮箱），否则 HR 联系你需要额外花费平台"额度"</td></tr>
+      </tbody>
+    </table>
+
+    <h3>排版与其他</h3>
+    <p>
+      字体 / 排版要简洁清晰，避免花哨字体和杂乱排版（HR 3–10 秒扫一眼，乱了直接被跳过）。数字 / 成果不要用中文描述数字（不利于突出量化效果）。小公司实习也算数，只要有可量化、可独立完成的产出。
+    </p>
+
+    <blockquote>
+      反面教材："产出一篇研报"——太泛了。<br>
+      正确写法："围绕粤港澳大湾区消费升级主题，独立完成 8000 字行业研报，被导师选为课程示范案例。"
+    </blockquote>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 05 · Cover Letter
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>Cover Letter · 外企</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">三步准备</h4>
+      <p>研究公司 → 分析 JD → 回顾匹配度</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">Coffee Chat</h4>
+      <p>外企 / 香港 local / 外国人更愿接受；中资大厂的人太忙，很少回复领英建联</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 05 · Cover Letter</div>
+
+    <h2 class="article-title">Cover Letter 结构（多用于外企）</h2>
+
+    <p class="article-lede">
+      Cover Letter 不是简历的重复，而是"为什么是我"的论证。三步准备法 + 三段结构。
+    </p>
+
+    <h3>三步准备法</h3>
+    <ol class="num-list">
+      <li>研究公司（官网 / 领英建联该公司员工，约 Coffee Chat）；</li>
+      <li>分析职位描述（JD），明确职责与所需资质；</li>
+      <li>回顾自身背景与岗位的匹配度。</li>
+    </ol>
+
+    <h3>三段结构</h3>
+    <p>
+      <strong>开头</strong>：说明申请原因 → <strong>主体段落</strong>：突出与岗位相关的核心能力 / 优势 → <strong>结尾</strong>：感谢阅读 + 联系方式。
+    </p>
+
+    <h3>关于 Coffee Chat 建联</h3>
+    <p>
+      外企 / 香港 local 公司 / 外国人通常更愿意接受 Coffee Chat 请求；中资大厂（字节、腾讯、华为等）的人普遍太忙，很少回复领英建联请求。
+    </p>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 06 · 笔试
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>笔试 · 行测 · 备考</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">备考资源</h4>
+      <p>牛客网 / 闲鱼北森题库 / B 站公考速成 / 求职 App</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">核心策略</h4>
+      <p>多刷题——很多测评题目会重复出现，刷多了能直接背出答案</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 06 · 笔试</div>
+
+    <h2 class="article-title">笔试相关（各行业占比 + 备考资源）</h2>
+
+    <p class="article-lede">
+      不同行业笔试模块占比差异大。互联网重行测，金融重专业知识和英语，通用后台岗以性格测试为主。
+    </p>
+
+    <h3>不同行业笔试模块占比</h3>
+    <p>（大致参考，非绝对）</p>
+
+    <table class="zine-table">
+      <thead>
+        <tr>
+          <th>行业</th>
+          <th>行测</th>
+          <th>专业知识</th>
+          <th>主观题</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>互联网</td>
+          <td>40%–60%</td>
+          <td>30%–50%</td>
+          <td>10%–20%</td>
+        </tr>
+        <tr>
+          <td>金融</td>
+          <td>占比更低</td>
+          <td>更看重专业知识，且<mark>普遍会单独考英语</mark></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>技术岗 / 通用后台岗<br>（行政、人力、财务）</td>
+          <td>性格测试为主</td>
+          <td>全行业通用，无固定模板，真实作答即可</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>备考资源</h3>
+    <p>
+      行测模拟题、题库：各类求职 App、闲鱼（可买到最新一年的<strong>北森题库</strong>）、<strong>牛客网</strong>。
+    </p>
+    <p>
+      建议：多刷题，很多测评题目会重复出现，刷多了能直接背出答案。
+    </p>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 07 · 面试
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>面试 · 三轮 · 无领导 · 结构化</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">面试轮次</h4>
+      <p>一面 HR 面 → 二面业务面 → 三面终面</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">角色选择</h4>
+      <p>Leader / Timer / Note-taker / 总结陈述者——根据自身优势选择，不必抢 Leader</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">加分项</h4>
+      <p>感谢信——非必须，但有人因此拿到 offer</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 07 · 面试</div>
+
+    <h2 class="article-title">面试相关</h2>
+
+    <p class="article-lede">
+      三轮面试各有侧重：HR 面看诚意，业务面看专业，终面看格局。无领导小组和结构化面试各有解法。
+    </p>
+
+    <h3>面试轮次</h3>
+    <ol class="num-list">
+      <li>
+        <strong>一面（HR 面）</strong>：偏泛面，考察对公司 / 岗位的基本了解、是否海投缺乏诚意等，时长通常较短、多为线上 1v1。
+      </li>
+      <li>
+        <strong>二面（业务面）</strong>：由业务负责人 / 未来 Mentor 主导，专业深度考察更强，时长更长。可能是 1v1、1v多或无领导小组。
+      </li>
+      <li>
+        <strong>三面（终面）</strong>：一般是较高 level 的人来面，进入终面后拿到 offer 的概率相对较大。
+      </li>
+    </ol>
+
+    <h3>无领导小组面试</h3>
+    <p>
+      常见形式：选择排序题、辩论题、谈判题（较少见）、脱敏业务案例讨论。
+    </p>
+    <p>
+      角色选择：Leader / Timer / Note-taker / 总结陈述者等，<mark>根据自身优势选择角色</mark>，不必抢 Leader（表现不好反而扣分）。
+    </p>
+
+    <h3>结构化 / 半结构化面试</h3>
+    <p>
+      提前拆解目标岗位 JD 关键词，简历和回答尽量向 JD 描述的能力 / 问题靠拢。常见问题：为什么选择这个行业 / 公司 / 岗位？不是本地人为何选择这个城市？对行业的了解？财务分析能力（投研类岗位）等。
+    </p>
+    <p>
+      建议提前准备"模板化"的经历回答，并可与 AI 模拟对话练习（自己回答后，让 AI 扮演 HR 追问）。
+    </p>
+
+    <h3>感谢信</h3>
+    <blockquote>
+      非必须，但有实际案例：某候选人因为坚持写感谢信，在原本未通过的情况下，后续岗位空缺时被优先考虑并拿到 offer。
+    </blockquote>
+  </article>
+</section>
+
+<!-- ════ Pull Quote ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+    <p class="pq-small-text">
+      学姐秋招踩坑经验总结——最实用的一部分。八条教训，每一条都来自真实经历。
+    </p>
+    <div class="pq-script">
+      起步太晚<br>只投好岗位<br>All in 一座城
+    </div>
+    <span class="pq-cite">—— 秋招踩坑 · 三大致命错误</span>
+    <p class="pq-below">
+      海投了 300+ 份简历才摸到规律。起步太晚错过 6–7 月滚动窗口；只投总行 / 投研 / 战略岗导致简历关都过不了；All in 单一城市导致颗粒无收。
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 08 · 学姐踩坑经验总结
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>踩坑经验 · 最实用</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">报录比参考</h4>
+      <p>广东头部国企管培岗 350:1；中银网申简历编号到 36 万</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">做得好的</h4>
+      <p>边秋招边刷小红书 / 塔塔网申插件 / 海投 300+</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">建议重点</h4>
+      <p>本文最实用的一章，建议反复阅读</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 08 · 踩坑总结</div>
+
+    <h2 class="article-title">学姐秋招踩坑经验总结</h2>
+
+    <p class="article-lede">
+      非常实用，建议重点参考。八条踩坑 + 四条做对了的事——每一条都是真金白银换来的教训。
+    </p>
+
+    <h3>八条踩坑</h3>
+    <ol class="num-list">
+      <li>
+        <strong>起步太晚</strong>：没有从 8 月初开始投递，错过大量大厂 6–7 月的滚动招聘窗口。
+      </li>
+      <li>
+        <strong>低估竞争难度</strong>：某广东头部国企管培岗位报录比约 <mark>350:1</mark>；中银某年网申简历编号到 <mark>36 万</mark>。
+      </li>
+      <li>
+        <strong>只投好岗位 / 好方向，没有分层次投递</strong>：只投总行、国际总部、投研 / 战略岗，导致很多简历关都过不了，进终面的机会少。
+      </li>
+      <li>
+        <strong>忽视户籍所在地优势</strong>：面试某央企子公司战略投资岗时，自我介绍后第一个问题就是"是不是本地人 / 是不是党员"，答案不理想直接 5 分钟结束面试。
+      </li>
+      <li>
+        <strong>简历改得太晚</strong>：秋招已经进行一段时间才匆忙找老师改简历。
+      </li>
+      <li>
+        <strong>暑期留用实习拖延转正答辩</strong>，导致边实习边全国飞面试，非常辛苦。
+      </li>
+      <li>
+        <strong>All in 单一城市 / 地区</strong>，导致颗粒无收；后来发现成都、重庆、北京、上海、武汉、深圳等竞争都非常激烈。
+      </li>
+      <li>
+        <strong>未及时记录截止时间</strong>，容易错过笔试 / 面试机会。
+      </li>
+    </ol>
+
+    <h3>做得好的地方</h3>
+    <p>
+      边秋招边刷小红书，及时了解行业动态（如：券商 / 基金秋招很多只发"差额实习转正"名额），据此及时调整主投方向（如改投国企、银行）。
+    </p>
+    <p>
+      使用"塔塔网申"插件辅助批量网申（浏览器插件，不用开 VPN），节省填写时间。不建议找人代投简历，容易延误时机。
+    </p>
+    <p>
+      <mark>海投基数</mark>：该学姐海投了 <strong>300+ 份简历</strong>；建议不要因挑剔而只投十几份，基数太小基本很难成功。
+    </p>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 09 · 薪资与岗位市场
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>薪资 · 市场</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">应届薪资</h4>
+      <p>1.5 万–2 万港币 / 月，2 万算较好</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">行业趋势</h4>
+      <p>PE/VC 竞争激烈且在收缩；行研不算稀缺也不算多</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 09 · 薪资市场</div>
+
+    <h2 class="article-title">薪资与岗位市场参考</h2>
+
+    <p class="article-lede">
+      香港应届生薪资多数在 1.5 万–2 万港币区间。PE/VC 在收缩，行研不多不少。
+    </p>
+
+    <ul style="list-style: none; margin: 1vh 0;">
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        <strong>香港应届生薪资</strong>：多数在 <strong>1.5 万–2 万港币</strong>左右，2 万算是较好水平。
+      </li>
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        <strong>PE / VC 岗位</strong>：竞争一直很激烈，且近期行业在收缩（经济形势影响，相关公司已有裁员），扩张招聘的机会更少。
+      </li>
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        <strong>行研岗位</strong>：不算稀缺但也不算多，多见于券商及研究类机构。
+      </li>
+    </ul>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 10 · 语言与背景
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>语言 · 背景</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">语言优先级</h4>
+      <p>英语 > 粤语 > 普通话</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">实习认可度</h4>
+      <p>大陆实习被认可；香港本地实习认可度更高</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 10 · 语言背景</div>
+
+    <h2 class="article-title">语言与背景相关</h2>
+
+    <p class="article-lede">
+      英语优先，其次粤语，最后普通话——哪怕是本地 Local 公司，工作语言也是英语。
+    </p>
+
+    <p>
+      简历语言：<strong>英语优先</strong>，其次粤语，最后普通话（哪怕是本地 Local 公司，工作语言也是英语）。
+    </p>
+    <p>
+      会粤语在香港找工作更有优势；英语足够好可以覆盖大部分场景的话，不会粤语劣势不大。
+    </p>
+    <p>
+      香港 HR 对本科院校背景的看重程度不如大陆那么高。大陆实习经历在香港同样被认可，但香港本地企业对<strong>香港实习经历</strong>认可度更高。
+    </p>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 11 · 学校求职支持
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>学校资源 · 免费</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">提供内容</h4>
+      <p>简历修改（AI + 真人）/ 模拟面试（AI + 真人）/ 职业规划</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">名额</h4>
+      <p>学校层面比学院层面更难抢，但整体"多到用不完"</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 11 · 学校支持</div>
+
+    <h2 class="article-title">学校可利用的求职支持资源</h2>
+
+    <p class="article-lede">
+      学校 / 学院层面均提供简历修改、模拟面试、职业规划指导——多到用不完，关键看你有没有主动关注。
+    </p>
+
+    <p>
+      学校 / 学院层面均提供：
+    </p>
+    <ul style="list-style: none; margin: 1vh 0;">
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        简历修改辅导（<strong>AI + 真人老师</strong>）；
+      </li>
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        模拟面试（<strong>AI + 真人老师</strong>）；
+      </li>
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        职业规划指导。
+      </li>
+    </ul>
+    <p>
+      学校层面名额比学院层面更难抢，但整体资源<mark>"多到用不完"</mark>，建议主动关注邮箱通知并积极报名。
+    </p>
+  </article>
+</section>
+
+<!-- ══════════════════════════════════════
+     Chapter 12 · 社交与人脉
+══════════════════════════════════════ -->
+
+<section class="zine-body two-col">
+  <aside class="col-narrow">
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">板块</h4>
+      <p>社交 · 人脉</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">核心渠道</h4>
+      <p>校友群 / 校友会 / 联合讲座 / 行业峰会志愿者</p>
+    </div>
+    <div class="sidebar-block">
+      <h4 class="sidebar-label">Stephanie 老师</h4>
+      <p>不要自我设限——曾有学生逐一线下拜访银行网点争取实习</p>
+    </div>
+  </aside>
+
+  <article class="col-wide">
+    <div class="article-eyebrow">Chapter 12 · 社交人脉</div>
+
+    <h2 class="article-title">社交与人脉资源</h2>
+
+    <p class="article-lede">
+      以金融专业为例，可迁移到其他专业。校友群、联合讲座、行业峰会——人脉不是"认识谁"，而是"谁知道你在找什么"。
+    </p>
+
+    <ul style="list-style: none; margin: 1vh 0;">
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        各专业有自己的<strong>校友群</strong>（含往届学长学姐），常有内部实习 / 招聘信息、各城市校友会聚会信息。加分享人微信备注专业可拉入相关校友群。
+      </li>
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        学校常与其他高校（如复旦）联合举办讲座，可拓展人脉。
+      </li>
+      <li style="padding: 8px 0 8px 20px; position: relative; font-family: 'Noto Serif SC', serif; font-size: clamp(14px,1.3vw,15.5px); color: var(--ink-2); line-height: 1.92;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-family: 'Noto Sans Mono', monospace; font-size: 12px;">▸</span>
+        学校也会对接大型行业峰会的志愿者名额 / 免费门票（例：往年争取过 <strong>Fintech Week</strong> 的免费门票，原价约 <strong>499 美金</strong>，凭 CFA 等身份免费获取）。
+      </li>
+    </ul>
+
+    <blockquote>
+      Stephanie 老师分享的求职理念：<mark>不要自我设限</mark>——曾有学生通过银行官网名单，逐一线下拜访各银行网点争取实习机会并成功拿到 offer。同时建议多阅读英文新闻，拓宽信息来源，不被语言限制视野。
+    </blockquote>
+  </article>
+</section>
+
+<!-- ════ Pull Quote ════ -->
+<section class="pull-quote-section">
+  <div class="tracing-card">
+    <p class="pq-small-text">
+      全文读完，如果你只能记住一件事——
+    </p>
+    <div class="pq-script">
+      资源多到用不完<br>关键是你去不去拿
+    </div>
+    <span class="pq-cite">—— MAGAZINE OWN · Vol.07</span>
+    <p class="pq-below">
+      CISA 群 / CC 公众号 / 阳楼招聘会 / 港府资助实习 / RA 机会 / 校友群 / 简历修改 / 模拟面试——这些入口全部在校内。海投 300+ 之前，先把身边的资源用尽。
+    </p>
+  </div>
+</section>
+
+<!-- ════ TRACING APPENDIX · 硫酸纸附页 · 行动清单 ════ -->
+<div class="tracing-appendix">
+  <div class="appendix-inner">
+
+    <div class="appendix-title">Action Checklist</div>
+
+    <div class="appendix-grid">
+      <div class="appendix-block">
+        <div class="appendix-label">投递准备</div>
+        <ul class="checklist">
+          <li>建立"投递记录表"（公司 / 岗位 / 简历版本 / 截止时间 / 笔面试时间）</li>
+          <li>8 月初前后即开始关注并投递第一波秋招（不要等到 9–10 月）</li>
+          <li>按"保底（户籍地）/ 稳妥 / 冲刺（热门城市）"分层规划投递城市和岗位</li>
+          <li>准备至少 2–3 个不同方向的定制化简历版本</li>
+        </ul>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">简历细则</div>
+        <ul class="checklist">
+          <li>英文书写、无照片、无生日性别</li>
+          <li>Gmail 邮箱 + 香港本地号码</li>
+          <li>STAR 法则 + 量化成果 + 关键处加粗</li>
+          <li>不用中文描述数字</li>
+        </ul>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">信息渠道</div>
+        <ul class="checklist">
+          <li>关注 CISA 群 / CISA 公众号 / CC 公众号</li>
+          <li>获取内推、港府资助实习、招聘会信息</li>
+          <li>入学后主动联系导师询问 RA 机会</li>
+          <li>积极参加"阳楼"每月招聘会（哪怕只是扫码投递）</li>
+        </ul>
+      </div>
+      <div class="appendix-block">
+        <div class="appendix-label">笔面试准备</div>
+        <ul class="checklist">
+          <li>提前刷行测题库（牛客网、闲鱼北森题库、B 站公考速成视频）</li>
+          <li>准备无领导小组面试角色策略</li>
+          <li>准备结构化面试模板化回答</li>
+          <li>多利用学校免费的简历修改 / 模拟面试 / 职业规划资源</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="appendix-rule"></div>
+    <div class="appendix-fine">
+      This appendix is printed on tracing paper · 本附页以硫酸纸印刷 · Vol.07 · 2026
+    </div>
+
+  </div>
+</div>
+
+<!-- ════ L07 · 尾页 ════ -->
+<footer class="colophon">
+  <div class="colophon-inner">
+    <div class="colophon-grid">
+      <div>
+        <h5>关于本期</h5>
+        <p>CityU 求职经验 &amp; 校内资源分享会整理笔记。分享人：苍蔓学姐（金融专业校友）。涵盖十二个板块，从校内资源到踩坑经验，一份读完即可上手的行动指南。</p>
+      </div>
+      <div>
+        <h5>出版信息</h5>
+        <p>2026 · MAGAZINE OWN<br>分享会笔记系列<br>非正式出版物 · 仅供学习参考</p>
+      </div>
+      <div>
+        <h5>设计信息</h5>
+        <p>字体：Noto Serif SC / Noto Sans Mono / Dancing Script<br>主题：t-a 牛皮纸档案<br>版式：双栏 × 12 章 + 附页</p>
+      </div>
+    </div>
+    <div class="colophon-rule"></div>
+    <p class="colophon-fine">© 2026 · MAGAZINE OWN · All Rights Reserved</p>
+  </div>
+</footer>
+
+</body>
+</html>
